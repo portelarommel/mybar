@@ -14,13 +14,24 @@ import br.com.trabalhopoo.mybar.enums.TipoDeUsuario;
 @Table(name = "usuarios")
 public class Usuario {
     @Id
+    @Column(unique = true)
     private String codigo;
     private String senha;
-    //private tipo;
     private String nome;
     private String email;
     @Enumerated(EnumType.STRING)
     private TipoDeUsuario tipo;
+    @OneToOne 
+    private ItensDaConta quemRemoveu;
+    @OneToMany
+    private ItensDaConta quemLancou;
+    @OneToMany
+    private Pagamentos quemExcluiuPg;
+    @OneToOne
+    private Pagamentos quemLancouPg;
+    @OneToMany
+    private Conta garconAbertura;
+
 
 
 }

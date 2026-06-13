@@ -15,10 +15,13 @@ import  br.com.trabalhopoo.mybar.enums.Sexo;
 public class Cliente {
     private String nome;
     @Id
+    @Column(unique = true)
     private String cpf;
     private String celular;
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
+    @OneToMany
+    private Conta conta;
 
 
 }
