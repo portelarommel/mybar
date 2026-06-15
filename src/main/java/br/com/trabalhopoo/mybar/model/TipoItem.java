@@ -28,7 +28,7 @@ public class TipoDeItem {
     @Enumerated(EnumType.STRING)
     private Sentenca cozinha;
     @OneToMany
-    private ItemDeCardapio itemDeCardapio;
+    private ItemCardapio itemCardapio;
 
 
 

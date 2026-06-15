@@ -23,7 +23,7 @@ public class ItensDaConta {
     @ManyToOne
     private Usuario quemLancou;
     @ManyToOne
-    private ItemDeCardapio itemDeCardapio;
+    private ItemCardapio itemCardapio;
     @ManyToOne
     private Conta conta;
 
