@@ -22,13 +22,13 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private TipoDeUsuario tipo;
     @OneToOne 
-    private ItensDaConta quemRemoveu;
+    private ItemDaConta quemRemoveu;
     @OneToMany
-    private ItensDaConta quemLancou;
+    private ItemDaConta quemLancou;
     @OneToMany
-    private Pagamentos quemExcluiuPg;
+    private Pagamento quemExcluiuPg;
     @OneToOne
-    private Pagamentos quemLancouPg;
+    private Pagamento quemLancouPg;
     @OneToMany
     private Conta garconAbertura;
 

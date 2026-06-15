@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.trabalhopoo.mybar.model.Conta;
-import br.com.trabalhopoo.mybar.model.Usuario;
 import br.com.trabalhopoo.mybar.service.ContaService;
 
 @Controller
@@ -36,18 +35,20 @@ public class ContaController {
         return ResponseEntity.status(200).body(contaService.listarContas());
     }
     @GetMapping
-    public Conta buscarConta(@PathVariable Integer numero){
-        return new Conta(); // código temporário
+    public ResponseEntity<Conta> buscarConta(@PathVariable Integer numero){
+        Conta encontrada = contaService.buscarConta(numero);
+        return ResponseEntity.status(200).body(encontrada);
     }
     @PutMapping("/{numero}/editar")
     public ResponseEntity<Conta> editarConta(@PathVariable String numero, @RequestBody Conta conta)
     {
-        return ResponseEntity.status(202).body(contaService.editarConta(conta));
+        return ResponseEntity.status(200).body(contaService.editarConta(conta));
     }
     @PostMapping("/registrar")
     public ResponseEntity<Conta> registrarConta(@RequestBody Conta conta)
     {
-        return ResponseEntity.status(201).body(contaService.registrarConta(conta));
+        Conta salva = contaService.registrarConta(conta);
+        return ResponseEntity.status(201).body(salva);
     }
     @DeleteMapping("/{numero}/deletar")
     public ResponseEntity<?> deletarConta(@PathVariable Integer numero)
