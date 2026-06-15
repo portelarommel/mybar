@@ -19,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class TipoDeItem {
+public class TipoItem {
     @Id
     @Column(unique = true)
     private String codigo;

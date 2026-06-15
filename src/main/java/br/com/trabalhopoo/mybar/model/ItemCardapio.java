@@ -14,15 +14,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ItemDeCardapio {
+public class ItemCardapio {
     @Id
     @Column(unique = true)
     private String codigo;
     private String descricao;
     private BigDecimal valor;
     @OneToMany
-    private ItensDaConta itensDaConta;
+    private ItemDaConta itensDaConta;
     @ManyToOne
-    private TipoDeItem tipoDeItem;
+    private TipoItem tipoDeItem;
 
 }

@@ -4,7 +4,7 @@ import java.time.LocalTime;
 
 import br.com.trabalhopoo.mybar.enums.Sentenca;
 import jakarta.persistence.*;
-public class ItensDaConta {
+public class ItemDaConta {
     private int quantidade;
     @Enumerated(EnumType.STRING)
     private Sentenca ativo;

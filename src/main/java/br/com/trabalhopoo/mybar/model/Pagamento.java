@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import br.com.trabalhopoo.mybar.enums.Sentenca;
 @Entity
 @Table(name="pagamentos")
-public class Pagamentos {
+public class Pagamento {
     private float valor;
     @Enumerated(EnumType.STRING)
     private FormaDePagamento forma;

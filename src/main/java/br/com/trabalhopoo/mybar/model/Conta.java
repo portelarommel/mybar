@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @Getter
 @Setter
@@ -15,7 +17,8 @@ import java.time.LocalTime;
 @Table(name = "contas")
 public class Conta {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Min(0)
+    @Max(9999)
     private int numero;
     private String status;
     private LocalDate dataAbertura;
@@ -23,11 +26,11 @@ public class Conta {
     @ManyToOne
     private Usuario garconAbertura;
     @OneToMany
-    private Pagamentos pagamento;
+    private Pagamento pagamento;
     @ManyToOne
     private Cliente cliente;
     @OneToMany 
-    private ItensDaConta itensDaConta;
+    private ItemDaConta itensDaConta;
 
 
 }
