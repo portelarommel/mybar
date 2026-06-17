@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
+import br.com.trabalhopoo.mybar.repository.ItemDaContaRepository;
 import br.com.trabalhopoo.mybar.enums.Status;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
 import br.com.trabalhopoo.mybar.exception.ContaNaoEncontradaException;
 import br.com.trabalhopoo.mybar.model.Conta;
+import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.model.Usuario;
 
 
@@ -52,6 +54,14 @@ public class ContaService {
 
         Conta encontrado = (Conta)contaRepository.findById(numero).orElseThrow(() -> new ContaNaoEncontradaException("Conta não encontrada"));
         return encontrado;
+
+    }
+    public Conta registrarItemConta(Integer numero, ItemDaConta itemDaConta )
+    {
+        Conta conta = buscarConta(numero);
+        conta.adicionarItem(itemDaConta);
+        contaRepository.save(conta);
+        return conta;
 
     }
 

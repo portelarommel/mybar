@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.trabalhopoo.mybar.model.Conta;
+import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ContaService;
 
 @Controller
@@ -62,8 +63,9 @@ public class ContaController {
         return "";
     }
     @PutMapping("/{numero}/registrarItem")
-    public String registrarItemConta(@PathVariable Integer numero){
-        return "";
+    public ResponseEntity<Conta> registrarItemConta(@PathVariable Integer numero, @RequestBody ItemDaConta itemDaConta ){
+        Conta nova  = contaService.registrarItemConta(numero, itemDaConta);
+        return ResponseEntity.status(201).body(nova);
     }
     @PutMapping("/{numero}/fechar")
     public String fecharConta(@PathVariable Integer numero)

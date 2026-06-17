@@ -5,6 +5,9 @@ import java.time.LocalTime;
 import br.com.trabalhopoo.mybar.enums.Sentenca;
 import jakarta.persistence.*;
 public class ItemDaConta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private int quantidade;
     @Enumerated(EnumType.STRING)
     private Sentenca ativo;

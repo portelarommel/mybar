@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import java.io.ObjectInputFilter.Status;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
@@ -29,11 +32,16 @@ public class Conta {
     @ManyToOne
     private Usuario garconAbertura;
     @OneToMany
-    private Pagamento pagamento;
+    private List<Pagamento> pagamento = new ArrayList();
     @ManyToOne
     private Cliente cliente;
-    @OneToMany 
-    private ItemDaConta itensDaConta;
+    @OneToMany (mappedBy = "conta", cascade = CascadeType.ALL)
+    private List<ItemDaConta> itensDaConta = new ArrayList();
+
+    public void adicionarItem(ItemDaConta item) {
+            itensDaConta.add(item);
+             item.setConta(this);
+            }
 
 
 }

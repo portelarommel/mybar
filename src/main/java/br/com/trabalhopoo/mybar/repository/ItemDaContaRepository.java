@@ -1,5 +1,5 @@
 package br.com.trabalhopoo.mybar.repository;
 
+public interface ItemDaContaRepository {
 
-public interface ItemCardapioRepository  {
 }
