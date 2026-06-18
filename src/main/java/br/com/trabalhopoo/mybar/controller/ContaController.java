@@ -68,9 +68,10 @@ public class ContaController {
         return ResponseEntity.status(201).body(nova);
     }
     @PutMapping("/{numero}/fechar")
-    public String fecharConta(@PathVariable Integer numero)
+    public ResponseEntity<Conta> fecharConta(@PathVariable Integer numero)
     {
-        return "";
+        Conta fechada = contaService.fecharConta(numero);
+        return ResponseEntity.status(201).body(fechada);
     }
 
 

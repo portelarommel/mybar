@@ -1,13 +1,29 @@
 package br.com.trabalhopoo.mybar.model;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 import br.com.trabalhopoo.mybar.enums.Sentenca;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+@Getter
+@Setter
+@Entity
+@Table(name = "contas")
 public class ItemDaConta {
+    public ItemDaConta(ItemCardapio itemCardapio, int quantidade)
+    {
+        this.quantidade = quantidade;
+        this.itemCardapio = itemCardapio;
+        valor = itemCardapio.getValor().multiply(BigDecimal.valueOf(quantidade));
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private BigDecimal valor;
     private int quantidade;
     @Enumerated(EnumType.STRING)
     private Sentenca ativo;

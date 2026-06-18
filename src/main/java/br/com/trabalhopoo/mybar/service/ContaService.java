@@ -1,5 +1,6 @@
 package br.com.trabalhopoo.mybar.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import br.com.trabalhopoo.mybar.enums.Status;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
 import br.com.trabalhopoo.mybar.exception.ContaNaoEncontradaException;
 import br.com.trabalhopoo.mybar.model.Conta;
+import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.model.Usuario;
 
@@ -63,6 +65,20 @@ public class ContaService {
         contaRepository.save(conta);
         return conta;
 
+    }
+    public Conta fecharConta(Integer numero)
+    {
+        Conta conta = buscarConta(numero);
+        BigDecimal total = new BigDecimal(0);
+        for (ItemDaConta item : conta.getItensDaConta())
+        {
+            BigDecimal aux = item.getValor().multiply( item.getItemCardapio().getTipoDeItem().getGorjeta());
+            total = total.add(aux);
+        }
+        ItemDaConta gorjeta = new ItemDaConta(total);
+        conta.adicionarItem(gorjeta);
+        return conta;
+      
     }
 
 }

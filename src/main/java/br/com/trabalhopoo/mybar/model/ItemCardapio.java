@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "itensCardapio")
 public class ItemCardapio {
     @Id
     @Column(unique = true)
