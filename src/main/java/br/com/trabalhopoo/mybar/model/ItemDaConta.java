@@ -20,6 +20,10 @@ public class ItemDaConta {
         this.itemCardapio = itemCardapio;
         valor = itemCardapio.getValor().multiply(BigDecimal.valueOf(quantidade));
     }
+        public ItemDaConta(BigDecimal valor)
+    {
+        this.valor = valor;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

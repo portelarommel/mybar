@@ -1,5 +1,6 @@
 package br.com.trabalhopoo.mybar.model;
 import java.math.BigDecimal;
+import java.util.List;
 
 import br.com.trabalhopoo.mybar.enums.Sentenca;
 import jakarta.persistence.Column;
@@ -8,6 +9,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,14 +24,16 @@ import lombok.Setter;
 @Entity
 public class TipoItem {
     @Id
-    @Column(unique = true)
-    private String codigo;
+    @Min(0)
+    @Max(9999)
+    private Integer codigo;
     private String descricao;
+    private Boolean ativo = true;
     private BigDecimal gorjeta;
     @Enumerated(EnumType.STRING)
     private Sentenca cozinha;
-    @OneToMany
-    private ItemCardapio itemCardapio;
+    @OneToMany(mappedBy = "tipoItem")
+    private List<ItemCardapio> itensCardapio;
 
 
 

@@ -17,7 +17,7 @@ import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.service.ItemCardapioService;
 @Controller
-@RequestMapping("/ItemCardapio")
+@RequestMapping("/itensCardapio")
 public class ItemCardapioController {
     @Autowired
     private final ItemCardapioService itemCardapioService;
@@ -39,7 +39,7 @@ public class ItemCardapioController {
     }
 
     @PutMapping("/{codigo}")
-    public ResponseEntity<ItemCardapio> editarItemCardapio(@RequestBody ItemCardapio itemCardapio)
+    public ResponseEntity<ItemCardapio> editarItemCardapio(@PathVariable Integer codigo, @RequestBody ItemCardapio itemCardapio)
     {
         return ResponseEntity.status(200).body(itemCardapioService.editarItemCardapio(itemCardapio));
 

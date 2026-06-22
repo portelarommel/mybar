@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.com.trabalhopoo.mybar.model.TipoItem;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ContaJaAbertaException.class)
@@ -25,6 +27,11 @@ public class GlobalExceptionHandler {
 
     }
     @ExceptionHandler(ItemCardapioJaRegistradoException.class)
+    public ResponseEntity<ErroResponse> tratarItemCardapioJaRegistrado(ItemCardapioJaRegistradoException ex)
+    {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
+    }
+    @ExceptionHandler(ItemCardapioJaRegistradoException.class)
     public ResponseEntity<ErroResponse> tratarContaJaAberta(ItemCardapioJaRegistradoException ex)
     {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
@@ -35,6 +42,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
 
     }
+
+    @ExceptionHandler(TipoItemNaoEncontradoException.class)
+    public ResponseEntity<ErroResponse> tratarTipoItemNaoEncontrado(TipoItemNaoEncontradoException ex)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErroResponse(ex.getMessage()));
+
+    }
+    @ExceptionHandler(TipoItemJaRegistradoException.class)
+    public ResponseEntity<ErroResponse> tratarTipoItemJaRegistrado(TipoItemJaRegistradoException ex)
+    {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
+    }
+
 
 
 }
