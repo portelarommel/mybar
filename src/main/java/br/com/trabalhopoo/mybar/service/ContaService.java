@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
 import br.com.trabalhopoo.mybar.repository.ItemDaContaRepository;
 import br.com.trabalhopoo.mybar.enums.Status;
+import br.com.trabalhopoo.mybar.exception.ContaComPedidosException;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
 import br.com.trabalhopoo.mybar.exception.ContaNaoEncontradaException;
 import br.com.trabalhopoo.mybar.model.Conta;
@@ -40,25 +41,41 @@ public class ContaService {
         Conta nova =  contaRepository.save(conta);
         return nova;
     }
-    public Conta editarConta(Conta conta)
-    {
+    public Conta editarConta(String numero, Conta conta)
+    { 
+        Conta buscar = buscarConta(numero);
+        if (!buscar.getItensDaConta().isEmpty())
+        {
+            throw new ContaComPedidosException("Não é possível alterar a conta pois essa possui pedidos!");
+        }
+        if(contaRepository.existsById(conta.getNumero()))
+        {
+            throw new ContaJaAbertaException("Já existe conta aberta com esse número!");
+        }
+
+
         Conta contaEditada =  contaRepository.save(conta);
         return contaEditada;
     }
-    public Boolean deletarConta(Integer numero)
+    public Boolean deletarConta(String numero)
     {
+        Conta buscar = buscarConta(numero);
+        if (!buscar.getItensDaConta().isEmpty())
+        {
+            throw new ContaComPedidosException("Não é possível deletar a conta pois essa possui pedidos!");
+        }
         contaRepository.deleteById(numero);
         return true;
 
     }
-    public Conta buscarConta(Integer numero)
+    public Conta buscarConta(String numero)
     {
 
         Conta encontrado = (Conta)contaRepository.findById(numero).orElseThrow(() -> new ContaNaoEncontradaException("Conta não encontrada"));
         return encontrado;
 
     }
-    public Conta registrarItemConta(Integer numero, ItemDaConta itemDaConta )
+    public Conta registrarItemConta(String numero, ItemDaConta itemDaConta )
     {
         Conta conta = buscarConta(numero);
         conta.adicionarItem(itemDaConta);
@@ -66,7 +83,7 @@ public class ContaService {
         return conta;
 
     }
-    public Conta fecharConta(Integer numero)
+    public Conta fecharConta(String numero)
     {
         Conta conta = buscarConta(numero);
         BigDecimal total = new BigDecimal(0);

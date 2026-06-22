@@ -27,23 +27,19 @@ public class ContaController {
         this.contaService = contaService;
     }
     @GetMapping
-    public String TabelaContas()
-    {
-        return "";
-    }
-    @GetMapping
     public ResponseEntity<List<Conta>> listarContas(){
         return ResponseEntity.status(200).body(contaService.listarContas());
     }
     @GetMapping
-    public ResponseEntity<Conta> buscarConta(@PathVariable Integer numero){
+    public ResponseEntity<Conta> buscarConta(@PathVariable String numero){
         Conta encontrada = contaService.buscarConta(numero);
         return ResponseEntity.status(200).body(encontrada);
     }
-    @PutMapping("/{numero}/editar")
-    public ResponseEntity<Conta> editarConta(@PathVariable String numero, @RequestBody Conta conta)
+    @PutMapping("/{numeroAtual}/editar")
+    public ResponseEntity<Conta> editarConta(@PathVariable String numeroAtual, @RequestBody Conta conta)
     {
-        return ResponseEntity.status(200).body(contaService.editarConta(conta));
+        Conta editada = contaService.editarConta(numeroAtual,conta);
+        return ResponseEntity.status(200).body(editada);
     }
     @PostMapping("/registrar")
     public ResponseEntity<Conta> registrarConta(@RequestBody Conta conta)
@@ -52,23 +48,18 @@ public class ContaController {
         return ResponseEntity.status(201).body(salva);
     }
     @DeleteMapping("/{numero}/deletar")
-    public ResponseEntity<?> deletarConta(@PathVariable Integer numero)
+    public ResponseEntity<?> deletarConta(@PathVariable String numero)
     {
         contaService.deletarConta(numero);
         return ResponseEntity.status(204).build();
     }
-    @GetMapping("/{numero}/visualizar")
-    public String visualizarConta(@PathVariable Integer numero)
-    {
-        return "";
-    }
     @PutMapping("/{numero}/registrarItem")
-    public ResponseEntity<Conta> registrarItemConta(@PathVariable Integer numero, @RequestBody ItemDaConta itemDaConta ){
+    public ResponseEntity<Conta> registrarItemConta(@PathVariable String numero, @RequestBody ItemDaConta itemDaConta ){
         Conta nova  = contaService.registrarItemConta(numero, itemDaConta);
         return ResponseEntity.status(201).body(nova);
     }
     @PutMapping("/{numero}/fechar")
-    public ResponseEntity<Conta> fecharConta(@PathVariable Integer numero)
+    public ResponseEntity<Conta> fecharConta(@PathVariable String numero)
     {
         Conta fechada = contaService.fecharConta(numero);
         return ResponseEntity.status(201).body(fechada);

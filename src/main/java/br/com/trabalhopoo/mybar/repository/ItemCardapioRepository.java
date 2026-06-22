@@ -1,5 +1,12 @@
 package br.com.trabalhopoo.mybar.repository;
 
 
-public interface ItemCardapioRepository  {
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.com.trabalhopoo.mybar.model.ItemCardapio;
+
+public interface ItemCardapioRepository extends JpaRepository<ItemCardapio, Integer> {
+    List<ItemCardapio> findByAtivoTrue();
 }

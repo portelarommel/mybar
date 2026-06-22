@@ -13,6 +13,7 @@ import java.util.List;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -22,9 +23,10 @@ import jakarta.validation.constraints.Min;
 @Table(name = "contas")
 public class Conta {
     @Id
-    @Min(0)
-    @Max(9999)
-    private int numero;
+    @Column(length = 4, nullable = false)
+    @Pattern(regexp = "\\d{4}", message = "Deve conter exatamente 4 dígitos")
+    private String numero;
+    
     @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDate dataAbertura;
