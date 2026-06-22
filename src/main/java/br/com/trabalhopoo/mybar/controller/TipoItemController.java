@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.trabalhopoo.mybar.model.TipoItem;
 import br.com.trabalhopoo.mybar.service.TipoItemService;
@@ -30,8 +31,8 @@ public class TipoItemController {
         return ResponseEntity.status(200).body(tipoItemService.listarTiposItem());
     }
 
-    @GetMapping 
-    public ResponseEntity<TipoItem> buscarTipoItem(@PathVariable Integer codigo)
+    @GetMapping("/buscarConta")
+    public ResponseEntity<TipoItem> buscarTipoItem(@RequestParam Integer codigo)
     {
         return ResponseEntity.status(200).body(tipoItemService.buscarTipoItem(codigo));
 

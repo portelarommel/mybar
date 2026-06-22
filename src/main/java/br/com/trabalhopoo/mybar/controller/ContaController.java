@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
@@ -30,8 +31,8 @@ public class ContaController {
     public ResponseEntity<List<Conta>> listarContas(){
         return ResponseEntity.status(200).body(contaService.listarContas());
     }
-    @GetMapping
-    public ResponseEntity<Conta> buscarConta(@PathVariable String numero){
+    @GetMapping("/buscarConta")
+    public ResponseEntity<Conta> buscarConta(@RequestParam String numero){
         Conta encontrada = contaService.buscarConta(numero);
         return ResponseEntity.status(200).body(encontrada);
     }
