@@ -2,11 +2,13 @@ package br.com.trabalhopoo.mybar.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import br.com.trabalhopoo.mybar.exception.TipoItemJaRegistradoException;
 import br.com.trabalhopoo.mybar.exception.TipoItemNaoEncontradoException;
 import br.com.trabalhopoo.mybar.model.TipoItem;
 import br.com.trabalhopoo.mybar.repository.TipoItemRepository;
-
+@Service
 public class TipoItemService {
     private TipoItemRepository tipoItemRepository;
     public TipoItemService (TipoItemRepository tipoItemRepository)

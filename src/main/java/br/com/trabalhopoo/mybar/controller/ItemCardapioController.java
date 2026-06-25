@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
@@ -31,8 +32,8 @@ public class ItemCardapioController {
         return ResponseEntity.status(200).body(itemCardapioService.listarItensCardapio());
     }
 
-    @GetMapping 
-    public ResponseEntity<ItemCardapio> buscarItemCardapio(@PathVariable Integer codigo)
+    @GetMapping("/buscarItem")
+    public ResponseEntity<ItemCardapio> buscarItemCardapio(@RequestParam Integer codigo)
     {
         return ResponseEntity.status(200).body(itemCardapioService.buscarItemCardapio(codigo));
 

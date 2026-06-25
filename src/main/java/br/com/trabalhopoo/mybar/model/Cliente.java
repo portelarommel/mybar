@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.br.CPF;
 
 import  br.com.trabalhopoo.mybar.enums.Sexo;
@@ -27,7 +29,7 @@ public class Cliente {
     private String celular;
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
-    @OneToMany
-    private Conta conta;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Conta> contas;
 
 }

@@ -5,13 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.trabalhopoo.mybar.enums.ModoOperacao;
 import br.com.trabalhopoo.mybar.model.Configuracao;
 import br.com.trabalhopoo.mybar.repository.ConfiguracaoRepository;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
-
+@Service
 public class ConfiguracaoService {
     @Autowired
     public ConfiguracaoRepository configuracaoRepository;

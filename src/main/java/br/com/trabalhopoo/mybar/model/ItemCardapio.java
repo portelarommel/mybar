@@ -30,6 +30,6 @@ public class ItemCardapio {
     @OneToMany(mappedBy ="itemCardapio")
     private List<ItemDaConta> itensDaConta;
     @ManyToOne
-    private TipoItem tipoDeItem;
+    private TipoItem tipoItem;
 
 }

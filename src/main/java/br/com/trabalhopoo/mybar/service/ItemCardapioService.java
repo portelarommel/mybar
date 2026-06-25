@@ -2,11 +2,13 @@ package br.com.trabalhopoo.mybar.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import br.com.trabalhopoo.mybar.exception.ItemCardapioJaRegistradoException;
 import br.com.trabalhopoo.mybar.exception.ItemCardapioNaoEncontradoException;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.repository.ItemCardapioRepository;
-
+@Service
 public class ItemCardapioService {
     private ItemCardapioRepository itemCardapioRepository;
     public ItemCardapioService (ItemCardapioRepository itemCardapioRepository)

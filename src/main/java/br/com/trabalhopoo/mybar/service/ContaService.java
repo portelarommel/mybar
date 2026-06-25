@@ -89,7 +89,7 @@ public class ContaService {
         BigDecimal total = new BigDecimal(0);
         for (ItemDaConta item : conta.getItensDaConta())
         {
-            BigDecimal aux = item.getValor().multiply( item.getItemCardapio().getTipoDeItem().getGorjeta());
+            BigDecimal aux = item.getValor().multiply( item.getItemCardapio().getTipoItem().getGorjeta());
             total = total.add(aux);
         }
         ItemDaConta gorjeta = new ItemDaConta(total);

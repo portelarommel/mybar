@@ -31,11 +31,6 @@ public class GlobalExceptionHandler {
     {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
     }
-    @ExceptionHandler(ItemCardapioJaRegistradoException.class)
-    public ResponseEntity<ErroResponse> tratarContaJaAberta(ItemCardapioJaRegistradoException ex)
-    {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
-    }
     @ExceptionHandler(ContaComPedidosException.class)
     public ResponseEntity<ErroResponse> tratarContaComPedidos(ContaComPedidosException ex)
     {

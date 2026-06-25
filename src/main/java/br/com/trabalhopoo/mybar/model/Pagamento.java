@@ -1,5 +1,6 @@
 package br.com.trabalhopoo.mybar.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import br.com.trabalhopoo.mybar.enums.FormaDePagamento;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,6 +11,9 @@ import br.com.trabalhopoo.mybar.enums.Sentenca;
 @Entity
 @Table(name="pagamentos")
 public class Pagamento {
+    @Id
+    @NotNull
+    private long Id;
     private float valor;
     @Enumerated(EnumType.STRING)
     private FormaDePagamento forma;

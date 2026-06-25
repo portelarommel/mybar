@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+
+import java.util.List;
+
 import br.com.trabalhopoo.mybar.enums.TipoDeUsuario;
 
 @Getter
@@ -23,14 +26,14 @@ public class Usuario {
     private TipoDeUsuario tipo;
     @OneToOne 
     private ItemDaConta quemRemoveu;
-    @OneToMany
-    private ItemDaConta quemLancou;
-    @OneToMany
-    private Pagamento quemExcluiuPg;
+    @OneToMany(mappedBy = "quemLancou", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemDaConta> quemLancou;
+    @OneToMany(mappedBy = "quemExcluiuPg", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pagamento> quemExcluiuPg;
     @OneToOne
     private Pagamento quemLancouPg;
-    @OneToMany
-    private Conta garconAbertura;
+    @OneToMany(mappedBy = "garconAbertura", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Conta> garconAbertura;
 
 
 
