@@ -2,52 +2,61 @@ package br.com.trabalhopoo.mybar.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.trabalhopoo.mybar.model.TipoItem;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ContaJaAbertaException.class)
-    public ResponseEntity<ErroResponse> tratarContaJaAberta(ContaJaAbertaException ex)
+    public String tratarContaJaAberta(ContaJaAbertaException ex,RedirectAttributes attributes)
     {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
+        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        return "redirect:/contas/registrar";
     }
     @ExceptionHandler(ContaNaoEncontradaException.class)
-    public ResponseEntity<ErroResponse> tratarContaNaoEncontrada(ContaNaoEncontradaException ex)
+    public String tratarContaNaoEncontrada(ContaNaoEncontradaException ex,RedirectAttributes attributes)
     {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErroResponse(ex.getMessage()));
+        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        return "redirect:/contas";
 
     }
    @ExceptionHandler(ItemCardapioNaoEncontradoException.class)
-    public ResponseEntity<ErroResponse> tratarItemCardapioNaoEncontrado(ItemCardapioNaoEncontradoException ex)
+    public String tratarItemCardapioNaoEncontrado(ItemCardapioNaoEncontradoException ex,RedirectAttributes attributes)
     {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErroResponse(ex.getMessage()));
+        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        return "redirect:/itensCardapio";
 
     }
     @ExceptionHandler(ItemCardapioJaRegistradoException.class)
-    public ResponseEntity<ErroResponse> tratarItemCardapioJaRegistrado(ItemCardapioJaRegistradoException ex)
+    public String tratarItemCardapioJaRegistrado(ItemCardapioJaRegistradoException ex, RedirectAttributes attributes)
     {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
+        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        return "redirect:/itensCardapio/registrar";
     }
     @ExceptionHandler(ContaComPedidosException.class)
-    public ResponseEntity<ErroResponse> tratarContaComPedidos(ContaComPedidosException ex)
+    public String tratarContaComPedidos(ContaComPedidosException ex,RedirectAttributes attributes)
     {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
+        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        return "redirect:/contas";
 
     }
 
     @ExceptionHandler(TipoItemNaoEncontradoException.class)
-    public ResponseEntity<ErroResponse> tratarTipoItemNaoEncontrado(TipoItemNaoEncontradoException ex)
+    public String tratarTipoItemNaoEncontrado(TipoItemNaoEncontradoException ex, RedirectAttributes attributes)
     {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErroResponse(ex.getMessage()));
+        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        return "redirect:/tiposItem";
 
     }
     @ExceptionHandler(TipoItemJaRegistradoException.class)
-    public ResponseEntity<ErroResponse> tratarTipoItemJaRegistrado(TipoItemJaRegistradoException ex)
+    public String tratarTipoItemJaRegistrado(TipoItemJaRegistradoException ex,RedirectAttributes attributes)
     {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse(ex.getMessage()));
+        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        return "redirect:/tiposItem/registrar";
     }
 
 
