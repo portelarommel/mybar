@@ -2,60 +2,50 @@ package br.com.trabalhopoo.mybar.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.trabalhopoo.mybar.model.TipoItem;
 import br.com.trabalhopoo.mybar.service.TipoItemService;
-@Controller
-@RequestMapping("tiposItem")
+
+@RestController
+@RequestMapping("/tiposItem")
 public class TipoItemController {
-    @Autowired
+
     private final TipoItemService tipoItemService;
     public TipoItemController( TipoItemService tipoItemService)
     {
         this.tipoItemService = tipoItemService;
     }
-        @GetMapping
+
+    @GetMapping()
     public ResponseEntity<List<TipoItem>> listarTiposItem()
     {
         return ResponseEntity.status(200).body(tipoItemService.listarTiposItem());
     }
 
-    @GetMapping("/buscarConta")
-    public ResponseEntity<TipoItem> buscarTipoItem(@RequestParam Integer codigo)
+    @GetMapping("/{id}")
+    public ResponseEntity<TipoItem> pesquisarTipoItem(@PathVariable Long id)
     {
-        return ResponseEntity.status(200).body(tipoItemService.buscarTipoItem(codigo));
-
+        return ResponseEntity.status(200).body(tipoItemService.pesquisarTipoItem(id));
     }
 
-    @PutMapping("/{codigo}")
-    public ResponseEntity<TipoItem> editarTipoItem(@PathVariable Integer codigo, @RequestBody TipoItem tipoItem)
+    @PutMapping("/{id}")
+    public ResponseEntity<TipoItem> alterarTipoItem(@PathVariable Long id, @RequestBody TipoItem tipoItem)
     {
-        return ResponseEntity.status(200).body(tipoItemService.editarTipoItem(tipoItem));
-
+        tipoItem.setId(id);
+        return ResponseEntity.status(200).body(tipoItemService.alterarTipoItem(tipoItem));
     }
-    @PostMapping("/registrar")
-    public ResponseEntity<TipoItem> registrarTipoItem(@RequestBody TipoItem tipoItem)
-    {
+
+    @PostMapping()
+    public ResponseEntity<TipoItem> registrarTipoItem(@RequestBody TipoItem tipoItem) {
         return ResponseEntity.status(200).body(tipoItemService.registrarTipoItem(tipoItem));
     }
-    @DeleteMapping("/{codigo}")
-    public ResponseEntity<?> deletarTipoItem(@PathVariable Integer codigo)
-    {
-        return ResponseEntity.status(201).body(tipoItemService.deletarTipoItem(codigo));
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarTipoItem(@PathVariable Long id) {
+        tipoItemService.deletarTipoItem(id);
+        return ResponseEntity.status(201).build();
     }
-
-
-    
 }

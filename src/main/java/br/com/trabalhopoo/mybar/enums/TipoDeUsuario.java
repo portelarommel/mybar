@@ -5,6 +5,4 @@ public enum TipoDeUsuario {
     ADMINISTRADOR,
     COZINHA,
     ATENDENTE_BALCAO
-
-    
 }
