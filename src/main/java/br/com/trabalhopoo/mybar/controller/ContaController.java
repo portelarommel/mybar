@@ -8,55 +8,65 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ContaService;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/contas")
 public class ContaController {
-    @Autowired
     private final ContaService contaService;
     public ContaController(ContaService contaService){
         this.contaService = contaService;
     }
     @GetMapping
-    public ResponseEntity<List<Conta>> listarContas(){
-        return ResponseEntity.status(200).body(contaService.listarContas());
+    public String listar(Model model){
+        model.addAttribute("contas",contaService.listarContas());
+        return "conta/listarConta";
     }
-    @GetMapping("/buscarConta")
-    public ResponseEntity<Conta> buscarConta(@RequestParam String numero){
+    @GetMapping("/buscar")
+    public String buscarConta(@RequestParam String numero,Model model){
         Conta encontrada = contaService.buscarConta(numero);
-        return ResponseEntity.status(200).body(encontrada);
+        model.addAttribute(encontrada);
+        return "conta/buscarConta";
     }
     @PutMapping("/{numeroAtual}/editar")
-    public ResponseEntity<Conta> editarConta(@PathVariable String numeroAtual, @RequestBody Conta conta)
+    public  String editarConta(@PathVariable String numeroAtual, @ModelAttribute Conta conta,RedirectAttributes attributes)
     {
-        Conta editada = contaService.editarConta(numeroAtual,conta);
-        return ResponseEntity.status(200).body(editada);
+        contaService.editarConta(numeroAtual,conta);
+        attributes.addFlashAttribute("mensagem", "Conta editada com sucesso!");
+        return "redirect:/contas";
     }
     @PostMapping("/registrar")
-    public ResponseEntity<Conta> registrarConta(@RequestBody Conta conta)
+    public String registrarConta(@RequestBody Conta conta,RedirectAttributes attributes)
     {
-        Conta salva = contaService.registrarConta(conta);
-        return ResponseEntity.status(201).body(salva);
+        contaService.registrarConta(conta);
+        attributes.addFlashAttribute("mensagem", "Conta registrada com sucesso!");
+
+        return "redirect:/contas";
     }
     @DeleteMapping("/{numero}/deletar")
-    public ResponseEntity<?> deletarConta(@PathVariable String numero)
+    public String deletarConta(@PathVariable String numero,RedirectAttributes attributes)
     {
         contaService.deletarConta(numero);
-        return ResponseEntity.status(204).build();
+        attributes.addFlashAttribute("mensagem", "Conta apagada com sucesso!");
+        return "redirect:/contas";
     }
     @PutMapping("/{numero}/registrarItem")
-    public ResponseEntity<Conta> registrarItemConta(@PathVariable String numero, @RequestBody ItemDaConta itemDaConta ){
+    public ResponseEntity<Conta> registrarItemConta(@PathVariable String numero, @ModelAttribute ItemDaConta itemDaConta, RedirectAttributes attributes){
         Conta nova  = contaService.registrarItemConta(numero, itemDaConta);
+        attributes.addFlashAttribute("mensagem","Item adicionado na conta com sucesso!");
         return ResponseEntity.status(201).body(nova);
     }
     @PutMapping("/{numero}/fechar")

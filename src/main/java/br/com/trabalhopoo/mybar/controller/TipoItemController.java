@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.com.trabalhopoo.mybar.model.TipoItem;
 import br.com.trabalhopoo.mybar.service.TipoItemService;
-@Controller
-@RequestMapping("tiposItem")
+@RestController
+@RequestMapping("/tiposItem")
 public class TipoItemController {
     @Autowired
     private final TipoItemService tipoItemService;
