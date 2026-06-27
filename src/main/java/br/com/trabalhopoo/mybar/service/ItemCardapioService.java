@@ -1,60 +1,59 @@
 package br.com.trabalhopoo.mybar.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import br.com.trabalhopoo.mybar.exception.ItemCardapioJaRegistradoException;
 import br.com.trabalhopoo.mybar.exception.ItemCardapioNaoEncontradoException;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.repository.ItemCardapioRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class ItemCardapioService {
-    private ItemCardapioRepository itemCardapioRepository;
-    public ItemCardapioService (ItemCardapioRepository itemCardapioRepository)
-    {
+
+
+    private final ItemCardapioRepository itemCardapioRepository;
+
+    public ItemCardapioService(ItemCardapioRepository itemCardapioRepository) {
         this.itemCardapioRepository = itemCardapioRepository;
     }
-    public List<ItemCardapio> listarItensCardapio()
-    {
+
+    public List<ItemCardapio> listarItensCardapio() {
         return itemCardapioRepository.findByAtivoTrue();
+    }
 
+    public ItemCardapio buscarItemCardapio(Long id) {
+        return itemCardapioRepository.findById(id)
+                .orElseThrow(() ->
+                        new ItemCardapioNaoEncontradoException(
+                                "Não foi encontrado esse item no cardápio!"));
     }
-    public ItemCardapio buscarItemCardapio(Integer codigo)
-    {
-        ItemCardapio encontrado = (ItemCardapio)itemCardapioRepository.findById(codigo).orElseThrow(() -> new ItemCardapioNaoEncontradoException("Não foi encontado esse item no cardápio!"));
-        return encontrado;
+
+    public ItemCardapio registrarItemCardapio(ItemCardapio itemCardapio) {
+        return itemCardapioRepository.save(itemCardapio);
     }
-    public ItemCardapio registrarItemCardapio(ItemCardapio itemCardapio)
-    {
-        if(itemCardapioRepository.existsById(itemCardapio.getCodigo()))
-        {
-            throw new ItemCardapioJaRegistradoException("Já existe um item no cardápio com esse código!");
+
+    public ItemCardapio editarItemCardapio(ItemCardapio itemCardapio) {
+
+        ItemCardapio existente = buscarItemCardapio(itemCardapio.getId());
+
+        existente.setDescricao(itemCardapio.getDescricao());
+        existente.setValor(itemCardapio.getValor());
+        existente.setAtivo(itemCardapio.isAtivo());
+        existente.setTipoItem(itemCardapio.getTipoItem());
+
+        return itemCardapioRepository.save(existente);
+    }
+
+    public void deletarItemCardapio(Long id) {
+
+        ItemCardapio item = buscarItemCardapio(id);
+
+        if (!item.getItensDaConta().isEmpty()) {
+            item.setAtivo(false);
+            itemCardapioRepository.save(item);
+            return;
         }
-        ItemCardapio nova = itemCardapioRepository.save(itemCardapio);
-        return nova;
 
-
+        itemCardapioRepository.delete(item);
     }
-    public ItemCardapio editarItemCardapio(ItemCardapio itemCardapio)
-    {
-
-        ItemCardapio editado = itemCardapioRepository.save(itemCardapio);
-        return editado;
-
-    }
-    public Boolean deletarItemCardapio(Integer codigo)
-    {
-        ItemCardapio buscar = buscarItemCardapio(codigo);
-        if (!buscar.getItensDaConta().isEmpty()) {
-            buscar.setAtivo(false);
-            return true;
-
-        }
-        itemCardapioRepository.deleteById(codigo);
-        return true;
-    }
-
-
-
 }

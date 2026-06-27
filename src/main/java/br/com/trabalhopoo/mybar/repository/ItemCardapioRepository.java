@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 
-public interface ItemCardapioRepository extends JpaRepository<ItemCardapio, Integer> {
+public interface ItemCardapioRepository extends JpaRepository<ItemCardapio, Long> {
     List<ItemCardapio> findByAtivoTrue();
 }
