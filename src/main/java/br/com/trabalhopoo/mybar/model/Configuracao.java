@@ -5,29 +5,86 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import br.com.trabalhopoo.mybar.enums.ModoOperacao;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "configuracao")
 public class Configuracao {
     @Id
-    @NotNull
-    private Long id = 1L;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private BigDecimal valorIngressoMasc;
+
     private BigDecimal valorIngressoFemin;
+
+    // rever depois
     private LocalDate data;
     private LocalTime hora;
+
     @Enumerated(EnumType.STRING)
     private ModoOperacao modoOperacao;
 
+    public Configuracao() {
+    }
+
+    public Configuracao(Long id, BigDecimal valorIngressoMasc, BigDecimal valorIngressoFemin, LocalDate data, LocalTime hora, ModoOperacao modoOperacao) {
+        this.id = id;
+        this.valorIngressoMasc = valorIngressoMasc;
+        this.valorIngressoFemin = valorIngressoFemin;
+        this.data = data;
+        this.hora = hora;
+        this.modoOperacao = modoOperacao;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public BigDecimal getValorIngressoMasc() {
+        return valorIngressoMasc;
+    }
+
+    public void setValorIngressoMasc(BigDecimal valorIngressoMasc) {
+        this.valorIngressoMasc = valorIngressoMasc;
+    }
+
+    public BigDecimal getValorIngressoFemin() {
+        return valorIngressoFemin;
+    }
+
+    public void setValorIngressoFemin(BigDecimal valorIngressoFemin) {
+        this.valorIngressoFemin = valorIngressoFemin;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public LocalTime getHora() {
+        return hora;
+    }
+
+    public void setHora(LocalTime hora) {
+        this.hora = hora;
+    }
+
+    public ModoOperacao getModoOperacao() {
+        return modoOperacao;
+    }
+
+    public void setModoOperacao(ModoOperacao modoOperacao) {
+        this.modoOperacao = modoOperacao;
+    }
 }

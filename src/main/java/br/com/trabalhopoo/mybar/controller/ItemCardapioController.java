@@ -1,7 +1,11 @@
 package br.com.trabalhopoo.mybar.controller;
 
-import java.util.List;
+import br.com.trabalhopoo.mybar.model.ItemCardapio;
+import br.com.trabalhopoo.mybar.service.ItemCardapioService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,44 +25,43 @@ import br.com.trabalhopoo.mybar.service.ItemCardapioService;
 @RestController
 @RequestMapping("/itensCardapio")
 public class ItemCardapioController {
-    @Autowired
+
     private final ItemCardapioService itemCardapioService;
     public ItemCardapioController(ItemCardapioService itemCardapioService)
     {
         this.itemCardapioService = itemCardapioService;
     }
+
     @GetMapping
     public ResponseEntity<List<ItemCardapio>> listarItensCardapio()
     {
         return ResponseEntity.status(200).body(itemCardapioService.listarItensCardapio());
     }
 
-    @GetMapping("/buscarItem")
-    public ResponseEntity<ItemCardapio> buscarItemCardapio(@RequestParam Integer codigo)
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemCardapio> buscarItemCardapio(@PathVariable long id)
     {
-        return ResponseEntity.status(200).body(itemCardapioService.buscarItemCardapio(codigo));
+        return ResponseEntity.status(200).body(itemCardapioService.buscarItemCardapio(id));
 
     }
 
-    @PutMapping("/{codigo}")
-    public ResponseEntity<ItemCardapio> editarItemCardapio(@PathVariable Integer codigo, @RequestBody ItemCardapio itemCardapio)
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemCardapio> editarItemCardapio(@PathVariable Long id, @RequestBody ItemCardapio itemCardapio)
     {
+        itemCardapio.setId(id);
         return ResponseEntity.status(200).body(itemCardapioService.editarItemCardapio(itemCardapio));
-
     }
-    @PostMapping("/registrar")
+
+    @PostMapping()
     public ResponseEntity<ItemCardapio> registrarItemCardapio(@RequestBody ItemCardapio itemCardapio)
     {
         return ResponseEntity.status(200).body(itemCardapioService.registrarItemCardapio(itemCardapio));
     }
-    @DeleteMapping("/{codigo}")
-    public ResponseEntity<?> deletarItemCardapio(@PathVariable Integer codigo)
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarItemCardapio(@PathVariable Long id)
     {
-        return ResponseEntity.status(201).body(itemCardapioService.deletarItemCardapio(codigo));
-
+        itemCardapioService.deletarItemCardapio(id);
+        return ResponseEntity.status(201).build();
     }
-     
-    
-    
-
 }
