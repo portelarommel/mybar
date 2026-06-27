@@ -52,7 +52,7 @@ public class ItemCardapioController {
         return ResponseEntity.status(200).body(itemCardapioService.editarItemCardapio(itemCardapio));
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ItemCardapio> registrarItemCardapio(@RequestBody ItemCardapio itemCardapio)
     {
         return ResponseEntity.status(200).body(itemCardapioService.registrarItemCardapio(itemCardapio));

@@ -25,8 +25,7 @@ public class ItemDaConta {
 
     private int quantidade;
 
-    @Enumerated(EnumType.STRING)
-    private Sentenca ativo;
+    private Boolean ativo = true;
 
     private LocalDate dataSolicitacao;
 
@@ -65,11 +64,10 @@ public class ItemDaConta {
     }
 
 
-    public ItemDaConta(Long id, BigDecimal valor, int quantidade, Sentenca ativo, LocalDate dataSolicitacao, LocalTime horaSolicitacao, LocalDate dataRecebimentoCozinha, LocalTime horaRecebimentoCozinha, LocalDate dataEntregaCozinha, LocalTime horaEntregaCozinha, LocalDate dataRecebimentoBar, LocalTime horaRecebimentoBar, LocalDate dataEntregaBar, LocalTime horaEntregaBar, Usuario quemRemoveu, Usuario quemLancou, ItemCardapio itemCardapio, Conta conta) {
+    public ItemDaConta(Long id, BigDecimal valor, int quantidade, LocalDate dataSolicitacao, LocalTime horaSolicitacao, LocalDate dataRecebimentoCozinha, LocalTime horaRecebimentoCozinha, LocalDate dataEntregaCozinha, LocalTime horaEntregaCozinha, LocalDate dataRecebimentoBar, LocalTime horaRecebimentoBar, LocalDate dataEntregaBar, LocalTime horaEntregaBar, Usuario quemRemoveu, Usuario quemLancou, ItemCardapio itemCardapio, Conta conta) {
         this.id = id;
         this.valor = valor;
         this.quantidade = quantidade;
-        this.ativo = ativo;
         this.dataSolicitacao = dataSolicitacao;
         this.horaSolicitacao = horaSolicitacao;
         this.dataRecebimentoCozinha = dataRecebimentoCozinha;
@@ -114,11 +112,11 @@ public class ItemDaConta {
         this.quantidade = quantidade;
     }
 
-    public Sentenca getAtivo() {
+    public Boolean getAtivo() {
         return ativo;
     }
 
-    public void setAtivo(Sentenca ativo) {
+    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
     public StatusItem getStatus()

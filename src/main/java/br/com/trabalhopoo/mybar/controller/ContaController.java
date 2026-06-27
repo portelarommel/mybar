@@ -29,9 +29,8 @@ public class ContaController {
     }
 
     @GetMapping
-    public String listar(Model model){
-        model.addAttribute("contas",contaService.listarContas());
-        return "conta/listarConta";
+    public ResponseEntity<List<Conta>> listarContas(){
+        return ResponseEntity.status(200).body(contaService.listarContas());
     }
 
     @GetMapping("/{id}")
@@ -47,7 +46,7 @@ public class ContaController {
         return ResponseEntity.status(200).body(editada);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Conta> abrirConta(@RequestBody Conta conta)
     {
         return ResponseEntity.status(201).body(contaService.abrirConta(conta));

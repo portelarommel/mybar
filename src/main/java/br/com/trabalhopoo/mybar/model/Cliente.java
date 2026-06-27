@@ -21,7 +21,7 @@ public class Cliente {
 
     @Id
     @NotBlank
-    @CPF
+    //@CPF
     private String cpf;
 
     private String celular;

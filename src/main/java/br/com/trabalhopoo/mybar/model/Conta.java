@@ -52,7 +52,7 @@ public class Conta {
     public Conta() {
     }
 
-    public Conta(Long id, Integer numero, Status status, LocalDate dataAbertura, LocalTime horaAbertura, Usuario garconAbertura, Cliente cliente, List<Pagamento> pagamentos, List<ItemDaConta> itensDaConta) {
+    public Conta(Long id, Integer numero, Status status, LocalDate dataAbertura, LocalTime horaAbertura, Usuario garconAbertura, Cliente cliente) {
         this.id = id;
         this.numero = numero;
         this.status = status;
@@ -60,8 +60,6 @@ public class Conta {
         this.horaAbertura = horaAbertura;
         this.garconAbertura = garconAbertura;
         this.cliente = cliente;
-        this.pagamentos = pagamentos;
-        this.itensDaConta = itensDaConta;
     }
 
     public Long getId() {

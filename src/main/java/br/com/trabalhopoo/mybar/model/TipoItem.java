@@ -34,10 +34,9 @@ public class TipoItem {
     public TipoItem() {
     }
 
-    public TipoItem(Long id, String descricao, Boolean ativo, BigDecimal gorjeta, Sentenca cozinha, List<ItemCardapio> itensCardapio) {
+    public TipoItem(Long id, String descricao, BigDecimal gorjeta, Sentenca cozinha, List<ItemCardapio> itensCardapio) {
         this.id = id;
         this.descricao = descricao;
-        this.ativo = ativo;
         this.gorjeta = gorjeta;
         this.cozinha = cozinha;
         this.itensCardapio = itensCardapio;

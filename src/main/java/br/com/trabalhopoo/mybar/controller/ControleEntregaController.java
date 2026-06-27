@@ -30,7 +30,7 @@ public class ControleEntregaController {
         return ResponseEntity.status(200).body(resultado);
     }
     @Transactional
-    @PutMapping("/{id}/receberBar")
+    @PutMapping("/{idItem}/receberBar")
     public ResponseEntity<ItemDaConta>  receberBar(@PathVariable Long idItem)
     {
         ItemDaConta atualizado = controleEntregaService.receberNoBar(idItem);
@@ -38,7 +38,7 @@ public class ControleEntregaController {
     }
 
     @Transactional
-    @PutMapping("/{id}/registrarEntrega")
+    @PutMapping("/{idItem}/registrarEntrega")
     public ResponseEntity<ItemDaConta>  registrarEntregaBar(@PathVariable Long idItem)
     {
         ItemDaConta atualizado = controleEntregaService.registrarEntregaFinalBar(idItem);
