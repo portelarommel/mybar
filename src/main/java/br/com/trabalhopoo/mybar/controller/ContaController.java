@@ -33,36 +33,35 @@ public class ContaController {
         model.addAttribute("contas",contaService.listarContas());
         return "conta/listarConta";
     }
-    @GetMapping("/buscarConta")
-    public ResponseEntity<Conta> buscarConta(@RequestParam String numero){
-        Conta encontrada = contaService.buscarConta(numero);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Conta> buscarConta(@PathVariable Long id){
+        Conta encontrada = contaService.pesquisarConta(id);
         return ResponseEntity.status(200).body(encontrada);
     }
-    @PutMapping("/{numeroAtual}/editar")
-    public ResponseEntity<Conta> editarConta(@PathVariable String numeroAtual, @RequestBody Conta conta)
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Conta> alterarConta(@PathVariable Long id, @RequestBody Conta conta)
     {
-        Conta editada = contaService.editarConta(numeroAtual,conta);
+        Conta editada = contaService.alterarConta(id, conta);
         return ResponseEntity.status(200).body(editada);
     }
-    @PostMapping("/registrar")
-    public ResponseEntity<Conta> registrarConta(@RequestBody Conta conta)
+
+    @PostMapping()
+    public ResponseEntity<Conta> abrirConta(@RequestBody Conta conta)
     {
-        Conta salva = contaService.registrarConta(conta);
-        return ResponseEntity.status(201).body(salva);
+        return ResponseEntity.status(201).body(contaService.abrirConta(conta));
     }
-    @DeleteMapping("/{numero}/deletar")
-    public ResponseEntity<?> deletarConta(@PathVariable String numero)
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirConta(@PathVariable Long id)
     {
-        contaService.deletarConta(numero);
+        contaService.excluirConta(id);
         return ResponseEntity.status(204).build();
     }
-    @PutMapping("/{numero}/registrarItem")
-    public ResponseEntity<Conta> registrarItemConta(@PathVariable String numero, @RequestBody ItemDaConta itemDaConta ){
-        Conta nova  = contaService.registrarItemConta(numero, itemDaConta);
-        return ResponseEntity.status(201).body(nova);
-    }
-    @PutMapping("/{numero}/fechar")
-    public ResponseEntity<Conta> fecharConta(@PathVariable String numero)
+
+    @PutMapping("/{id}/fechar")
+    public ResponseEntity<Conta> fecharConta(@PathVariable Long id)
     {
         Conta fechada = contaService.fecharConta(id);
         return ResponseEntity.status(201).body(fechada);
