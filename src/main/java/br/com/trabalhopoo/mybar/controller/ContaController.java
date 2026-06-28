@@ -1,5 +1,6 @@
 package br.com.trabalhopoo.mybar.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ContaService;
@@ -33,9 +35,18 @@ public class ContaController {
         return ResponseEntity.status(200).body(contaService.listarContas());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Conta> buscarConta(@PathVariable Long id){
-        Conta encontrada = contaService.pesquisarConta(id);
+    @GetMapping("/pesquisar")
+    public ResponseEntity<List<Conta>> pesquisarConta(@RequestParam(required = false) Integer numeroConta,
+            @RequestParam(required = false) String cpf,
+            @RequestParam(required = false) String nomeCliente,
+            @RequestParam(required = false) Boolean aberta){
+        Status status = Status.ABERTA;
+        if(aberta != null)
+        {   
+            status = aberta? Status.ABERTA : Status.FECHADA;
+
+        }
+        List<Conta> encontrada = contaService.pesquisarContaPorFiltros(numeroConta, cpf, nomeCliente, status);
         return ResponseEntity.status(200).body(encontrada);
     }
 

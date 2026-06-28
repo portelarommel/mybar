@@ -89,10 +89,13 @@ public class ContaService {
 
         contaRepository.delete(conta);
     }
-
+    public List<Conta> pesquisarContaPorFiltros(Integer numero, String cpf, String nome, Status status)
+    {
+        return contaRepository.buscarComFiltros(numero, cpf, nome, status);
+    }
     public Conta pesquisarConta(Long id)
     {
-        Conta encontrado = (Conta) contaRepository.findById(id).orElseThrow(() -> new ContaNaoEncontradaException("Conta não encontrada"));
+        Conta encontrado = (Conta) contaRepository.findById(id).orElseThrow(() -> new ContaNaoEncontradaException("Conta não foi encontrada"));
         return encontrado;
 
     }
