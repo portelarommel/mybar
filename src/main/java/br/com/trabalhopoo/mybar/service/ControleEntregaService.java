@@ -23,6 +23,7 @@ public class ControleEntregaService {
     public List<ItemDaConta> buscarItemDaConta(Integer numeroConta,  String nomeCliente)
     {
         List<ItemDaConta> itens = itemDaContaRepository.buscarParaControleEntregas(numeroConta, nomeCliente);
+
         Map<StatusItem, Integer> pesoStatus = Map.of(
             StatusItem.SOLICITADO, 1,
             StatusItem.RECEBIDO, 2,
