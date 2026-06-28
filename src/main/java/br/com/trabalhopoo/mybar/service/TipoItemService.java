@@ -27,6 +27,10 @@ public class TipoItemService {
         TipoItem encontrado = (TipoItem)tipoItemRepository.findById(id).orElseThrow(() -> new TipoItemNaoEncontradoException("Não foi encontrado esse tipo de Item!"));
         return encontrado;
     }
+    public List<TipoItem> pesquisarTipoItemPorFiltros(String descricao)
+    {
+        return tipoItemRepository.buscarComFiltros(descricao);
+    }
 
     public TipoItem registrarTipoItem(TipoItem tipoItem) {
         return tipoItemRepository.save(tipoItem);

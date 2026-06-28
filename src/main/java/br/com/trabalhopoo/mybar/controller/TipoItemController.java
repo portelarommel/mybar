@@ -37,10 +37,10 @@ public class TipoItemController {
         return ResponseEntity.status(200).body(tipoItemService.listarTiposItem());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TipoItem> pesquisarTipoItem(@PathVariable Long id)
+    @GetMapping("/pesquisar")
+    public ResponseEntity<List<TipoItem>> pesquisarTipoItem(@RequestParam(required = false) String descricao)
     {
-        return ResponseEntity.status(200).body(tipoItemService.pesquisarTipoItem(id));
+        return ResponseEntity.status(200).body(tipoItemService.pesquisarTipoItemPorFiltros(descricao));
     }
 
     @PutMapping("/{id}")

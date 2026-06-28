@@ -38,10 +38,12 @@ public class ItemCardapioController {
         return ResponseEntity.status(200).body(itemCardapioService.listarItensCardapio());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ItemCardapio> buscarItemCardapio(@PathVariable long id)
+    @GetMapping("/pesquisar")
+    public ResponseEntity<List<ItemCardapio>> pesquisarItemCardapio(@RequestParam(required = false) Long codigo,
+        @RequestParam(required = false) String descricao,
+        @RequestParam(required = false) Long tipoItemId)
     {
-        return ResponseEntity.status(200).body(itemCardapioService.buscarItemCardapio(id));
+        return ResponseEntity.status(200).body(itemCardapioService.buscarItemCardapioPorFiltros(codigo,descricao,tipoItemId));
 
     }
 

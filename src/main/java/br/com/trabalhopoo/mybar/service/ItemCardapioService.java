@@ -27,7 +27,10 @@ public class ItemCardapioService {
                         new ItemCardapioNaoEncontradoException(
                                 "Não foi encontrado esse item no cardápio!"));
     }
-
+    public List<ItemCardapio> buscarItemCardapioPorFiltros(Long codigo, String descricao, Long tipoItemId)
+    {
+        return itemCardapioRepository.buscarComFiltrosDeTela(codigo, descricao, tipoItemId);
+    }
     public ItemCardapio registrarItemCardapio(ItemCardapio itemCardapio) {
         return itemCardapioRepository.save(itemCardapio);
     }
