@@ -1,5 +1,8 @@
 package br.com.trabalhopoo.mybar.service;
 
+import br.com.trabalhopoo.mybar.exception.ItemCardapioNaoEncontradoException;
+import br.com.trabalhopoo.mybar.exception.UsuarioNaoEncontradoException;
+import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.model.TipoItem;
 import br.com.trabalhopoo.mybar.model.Usuario;
 import br.com.trabalhopoo.mybar.repository.UsuarioRepository;
@@ -21,13 +24,30 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    public Usuario alterarUsuario(long id, Usuario usuario) {
+
+        Usuario existente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(
+                        "Usuário não encontrado com id: " + id));
+
+        existente.setNome(usuario.getNome());
+        existente.setEmail(usuario.getEmail());
+        existente.setSenha(usuario.getSenha());
+        existente.setCodigo(usuario.getCodigo());
+        existente.setTipo(usuario.getTipo());
+
+        return usuarioRepository.save(existente);
+    }
+
     public List<Usuario> listarUsuarios()
     {
         return usuarioRepository.findAll();
     }
 
-    public Optional<Usuario> pesquisarUsuario(Long id){
-        return usuarioRepository.findById(id);
+    public Usuario pesquisarUsuario(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(
+                        "Usuário não encontrado com id: " + id));
     }
 
     public void deletarUsuario(Long id){

@@ -2,41 +2,47 @@ package br.com.trabalhopoo.mybar.model;
 import java.math.BigDecimal;
 import java.util.List;
 
-import br.com.trabalhopoo.mybar.enums.Sentenca;
+import br.com.trabalhopoo.mybar.model.enums.Sentenca;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Table(name = "TiposItem")
+@Table(name = "tipos_item")
 public class TipoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "descricao", length = 255, nullable = false)
     private String descricao;
 
+    @Column(name = "codigo")
+    private String codigo;
+
+    @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;
 
+    @Column(name = "gorjeta", nullable = false)
     private BigDecimal gorjeta;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "cozinha", nullable = false)
     private Sentenca cozinha;
 
-    @OneToMany(mappedBy = "tipoItem")
+    @OneToMany(mappedBy = "tipoItem", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ItemCardapio> itensCardapio;
 
     public TipoItem() {
     }
 
-    public TipoItem(Long id, String descricao, BigDecimal gorjeta, Sentenca cozinha, List<ItemCardapio> itensCardapio) {
+    public TipoItem(Long id, String descricao, String codigo, Boolean ativo, BigDecimal gorjeta, Sentenca cozinha, List<ItemCardapio> itensCardapio) {
         this.id = id;
         this.descricao = descricao;
+        this.codigo = codigo;
+        this.ativo = ativo;
         this.gorjeta = gorjeta;
         this.cozinha = cozinha;
         this.itensCardapio = itensCardapio;
@@ -56,6 +62,14 @@ public class TipoItem {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public Boolean getAtivo() {

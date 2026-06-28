@@ -1,48 +1,49 @@
 package br.com.trabalhopoo.mybar.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
-import br.com.trabalhopoo.mybar.enums.Status;
+import br.com.trabalhopoo.mybar.model.enums.Status;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-
 
 @Entity
-@Table(name = "contas")
+@Table(name = "conta")
 public class Conta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "numero", nullable = false, unique = true, length = 4)
     private Integer numero;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private Status status;
 
+    @Column(name = "data_abertura", nullable = false)
     private LocalDate dataAbertura;
 
+    @Column(name = "hora_abertura", nullable = false)
     private LocalTime horaAbertura;
 
     @ManyToOne
+    @JoinColumn(name = "id_garcom_abertura", nullable = false)
     private Usuario garconAbertura;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cpf_cliente", nullable = false)
     private Cliente cliente;
 
     @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pagamento> pagamentos = new ArrayList();
+    private List<Pagamento> pagamentos = new ArrayList<>();
 
     @OneToMany (mappedBy = "conta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemDaConta> itensDaConta = new ArrayList();
+    @JsonIgnore
+    private List<ItemDaConta> itensDaConta = new ArrayList<>();
 
     public void adicionarItem(ItemDaConta item) {
         item.setConta(this);
