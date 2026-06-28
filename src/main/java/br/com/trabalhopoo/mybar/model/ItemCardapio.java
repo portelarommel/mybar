@@ -1,4 +1,7 @@
 package br.com.trabalhopoo.mybar.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -11,29 +14,35 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "itensCardapio")
+@Table(name = "itens_cardapio")
 public class ItemCardapio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "descricao", length = 255, nullable = false)
     private String descricao;
 
-    private boolean ativo = true;
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo = true;
 
+    @Column(name = "valor", precision = 10, scale = 2, nullable = false)
     private BigDecimal valor;
 
     @OneToMany(mappedBy ="itemCardapio")
+    @JsonIgnore
     private List<ItemDaConta> itensDaConta;
 
     @ManyToOne
+    @JoinColumn(name = "tipo_item_id", nullable = false)
+    @JsonBackReference
     private TipoItem tipoItem;
 
     public ItemCardapio() {
     }
 
-    public ItemCardapio(Long id, String descricao, boolean ativo, BigDecimal valor, List<ItemDaConta> itensDaConta, TipoItem tipoItem) {
+    public ItemCardapio(Long id, String descricao, Boolean ativo, BigDecimal valor, List<ItemDaConta> itensDaConta, TipoItem tipoItem) {
         this.id = id;
         this.descricao = descricao;
         this.ativo = ativo;
@@ -58,11 +67,11 @@ public class ItemCardapio {
         this.descricao = descricao;
     }
 
-    public boolean isAtivo() {
+    public Boolean getAtivo() {
         return ativo;
     }
 
-    public void setAtivo(boolean ativo) {
+    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 

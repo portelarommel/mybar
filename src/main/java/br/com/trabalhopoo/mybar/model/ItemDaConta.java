@@ -3,18 +3,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import br.com.trabalhopoo.mybar.enums.Sentenca;
-import br.com.trabalhopoo.mybar.enums.StatusItem;
+import br.com.trabalhopoo.mybar.model.enums.Sentenca;
+import br.com.trabalhopoo.mybar.model.enums.StatusItem;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Table(name = "ItensDaconta")
+@Table(name = "itens_da_conta")
 public class ItemDaConta {
 
     @Id
@@ -23,41 +19,57 @@ public class ItemDaConta {
 
     private BigDecimal valor; // nao tem no pdf mas vou analisar dps
 
+    @Column(name = "quantidade", nullable = false)
     private int quantidade;
 
+    @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;
 
+    @Column(name = "data_solicitacao")
     private LocalDate dataSolicitacao;
 
+    @Column(name = "hora_solicitacao")
     private LocalTime horaSolicitacao;
 
+    @Column(name = "data_recebimento_cozinha")
     private LocalDate dataRecebimentoCozinha;
 
+    @Column(name = "hora_recebimento_cozinha")
     private LocalTime horaRecebimentoCozinha;
 
+    @Column(name = "data_entrega_cozinha")
     private LocalDate dataEntregaCozinha;
 
+    @Column(name = "hora_entrega_cozinha")
     private LocalTime horaEntregaCozinha;
 
+    @Column(name = "data_recebimento_bar")
     private LocalDate dataRecebimentoBar;
 
+    @Column(name = "hora_recebimento_bar")
     private LocalTime horaRecebimentoBar;
 
+    @Column(name = "data_entrega_bar")
     private LocalDate dataEntregaBar;
 
+    @Column(name = "hora_entrega_bar")
     private LocalTime horaEntregaBar;
 
-    @OneToOne 
+    @ManyToOne
+    @JoinColumn(name = "id_garcom_remocao")
     private Usuario quemRemoveu;
 
     @ManyToOne
+    @JoinColumn(name = "id_garcom_lancamento")
     private Usuario quemLancou;
 
     @ManyToOne
+    @JoinColumn(name = "item_cardapio_id", nullable = false)
     private ItemCardapio itemCardapio;
 
     @ManyToOne
     @JsonIgnore
+    @JoinColumn(name = "id_conta", nullable = false)
     private Conta conta;
 
     public ItemDaConta() {
@@ -119,20 +131,20 @@ public class ItemDaConta {
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
-    public StatusItem getStatus()
-    {
-        if (getItemCardapio().getTipoItem().getCozinha() == Sentenca.SIM)
-        {
+
+    public StatusItem getStatus() {
+        if (getItemCardapio() == null || getItemCardapio().getTipoItem() == null) {
+            return null;
+        }
+
+        if (getItemCardapio().getTipoItem().getCozinha() == Sentenca.SIM) {
             if (this.getDataEntregaCozinha() != null) return StatusItem.ENTREGUE;
             if (this.getDataRecebimentoCozinha() != null) return StatusItem.RECEBIDO;
             return StatusItem.SOLICITADO;
-        }
-        else
-        {
+        } else {
             if (this.getDataEntregaBar() != null) return StatusItem.ENTREGUE;
             if (this.getDataRecebimentoBar() != null) return StatusItem.RECEBIDO;
             return StatusItem.SOLICITADO;
-
         }
     }
 
