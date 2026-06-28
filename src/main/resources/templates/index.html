@@ -1,151 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBar - Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>MyBar - Login</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background-color: #f4f6f9;
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
         }
-        
-        .hero-section {
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .login-header {
             text-align: center;
-            color: white;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
         }
-        
-        .hero-section h1 {
-            font-size: 3.5rem;
-            font-weight: bold;
+
+        .login-header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .login-header p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .form-group {
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
-        .hero-section p {
-            font-size: 1.3rem;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        
-        .card-menu {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin: 15px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
-            color: #333;
-            display: inline-block;
-            width: 200px;
-        }
-        
-        .card-menu:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
-            color: #333;
-            text-decoration: none;
-        }
-        
-        .card-menu i {
-            font-size: 3rem;
-            color: #667eea;
-            margin-bottom: 15px;
-        }
-        
-        .card-menu h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .card-menu p {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .menu-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-        
-        .status-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            border-radius: 20px;
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
             font-weight: bold;
+            font-size: 16px;
         }
-        
-        .status-aberto {
-            background-color: #27ae60;
-            color: white;
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
         }
-        
-        .status-fechado {
-            background-color: #e74c3c;
+
+        .form-group input:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: #991b1b;
             color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #7f1d1d;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div th:if="${atendimentoAberto}" class="status-badge status-aberto">
-            <i class="fas fa-check-circle"></i> Atendimento Aberto
-        </div>
-        <div th:unless="${atendimentoAberto}" class="status-badge status-fechado">
-            <i class="fas fa-times-circle"></i> Atendimento Fechado
+     <div class="login-container">
+        <div class="login-header">
+            <h1>MyBar</h1>
+            <p>Gerenciador de Bares e Restaurantes</p>
         </div>
 
-        <div class="hero-section">
-            <h1>
-                <i class="fas fa-glass-cheers"></i> MyBar
-            </h1>
-            <p>Sistema de Gerenciamento de Bares e Restaurantes</p>
-        </div>
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Ex: joao@limao.com" 
+                    required
+                 >
+            </div>
 
-        <div class="menu-container">
-            <a href="/contas" class="card-menu">
-                <i class="fas fa-receipt"></i>
-                <h3>Contas</h3>
-                <p>Gerenciar contas e lançamentos</p>
-            </a>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input 
+                    type="password" 
+                    id="senha" 
+                    name="senha" 
+                    placeholder="Digite sua senha" 
+                    required
+                >
+            </div>
 
-            <a href="/itens-cardapio" class="card-menu">
-                <i class="fas fa-utensils"></i>
-                <h3>Cardápio</h3>
-                <p>Gerenciar itens do cardápio</p>
-            </a>
-
-            <a href="/tipos-itens" class="card-menu">
-                <i class="fas fa-list"></i>
-                <h3>Tipos de Itens</h3>
-                <p>Categorias de produtos</p>
-            </a>
-
-            <a href="/usuarios" class="card-menu">
-                <i class="fas fa-users"></i>
-                <h3>Usuários</h3>
-                <p>Gerenciar usuários do sistema</p>
-            </a>
-
-            <a href="/configuracoes" class="card-menu">
-                <i class="fas fa-cog"></i>
-                <h3>Configurações</h3>
-                <p>Parâmetros do sistema</p>
-            </a>
-        </div>
+            <button type="submit" class="btn-login">Entrar</button>
+            
+        </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

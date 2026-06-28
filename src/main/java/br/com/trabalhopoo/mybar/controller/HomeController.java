@@ -9,5 +9,24 @@ public class HomeController {
     public String home() {
         return "index";
     }
-
+    @GetMapping("/conta")
+    public String contas()
+    {
+        return "conta/gestaoDeContas";
+    }
+    @GetMapping("/conta/edicaoDeConta")
+    public String edicaoContas()
+    {
+        return "conta/edicaoDeConta";
+    }
+    @GetMapping("/conta/registroDeConta")
+    public String registroDeConta()
+    {
+        return "conta/registroDeConta";
+    }
+    @GetMapping("/conta/fechamentoDeConta")
+    public String fechamentoDeConta()
+    {
+        return "conta/fechamentoDeConta";
+    }
 }
