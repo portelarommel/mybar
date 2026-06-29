@@ -22,7 +22,7 @@ import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ContaService;
 import org.springframework.ui.Model;
 
-@RestController
+@Controller
 @RequestMapping("/contas")
 public class ContaController {
     private final ContaService contaService;
@@ -30,13 +30,13 @@ public class ContaController {
         this.contaService = contaService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<List<Conta>> listarContas(){
         return ResponseEntity.status(200).body(contaService.listarContas());
-    }
+    }*/
 
-    @GetMapping("/pesquisar")
-    public ResponseEntity<List<Conta>> pesquisarConta(@RequestParam(required = false) Integer numeroConta,
+    @GetMapping
+    public String pesquisarConta(@RequestParam(required = false) Integer numeroConta,
             @RequestParam(required = false) String cpf,
             @RequestParam(required = false) String nomeCliente,
             @RequestParam(required = false) Boolean aberta){
@@ -47,33 +47,33 @@ public class ContaController {
 
         }
         List<Conta> encontrada = contaService.pesquisarContaPorFiltros(numeroConta, cpf, nomeCliente, status);
-        return ResponseEntity.status(200).body(encontrada);
+        return "conta/gestaoDeContas";
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Conta> alterarConta(@PathVariable Long id, @RequestBody Conta conta)
+    public String alterarConta(@PathVariable Long id, @RequestBody Conta conta)
     {
         Conta editada = contaService.alterarConta(id, conta);
-        return ResponseEntity.status(200).body(editada);
+        return "conta/edicaoDeConta";
     }
 
-    @PostMapping
-    public ResponseEntity<Conta> abrirConta(@RequestBody Conta conta)
+    @PostMapping("/registrar")
+    public String abrirConta(@RequestBody Conta conta)
     {
-        return ResponseEntity.status(201).body(contaService.abrirConta(conta));
+        return "conta/registroDeConta";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluirConta(@PathVariable Long id)
+    @DeleteMapping("/{id}/excluir")
+    public String excluirConta(@PathVariable Long id)
     {
         contaService.excluirConta(id);
-        return ResponseEntity.status(204).build();
+        return "redirect:/contas";
     }
 
     @PutMapping("/{id}/fechar")
-    public ResponseEntity<Conta> fecharConta(@PathVariable Long id)
+    public String fecharConta(@PathVariable Long id)
     {
         Conta fechada = contaService.fecharConta(id);
-        return ResponseEntity.ok(fechada);
+        return "conta/fechamentoDeConta";
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import br.com.trabalhopoo.mybar.model.Configuracao;
 import br.com.trabalhopoo.mybar.service.ConfiguracaoService;
 
-@RestController
+@Controller
 @RequestMapping("/configuracao")
 public class ConfiguracaoController {
 
@@ -29,19 +29,19 @@ public class ConfiguracaoController {
     }
 
     @PutMapping("/ingressos")
-    public ResponseEntity<Configuracao> alterarValorIngresso(@RequestParam BigDecimal valorIngressoMasc, @RequestParam BigDecimal valorIngressoFemin)
+    public String alterarValorIngresso(@RequestParam BigDecimal valorIngressoMasc, @RequestParam BigDecimal valorIngressoFemin)
     {
-        return ResponseEntity.status(200).body(configuracaoService.alterarValorIngresso(valorIngressoMasc,valorIngressoFemin));
+        return "redirect:/configuracao";
     }
 
     @PutMapping("/liberar")
-    public ResponseEntity<Configuracao> liberarAtendimento() {
-        return ResponseEntity.ok(configuracaoService.liberarAtendimento());
+    public String liberarAtendimento() {
+        return "redirect:/configuracao";
     }
 
     @PutMapping("/fechar")
-    public ResponseEntity<Configuracao> fecharAtendimento() {
-        return ResponseEntity.ok(configuracaoService.fecharAtendimento());
+    public String fecharAtendimento() {
+        return "redirect:/configuracao";
     }
 }
 

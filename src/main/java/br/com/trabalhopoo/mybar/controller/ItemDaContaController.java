@@ -4,11 +4,12 @@ import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ItemDaContaService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/contas")
 public class ItemDaContaController {
 
@@ -18,19 +19,19 @@ public class ItemDaContaController {
         this.itemDaContaService = itemDaContaService;
     }
 
-    @PostMapping("/{id}/item")
-    public ResponseEntity<ItemDaConta> registrarItemConta(@PathVariable Long id, @RequestBody ItemDaConta itemDaConta){
-        return ResponseEntity.status(201).body(itemDaContaService.registrarItemConta(id, itemDaConta));
+    @PostMapping("/{id}/registrar")
+    public String registrarItemConta(@PathVariable Long id, @RequestBody ItemDaConta itemDaConta){
+        return "conta/registroDeItemConta";
     }
 
-    @GetMapping("/{id}/item")
-    public ResponseEntity<List<ItemDaConta>> listarPorConta(@PathVariable Long id) {
-        return ResponseEntity.ok(itemDaContaService.listarPorConta(id));
+    @GetMapping("/{id}/itens")
+    public String listarPorConta(@PathVariable Long id) {
+        return "conta/registroDeItemConta" ;
     }
 
     @DeleteMapping("/{id}/item/{itemId}")
-    public ResponseEntity<?> excluirItem(@PathVariable Long id, @PathVariable Long itemId) {
+    public String excluirItem(@PathVariable Long id, @PathVariable Long itemId) {
         itemDaContaService.excluirItem(id, itemId);
-        return ResponseEntity.noContent().build();
+        return "conta/registroDeItemConta";
     }
 }

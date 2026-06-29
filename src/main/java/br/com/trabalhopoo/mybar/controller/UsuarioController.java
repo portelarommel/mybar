@@ -13,7 +13,7 @@ import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
 
@@ -23,30 +23,30 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<List<Usuario>> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
+    }*/
+
+    @GetMapping
+    public String pesquisarUsuario(@RequestParam(required = false) String nome) {
+        return "usuario/gestaoDeUsuario";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<Usuario>> pesquisarUsuario(@RequestParam(required = false) String nome) {
-        return ResponseEntity.ok(usuarioService.pesquisarUsuarioPorFiltro(nome));
-    }
-
-    @PostMapping
-    public ResponseEntity<Usuario> incluirUsuario(@RequestBody Usuario usuario) {
+    @PostMapping("/registro")
+    public String incluirUsuario(@RequestBody Usuario usuario) {
         Usuario criado = usuarioService.incluirUsuario(usuario);
-        return ResponseEntity.status(201).body(criado);
+        return "usuario/registroDeUsuario";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> alterarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.alterarUsuario(id, usuario));
+    @PutMapping("/{id}/editar")
+    public String alterarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+        return "usuario/edicaoDeUsuario";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
+    @DeleteMapping("/{id}/excluir")
+    public String deletarUsuario(@PathVariable Long id) {
         usuarioService.deletarUsuario(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/usuario";
     }
 }

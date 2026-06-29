@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import br.com.trabalhopoo.mybar.model.TipoItem;
 import br.com.trabalhopoo.mybar.service.TipoItemService;
 
-@RestController
+@Controller
 @RequestMapping("/tipos-item")
 public class TipoItemController {
 
@@ -31,33 +31,36 @@ public class TipoItemController {
         this.tipoItemService = tipoItemService;
     }
 
-    @GetMapping()
+    /*@GetMapping
     public ResponseEntity<List<TipoItem>> listarTiposItem()
     {
         return ResponseEntity.status(200).body(tipoItemService.listarTiposItem());
-    }
+    }*/
 
-    @GetMapping("/pesquisar")
-    public ResponseEntity<List<TipoItem>> pesquisarTipoItem(@RequestParam(required = false) String descricao)
+    @GetMapping
+    public String pesquisarTipoItem(@RequestParam(required = false) String descricao)
     {
-        return ResponseEntity.status(200).body(tipoItemService.pesquisarTipoItemPorFiltros(descricao));
+        tipoItemService.pesquisarTipoItemPorFiltros(descricao);
+        return "tipoDeItem/gestaoDeTipoDeItem";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TipoItem> alterarTipoItem(@PathVariable Long id, @RequestBody TipoItem tipoItem)
+    @PutMapping("/{id}/editar")
+    public String alterarTipoItem(@PathVariable Long id, @RequestBody TipoItem tipoItem)
     {
         tipoItem.setId(id);
-        return ResponseEntity.status(200).body(tipoItemService.alterarTipoItem(tipoItem));
+        tipoItemService.alterarTipoItem(tipoItem);
+        return "tipoDeItem/edicaoDeTipoDeItem";
     }
 
-    @PostMapping()
-    public ResponseEntity<TipoItem> registrarTipoItem(@RequestBody TipoItem tipoItem) {
-        return ResponseEntity.status(200).body(tipoItemService.registrarTipoItem(tipoItem));
+    @PostMapping("/registro")
+    public String registrarTipoItem(@RequestBody TipoItem tipoItem) {
+        tipoItemService.registrarTipoItem(tipoItem);
+        return "tipoDeItem/registroDeTipoDeItem";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletarTipoItem(@PathVariable Long id) {
+    @DeleteMapping("/{id}/excluir")
+    public String deletarTipoItem(@PathVariable Long id) {
         tipoItemService.deletarTipoItem(id);
-        return ResponseEntity.status(201).build();
+        return "redirect:/tipos-item";
     }
 }

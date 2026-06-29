@@ -32,38 +32,38 @@ public class ItemCardapioController {
         this.itemCardapioService = itemCardapioService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<List<ItemCardapio>> listarItensCardapio()
     {
         return ResponseEntity.status(200).body(itemCardapioService.listarItensCardapio());
-    }
+    }*/
 
-    @GetMapping("/pesquisar")
-    public ResponseEntity<List<ItemCardapio>> pesquisarItemCardapio(@RequestParam(required = false) Long codigo,
+    @GetMapping
+    public String pesquisarItemCardapio(@RequestParam(required = false) Long codigo,
         @RequestParam(required = false) String descricao,
         @RequestParam(required = false) Long tipoItemId)
     {
-        return ResponseEntity.status(200).body(itemCardapioService.buscarItemCardapioPorFiltros(codigo,descricao,tipoItemId));
+        return "itemCardapio/gestaoDeItemCardapio";
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ItemCardapio> editarItemCardapio(@PathVariable Long id, @RequestBody ItemCardapio itemCardapio)
+    @PutMapping("/{id}/editar")
+    public String editarItemCardapio(@PathVariable Long id, @RequestBody ItemCardapio itemCardapio)
     {
         itemCardapio.setId(id);
-        return ResponseEntity.status(200).body(itemCardapioService.editarItemCardapio(itemCardapio));
+        return "itemCardapio/edicaoDeItemCardapio" ;
     }
 
-    @PostMapping
-    public ResponseEntity<ItemCardapio> registrarItemCardapio(@RequestBody ItemCardapio itemCardapio)
+    @PostMapping("/registrar")
+    public String registrarItemCardapio(@RequestBody ItemCardapio itemCardapio)
     {
-        return ResponseEntity.status(200).body(itemCardapioService.registrarItemCardapio(itemCardapio));
+        return "itemCardapio/registroDeItemCardapio";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletarItemCardapio(@PathVariable Long id)
+    @DeleteMapping("/{id}/excluir")
+    public String deletarItemCardapio(@PathVariable Long id)
     {
         itemCardapioService.deletarItemCardapio(id);
-        return ResponseEntity.status(201).build();
+        return "itemCardapio/gestaoDeItemCardapio";
     }
 }
