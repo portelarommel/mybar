@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,7 +40,8 @@ public class ContaController {
     public String pesquisarConta(@RequestParam(required = false) Integer numeroConta,
             @RequestParam(required = false) String cpf,
             @RequestParam(required = false) String nomeCliente,
-            @RequestParam(required = false) Boolean aberta){
+            @RequestParam(required = false) Boolean aberta,
+            Model model){
         Status status = Status.ABERTA;
         if(aberta != null)
         {   
@@ -47,20 +49,34 @@ public class ContaController {
 
         }
         List<Conta> encontrada = contaService.pesquisarContaPorFiltros(numeroConta, cpf, nomeCliente, status);
+        model.addAttribute("contas",encontrada);
         return "conta/gestaoDeContas";
     }
 
-    @PutMapping("/{id}")
-    public String alterarConta(@PathVariable Long id, @RequestBody Conta conta)
+    @GetMapping("/{id}/editar")
+    public String carregarPaginaEdicao(@PathVariable Long id, Model model)
     {
-        Conta editada = contaService.alterarConta(id, conta);
+        Conta conta = contaService.pesquisarConta(id);
+        model.addAttribute("conta",conta);
         return "conta/edicaoDeConta";
     }
-
-    @PostMapping("/registrar")
-    public String abrirConta(@RequestBody Conta conta)
+    @PutMapping("/{id}/editar")
+    public String alterarConta(@PathVariable Long id, @ModelAttribute Conta conta, Model model)
     {
-        return "conta/registroDeConta";
+        contaService.alterarConta(id, conta);
+        return "redirect:/contas";
+    }
+    @GetMapping("/registrar")
+    public String carregarPaginaRegistro(Model model)
+    {
+        model.addAttribute("conta", new Conta());
+        return "conta/registroDeContas";
+    } 
+    @PostMapping("/registrar")
+    public String abrirConta(@ModelAttribute Conta conta)
+    {
+        contaService.abrirConta(conta);
+        return "redirect:/contas";
     }
 
     @DeleteMapping("/{id}/excluir")
@@ -68,12 +84,5 @@ public class ContaController {
     {
         contaService.excluirConta(id);
         return "redirect:/contas";
-    }
-
-    @PutMapping("/{id}/fechar")
-    public String fecharConta(@PathVariable Long id)
-    {
-        Conta fechada = contaService.fecharConta(id);
-        return "conta/fechamentoDeConta";
     }
 }

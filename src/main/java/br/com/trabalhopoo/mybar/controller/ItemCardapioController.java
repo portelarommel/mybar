@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,18 +47,35 @@ public class ItemCardapioController {
         return "itemCardapio/gestaoDeItemCardapio";
 
     }
+    @GetMapping("/{id}/editar")
+    public String carregarPaginaEdicao(@PathVariable Long id, Model model)
+    {
+        ItemCardapio itemCardapio = itemCardapioService.buscarItemCardapio(id);
+        model.addAttribute("itemCardapio", itemCardapio);
+        return "itemCardapio/edicaoDeItemCardapio";
+    }
 
     @PutMapping("/{id}/editar")
-    public String editarItemCardapio(@PathVariable Long id, @RequestBody ItemCardapio itemCardapio)
+    public String editarItemCardapio(@PathVariable Long id, @ModelAttribute ItemCardapio itemCardapio,Model model)
     {
         itemCardapio.setId(id);
-        return "itemCardapio/edicaoDeItemCardapio" ;
+        ItemCardapio editado = itemCardapioService.editarItemCardapio(itemCardapio);
+        model.addAttribute("itemCardapio",editado);
+        return "redirect:/itens-cardapio";
+    }
+    @GetMapping("/registrar")
+    public String carregarPaginaRegistro(Model model)
+    {
+        model.addAttribute("novo",new ItemCardapio());
+        return "itemCardapio/registroDeItemCardapio";
+
     }
 
     @PostMapping("/registrar")
-    public String registrarItemCardapio(@RequestBody ItemCardapio itemCardapio)
+    public String registrarItemCardapio(@ModelAttribute ItemCardapio itemCardapio,Model model)
     {
-        return "itemCardapio/registroDeItemCardapio";
+        itemCardapioService.registrarItemCardapio(itemCardapio);
+        return "redirect:/itens-cardapio";
     }
 
     @DeleteMapping("/{id}/excluir")

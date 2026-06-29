@@ -4,15 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
 
 import br.com.trabalhopoo.mybar.model.TipoItem;
 import br.com.trabalhopoo.mybar.service.TipoItemService;
@@ -38,24 +30,39 @@ public class TipoItemController {
     }*/
 
     @GetMapping
-    public String pesquisarTipoItem(@RequestParam(required = false) String descricao)
+    public String pesquisarTipoItem(@RequestParam(required = false) String descricao,Model model)
     {
-        tipoItemService.pesquisarTipoItemPorFiltros(descricao);
+        List<TipoItem> tipoitens = tipoItemService.pesquisarTipoItemPorFiltros(descricao);
+        model.addAttribute("TipoItens",tipoitens);
         return "tipoDeItem/gestaoDeTipoDeItem";
     }
+    @GetMapping
+    public String carregarPaginaEdicao(@PathVariable Long id,Model model)
+    {
+        TipoItem tipoItem = tipoItemService.pesquisarTipoItem(id);
+        model.addAttribute("tipoItem",tipoItem);
+        return "tipoDeItem/edicaoDeTipoDeItem";
 
+    }
     @PutMapping("/{id}/editar")
-    public String alterarTipoItem(@PathVariable Long id, @RequestBody TipoItem tipoItem)
+    public String alterarTipoItem(@PathVariable Long id, @ModelAttribute TipoItem tipoItem)
     {
         tipoItem.setId(id);
         tipoItemService.alterarTipoItem(tipoItem);
-        return "tipoDeItem/edicaoDeTipoDeItem";
+        return "redirect:/tipos-item";
     }
-
-    @PostMapping("/registro")
-    public String registrarTipoItem(@RequestBody TipoItem tipoItem) {
-        tipoItemService.registrarTipoItem(tipoItem);
+    @GetMapping("/registro")
+    public String carregarPaginaRegistro(Model model)
+    {
+        model.addAttribute("tipoItem",new TipoItem());
         return "tipoDeItem/registroDeTipoDeItem";
+
+
+    }
+    @PostMapping("/registro")
+    public String registrarTipoItem(@ModelAttribute TipoItem tipoItem) {
+        tipoItemService.registrarTipoItem(tipoItem);
+        return "redirect:/tipos-item";
     }
 
     @DeleteMapping("/{id}/excluir")

@@ -53,8 +53,7 @@ public class Conta {
     public Conta() {
     }
 
-    public Conta(Long id, Integer numero, Status status, LocalDate dataAbertura, LocalTime horaAbertura, Usuario garconAbertura, Cliente cliente) {
-        this.id = id;
+    public Conta(Integer numero, Status status, LocalDate dataAbertura, LocalTime horaAbertura, Usuario garconAbertura, Cliente cliente) {
         this.numero = numero;
         this.status = status;
         this.dataAbertura = dataAbertura;

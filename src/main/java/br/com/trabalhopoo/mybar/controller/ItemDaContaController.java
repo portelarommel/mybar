@@ -5,6 +5,7 @@ import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ItemDaContaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,18 +21,20 @@ public class ItemDaContaController {
     }
 
     @PostMapping("/{id}/registrar")
-    public String registrarItemConta(@PathVariable Long id, @RequestBody ItemDaConta itemDaConta){
-        return "conta/registroDeItemConta";
+    public String registrarItemConta(@PathVariable Long id, @ModelAttribute ItemDaConta itemDaConta){
+        return "redirect:/contas/"+id+"/itens";
     }
 
     @GetMapping("/{id}/itens")
-    public String listarPorConta(@PathVariable Long id) {
+    public String listarPorConta(@PathVariable Long id, Model model) {
+
+        model.addAttribute("itens", itemDaContaService.listarPorConta(id));
         return "conta/registroDeItemConta" ;
     }
 
     @DeleteMapping("/{id}/item/{itemId}")
     public String excluirItem(@PathVariable Long id, @PathVariable Long itemId) {
         itemDaContaService.excluirItem(id, itemId);
-        return "conta/registroDeItemConta";
+        return "redirect:/contas/"+id+"/itens";
     }
 }
