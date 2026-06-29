@@ -1,0 +1,106 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f3f4f6;
+    color: #111111;
+    padding: 40px 20px;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    margin-bottom: 40px;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 20px;
+}
+
+.dashboard-header h1 {
+    font-size: 28px;
+    color: #111111;
+}
+
+.dashboard-header p {
+    color: #4b5563;
+    margin-top: 5px;
+}
+
+/* Grid que organiza os cards de forma responsiva */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* Estrutura dos Cards */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #111111;
+    margin-bottom: 10px;
+}
+
+.card-description {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Estilo Base dos Botões da Dashboard (Cantos arredondados do MyBar) */
+.btn-dashboard {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    padding: 11px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* --- PALETA DE CORES OFICIAIS --- */
+
+/* Padrão Azul (Abas de cadastros/contas) */
+.btn-azul { 
+    background-color: #2563eb; 
+}
+.btn-azul:hover {
+    background-color: #1d4ed8;
+}
+
+/* Padrão Vinho/Vermelho Escuro (Pesquisas/Cozinha/Cardápio) */
+.btn-vinho { 
+    background-color: #991b1b; 
+}
+.btn-vinho:hover {
+    background-color: #7f1d1d;
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBar - Controle da Cozinha</title>
+    <link rel="stylesheet" th:href="@{/css/gestaoEstilo.css}">
+</head>
+<body>
+
+    <div class="container">
+        
+        <h2>Pesquisa por Contas</h2>
+        <form action="#" method="GET">
+            <div class="pesquisa-grid">
+                <div class="form-group">
+                    <label for="numeroConta">Número Conta</label>
+                    <input type="text" id="numeroConta" name="numeroConta" placeholder="120 (número com até 4 dígitos)" maxlength="4">
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="">Selecione o status...</option>
+                        <option value="Solicitado">Solicitado</option>
+                        <option value="Recebido">Recebido</option>
+                        <option value="Entregue">Entregue</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="buttons-bar">
+                <button type="submit" class="btn btn-pesquisar">Pesquisar</button>
+            </div>
+        </form>
+
+        <h2>Pedidos para a Cozinha</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Conta</th>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                        <th>Data e Hora</th>
+                        <th>Status</th>
+                        <th>Comandos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+</html>

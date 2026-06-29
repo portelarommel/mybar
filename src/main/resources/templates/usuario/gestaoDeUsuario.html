@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBar - Gestão de Usuários</title>
+    <link rel="stylesheet" th:href="@{/css/gestaoEstilo.css}">
+</head>
+<body>
+
+    <div class="container">
+        
+        <h2>Pesquisa por Usuários</h2>
+        <form action="#" method="GET">
+            <div class="pesquisa-grid">
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" placeholder="João (texto com até 255 caracteres)" maxlength="255">
+                </div>
+            </div>
+            
+            <div class="buttons-bar">
+                <button type="submit" class="btn btn-pesquisar">Pesquisar</button>
+                <a href="/usuarios/novo" class="btn btn-nova-conta">Novo Usuário</a>
+            </div>
+        </form>
+
+        <h2>Tabela de Usuários</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Comandos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+</html>
+</html>

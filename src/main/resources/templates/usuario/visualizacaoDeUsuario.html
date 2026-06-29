@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBar - Visualização de Usuário</title>
+    <link rel="stylesheet" th:href="@{/css/novoOuAlteraObjetoEstilo.css}">
+    
+    <style>
+        /* Botão de retorno integrado à paleta Vinho do MyBar */
+        .btn-voltar {
+            display: inline-block;
+            background-color: #991b1b;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 25px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+        .btn-voltar:hover {
+            background-color: #7f1d1d;
+        }
+
+        /* Feedback visual cinza de campo bloqueado (apenas leitura) */
+        input[readonly], select[disabled] {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-centralizada">
+        
+        <div class="container">
+            <h2>Tela de Visualização de Usuário</h2>
+            
+            <form action="#" method="GET">
+                
+                <div class="form-group">
+                    <label for="codigo">Código</label>
+                    <input type="text" id="codigo" name="codigo" readonly placeholder="Ex: 10">
+                </div>
+
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" readonly placeholder="Ex: João Limão">
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoUsuario">Tipo</label>
+                    <select id="tipoUsuario" name="tipoUsuario" disabled>
+                        <option value="">Selecione o tipo...</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Cozinha">Cozinha</option>
+                        <option value="Garçom">Garçom</option>
+                        <option value="Atendente Balcão">Atendente Balcão</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" readonly placeholder="Ex: joao@limao.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" readonly placeholder="••••">
+                </div>
+
+                <div class="buttons-bar" style="margin-top: 25px;">
+                    <a href="/usuarios" class="btn-voltar">&lt; Voltar para Gestão de Usuários &gt;</a>
+                </div>
+                
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>

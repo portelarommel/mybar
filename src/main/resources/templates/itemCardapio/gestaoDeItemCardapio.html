@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBar - Gestão de Itens do Cardápio</title>
+    <link rel="stylesheet" th:href="@{/css/gestaoEstilo.css}">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Tela de Gestão de Itens do Cardápio</h2>
+        
+        <form action="#" th:action="@{/cardapio/pesquisar}" method="GET">
+            <div class="pesquisa-grid">
+                <div class="form-group">
+                    <label for="codigo">Código</label>
+                    <input type="text" id="codigo" name="codigo" placeholder="120 (até 4 dígitos)" maxlength="4">
+                </div>
+                
+                <div class="form-group">
+                    <label for="descricao">Descrição</label>
+                    <input type="text" id="descricao" name="descricao" placeholder="(até 255 caracteres)" maxlength="255">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipoItem">Tipo de Item</label>
+                    <select id="tipoItem" name="tipoItem">
+                        <option value="">[Selecione o Tipo]</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="buttons-bar">
+                <button type="submit" class="btn btn-pesquisar">&lt; Pesquisar &gt;</button>
+                <a href="/cardapio/novo" class="btn btn-nova-conta">&lt; Novo Item &gt;</a>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Tipo</th>
+                        <th>Valor Unitário</th>
+                        <th>Gorjeta</th>
+                        <th>Comandos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+</html>

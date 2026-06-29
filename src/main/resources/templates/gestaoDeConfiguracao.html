@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBar - Configuração do Sistema</title>
+    <link rel="stylesheet" href="/css/novoOuAlteraObjetoEstilo.css">
+</head>
+<body>
+
+    <div class="container" style="max-width: 600px; margin: 40px auto;">
+        <h2>Configuração do Sistema</h2>
+
+        <fieldset style="border: 1px solid #e5e7eb; padding: 20px; border-radius: 6px; margin-bottom: 30px;">
+            <legend style="padding: 0 10px; font-weight: bold; color: #4b5563;">Configuração de Ingresso</legend>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="ingressoMasculino">Ingresso Masculino <span class="required">*</span></label>
+                    <input type="number" id="ingressoMasculino" name="ingressoMasculino" step="0.01" min="0" placeholder="R$ 50,00" required>
+                </div>
+                <div class="form-group">
+                    <label for="ingressoFeminino">Ingresso Feminino <span class="required">*</span></label>
+                    <input type="number" id="ingressoFeminino" name="ingressoFeminino" step="0.01" min="0" placeholder="R$ 10,00" required>
+                </div>
+                <div class="buttons-bar" style="margin-top: 15px;">
+                    <button type="submit" class="btn-salvar">&lt; Salvar &gt;</button>
+                </div>
+            </form>
+        </fieldset>
+
+
+        <fieldset style="border: 1px solid #e5e7eb; padding: 20px; border-radius: 6px; margin-bottom: 30px;">
+            <legend style="padding: 0 10px; font-weight: bold; color: #d97706;">Liberação de Atendimentos</legend>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="dataLiberacao">Data</label>
+                    <input type="text" id="dataLiberacao" name="dataLiberacao" placeholder="dd/mm/aaaa">
+                </div>
+                <div class="form-group">
+                    <label for="horaLiberacao">Hora</label>
+                    <input type="text" id="horaLiberacao" name="horaLiberacao" placeholder="hh:mm">
+                </div>
+                <div class="buttons-bar" style="margin-top: 15px;">
+                    <button type="submit" class="btn-salvar" style="background-color: #2563eb;">&lt; Liberar Atendimentos &gt;</button>
+                </div>
+            </form>
+        </fieldset>
+
+
+        </div>
+
+</body>
+</html>

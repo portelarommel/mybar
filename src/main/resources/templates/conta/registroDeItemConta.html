@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBar - Registro de Itens em Conta</title>
+    <link rel="stylesheet" th:href="@{/css/novoOuAlteraObjetoEstilo.css}">
+    <link rel="stylesheet" th:href="@{/css/gestaoEstilo.css}">
+    
+    <style>
+        /* Pequenos ajustes de layout específicos desta tela baseados nos padrões adotados */
+        .grid-dados-conta {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 25px 0 15px 0;
+            color: #111111;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 5px;
+        }
+        /* Estilo para inputs apenas leitura */
+        input[readonly] {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+        
+        <h2>Registro de Itens em Conta</h2>
+        <form action="#" method="POST">
+            
+            <div class="grid-dados-conta">
+                <div class="form-group">
+                    <label for="numero">Número <span class="required">*</span></label>
+                    <input type="text" id="numero" name="numero" placeholder="Ex: 120" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF <span class="required">*</span></label>
+                    <input type="text" id="cpf" name="cpf" placeholder="123.456.789-10" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="nome">Nome <span class="required">*</span></label>
+                    <input type="text" id="nome" name="nome" placeholder="Nome do Cliente" readonly required>
+                </div>
+            </div>
+
+            <div class="section-title">Lançar Novo Item</div>
+
+            <div class="grid-dados-conta">
+                <div class="form-group">
+                    <label for="codigoItem">Código <span class="required">*</span></label>
+                    <input type="text" id="codigoItem" name="codigoItem" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição <span class="required">*</span></label>
+                    <input type="text" id="descricao" name="descricao" placeholder="Ex: Coca cola 300 ml" required>
+                </div>
+                <div class="form-group">
+                    <label for="valorUnitario">Valor Unitário <span class="required">*</span></label>
+                    <input type="text" id="valorUnitario" name="valorUnitario" placeholder="R$ 0,00" required>
+                </div>
+            </div>
+
+            <div class="grid-dados-conta">
+                <div class="form-group">
+                    <label for="quantidade">Quantidade <span class="required">*</span></label>
+                    <input type="number" id="quantidade" name="quantidade" placeholder="01" min="1" max="99" required>
+                </div>
+                <div class="form-group">
+                    <label for="codigoGarcom">Código Garçom <span class="required">*</span></label>
+                    <input type="text" id="codigoGarcom" name="codigoGarcom" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
+                </div>
+                <div class="form-group">
+                    <label for="senhaGarcom">Senha <span class="required">*</span></label>
+                    <input type="password" id="senhaGarcom" name="senhaGarcom" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
+                </div>
+            </div>
+
+            <div class="buttons-bar" style="margin-top: 20px; text-align: left;">
+                <button type="submit" class="btn btn-nova-conta" style="background-color: #2563eb;">&lt; Inserir &gt;</button>
+            </div>
+        </form>
+
+        <div class="table-responsive" style="margin-top: 25px; margin-bottom: 25px;">
+            <div class="section-title">Itens na Conta</div>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Código</th>
+                        <th style="width: 30%;">Descrição</th>
+                        <th style="width: 15%;">Quantidade</th>
+                        <th style="width: 15%;">Valor</th>
+                        <th style="width: 25%;">Comandos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="buttons-bar" style="text-align: right; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+            <button type="button" class="btn btn-pesquisar" style="background-color: #991b1b; padding: 12px 30px; font-size: 16px;">&lt; Salvar &gt;</button>
+        </div>
+
+    </div>
+
+</body>
+</html>

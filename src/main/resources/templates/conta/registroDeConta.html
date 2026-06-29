@@ -3,222 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBar - Registro de Itens em Conta</title>
-    <style>
-        /* --- ESTILOS PADRÃO --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f4f6f9;
-            color: #333;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        h2 {
-            font-size: 18px;
-            color: #111;
-            background-color: #e5e7eb;
-            padding: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 20px 0 10px 0;
-            color: #4b5563;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 5px;
-        }
-
-        /* --- FORMULÁRIOS --- */
-        .grid-dados-conta {
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            font-size: 15px;
-            font-weight: bold;
-            color: #4b5563;
-            margin-bottom: 4px;
-        }
-
-        .form-group label .required {
-            color: #ef4444;
-        }
-
-        .form-group input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        /* Campos de leitura automática da conta */
-        .form-group input[readonly] {
-            background-color: #f3f4f6;
-            color: #4b5563;
-            font-weight: 500;
-        }
-
-        /* --- BOTÕES --- */
-        .btn {
-            padding: 11px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-
-        .btn-inserir { background-color: #2563eb; color: white; }
-        .btn-inserir:hover { background-color: #1d4ed8; }
-
-        .btn-salvar { background-color: #991b1b; color: white; margin-top: 15px; }
-        .btn-salvar:hover { background-color: #7f1d1d; }
-
-        .btn-confirmar-exclusao { background-color: #ef4444; color: white; }
-        .btn-confirmar-exclusao:hover { background-color: #dc2626; }
-
-        /* --- TABELA --- */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 5px;
-            font-size: 14px;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 10px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        th {
-            background-color: #f8fafc;
-            color: #475569;
-        }
-
-        .btn-excluir-item {
-            color: #ef4444;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 13px;
-        }
-
-        /* --- ÁREA DE SEGURANÇA (EXCLUSÃO) --- */
-        .box-exclusao {
-            background-color: #fef2f2;
-            border: 1px solid #fee2e2;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 25px;
-        }
-    </style>
+    <title>MyBar - Tela de Registro de Conta</title>
+    <link rel="stylesheet" href="/css/novoOuAlteraObjetoEstilo.css">
 </head>
 <body>
-
-    <div class="container">
+    <div class="page-centralizada">
+        <div class="container">
+        <h2>Tela de Registro de Conta</h2>
         
-        <h2>Registro de Itens em Conta</h2>
         <form action="#" method="POST">
             
-            <div class="grid-dados-conta">
-                <div class="form-group">
-                    <label for="numero">Número<span class="required">*</span></label>
-                    <input type="text" id="numero" name="numero" value="" placeholder="Ex: 120" readonly required>
-                </div>
-                <div class="form-group">
-                    <label for="cpf">CPF<span class="required">*</span></label>
-                    <input type="text" id="cpf" name="cpf" value="" placeholder="123.456.789-10" readonly required>
-                </div>
-                <div class="form-group">
-                    <label for="nome">Nome<span class="required">*</span></label>
-                    <input type="text" id="nome" name="nome" value="" placeholder="Nome do Cliente" readonly required>
-                </div>
+            <div class="form-group">
+                <label for="cpf">CPF <span class="required">*</span></label>
+                <input type="text" id="cpf" name="cpf" required 
+                       placeholder="123.456.789-10">
             </div>
 
-            <div class="section-title">Lançar Novo Item</div>
-
-            <div class="grid-dados-conta">
-                <div class="form-group">
-                    <label for="codigoItem">Código<span class="required">*</span></label>
-                    <input type="text" id="codigoItem" name="codigoItem" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
-                </div>
-                <div class="form-group">
-                    <label for="descricao">Descrição<span class="required">*</span></label>
-                    <input type="text" id="descricao" name="descricao" placeholder="Ex: Coca cola 300 ml" required>
-                </div>
-                <div class="form-group">
-                    <label for="valorUnitario">Valor Unitário<span class="required">*</span></label>
-                    <input type="text" id="valorUnitario" name="valorUnitario" placeholder="R$ 0,00" required>
-                </div>
+            <div class="form-group">
+                <label for="nome">Nome <span class="required">*</span></label>
+                <input type="text" id="nome" name="nome" required maxlength="255" placeholder="Ex: Raimundo Moura">
             </div>
 
-            <div class="grid-dados-conta">
-                <div class="form-group">
-                    <label for="quantidade">Quantidade<span class="required">*</span></label>
-                    <input type="number" id="quantidade" name="quantidade" placeholder="01" min="1" max="99" required>
-                </div>
-                <div class="form-group">
-                    <label for="codigoGarcom">Código Garçom<span class="required">*</span></label>
-                    <input type="text" id="codigoGarcom" name="codigoGarcom" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
-                </div>
-                <div class="form-group">
-                    <label for="senhaGarcom">Senha<span class="required">*</span></label>
-                    <input type="password" id="senhaGarcom" name="senhaGarcom" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
-                </div>
+            <div class="form-group">
+                <label for="celular">Celular <span class="required">*</span></label>
+                <input type="text" id="celular" name="celular" required placeholder="86 98888-8888">
+            </div>
+            
+            <div class="form-group">
+                <label for="sexo">Sexo <span class="required">*</span></label>
+                <select id="sexo" name="sexo" required>
+                    <option value="">[Selecione]</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                </select>
             </div>
 
-            <button type="submit" class="btn btn-inserir">&lt; Inserir &gt;</button>
+            <div class="form-group">
+                <label for="data">Data <span class="required">*</span></label>
+                <input type="text" id="data" name="data" required placeholder="dd/mm/aaaa">
+            </div>
+
+            <div class="form-group">
+                <label for="hora">Hora <span class="required">*</span></label>
+                <input type="text" id="hora" name="hora" required placeholder="99:99">
+            </div>
+
+            <div class="form-group">
+                <label for="numeroConta">Número Conta <span class="required">*</span></label>
+                <input type="text" id="numeroConta" name="numeroConta" required placeholder="Ex: 120">
+            </div>
+
+            <div class="form-group">
+                <label for="codigo">Código</label>
+                <input type="text" id="codigo" name="codigo" placeholder="Ex: 1010">
+            </div>
+
+            <div class="form-group">
+                <label for="garcom">Garçom <span class="required">*</span></label>
+                <input type="text" id="garcom" name="garcom" required placeholder="Nome do Garçom">
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha <span class="required">*</span></label>
+                <input type="password" id="senha" name="senha" required placeholder="9999 (4 dígitos)">
+            </div>
+
+            <div class="buttons-bar">
+                <button type="submit" class="btn-salvar">&lt; Salvar &gt;</button>
+                <a href="/gestaodeconta" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Voltar</a>
+            </div>
+            
+            <div class="footer-note">
+                Os campos marcados com <span class="required">*</span> são de preenchimento obrigatório.
+            </div>
+            
         </form>
-
-        <div class="section-title">Itens na Conta</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Descrição</th>
-                    <th>Quantidade</th>
-                    <th>Valor</th>
-                    <th>Comandos</th>
-                </tr>
-            </thead>
-            <tbody>
-                </tbody>
-        </table>
-
-        <button type="button" class="btn btn-salvar">&lt; Salvar &gt;</button>
-
-
+        </div>
     </div>
+
 
 </body>
 </html>

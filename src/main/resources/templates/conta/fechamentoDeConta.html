@@ -1,211 +1,77 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBar 1.0 - Fechamento de Conta</title>
+    <title>MyBar - Fechamento de Conta</title>
+    <link rel="stylesheet" th:href="@{/css/novoOuAlteraObjetoEstilo.css}">
+    <link rel="stylesheet" th:href="@{/css/gestaoEstilo.css}">
+    
     <style>
-        /* --- ESTILOS PADRÃO E RESET --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
+        /* Pequenos ajustes de layout específicos desta tela */
+        .grid-3-colunas {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
         }
-
-        body {
-            background-color: #f4f6f9;
-            color: #333;
-            padding: 20px;
+        .grid-2-colunas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
-
-        .container {
-            max-width: 950px; /* Mantém a caixa larga na horizontal */
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        h2 {
-            font-size: 18px;
-            color: #111;
-            background-color: #e5e7eb;
-            padding: 12px;
-            text-align: center;
-            margin-bottom: 25px;
-            border-radius: 4px;
-        }
-
         .section-title {
-            font-size: 15px;
+            font-size: 18px;
             font-weight: bold;
-            margin: 25px 0 12px 0;
-            color: #4b5563;
+            margin: 25px 0 15px 0;
+            color: #111111;
             border-bottom: 2px solid #e5e7eb;
             padding-bottom: 5px;
         }
-
-        /* --- LAYOUTS DE GRID EM COLUNAS --- */
-        .grid-3-colunas {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        /* NOVA REGRA: Grid específico para 2 colunas para resolver o visual da autenticação */
-        .grid-2-colunas {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Divide o espaço em 50% para cada */
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-size: 13px;
-            font-weight: bold;
-            color: #4b5563;
-            margin-bottom: 5px;
-        }
-
-        .form-group label .required {
-            color: #ef4444;
-        }
-
-        .form-group input, .form-group select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        /* Campos cinzas de leitura do sistema */
-        .form-group input[readonly] {
-            background-color: #f3f4f6;
-            color: #1f2937;
-            font-weight: bold;
-        }
-
-        /* --- BOTÃO INSERIR PAGAMENTO --- */
-        .btn-inserir-container {
-            display: flex;
-            justify-content: flex-start;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-
-        .btn-inserir {
-            background-color: #2563eb;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            border: none;
-            border-radius: 4px;
-            padding: 12px 30px;
-            cursor: pointer;
-            transition: background-color 0.15s;
-            width: 100%;
-        }
-
-        .btn-inserir:hover { 
-            background-color: #1d4ed8; 
-        }
-
-        /* --- TABELAS VERTICALIZADAS --- */
+        /* Organiza as tabelas uma embaixo da outra */
         .tables-vertical-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 30px; 
-            margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 20px;
+            margin-bottom: 30px;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            margin-top: 5px;
+        /* Estilo para inputs que são apenas leitura */
+        input[readonly] {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            cursor: not-allowed;
         }
-
-        th, td {
-            text-align: left;
-            padding: 12px 15px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        th {
-            background-color: #f8fafc;
-            color: #475569;
-            font-weight: bold;
-        }
-
-        .btn-excluir {
-            color: #ef4444;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .btn-excluir:hover {
-            text-decoration: underline;
-        }
-
-        /* --- BOTÃO DE CONCLUSÃO FINAL --- */
-        .btn-concluir {
-            background-color: #991b1b;
-            color: white;
-            width: 100%;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 4px;
-            padding: 15px;
-            margin-top: 35px;
-            cursor: pointer;
-            transition: background-color 0.15s;
-        }
-
-        .btn-concluir:hover { 
-            background-color: #7f1d1d; 
-        }
-
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
         <h2>Fechamento de Conta</h2>
 
         <form action="#" method="POST">
             
             <div class="grid-3-colunas">
                 <div class="form-group">
-                    <label for="numero">Número<span class="required">*</span></label>
+                    <label for="numero">Número <span class="required">*</span></label>
                     <input type="text" id="numero" name="numero" placeholder="Ex: 120" readonly required>
                 </div>
                 <div class="form-group">
-                    <label for="cpf">CPF<span class="required">*</span></label>
+                    <label for="cpf">CPF <span class="required">*</span></label>
                     <input type="text" id="cpf" name="cpf" placeholder="123.456.789-10" readonly required>
                 </div>
                 <div class="form-group">
-                    <label for="nome">Nome<span class="required">*</span></label>
+                    <label for="nome">Nome <span class="required">*</span></label>
                     <input type="text" id="nome" name="nome" placeholder="Nome do Cliente" readonly required>
                 </div>
             </div>
 
             <div class="grid-2-colunas">
                 <div class="form-group">
-                    <label for="valorTotal">Valor Total<span class="required">*</span></label>
+                    <label for="valorTotal">Valor Total <span class="required">*</span></label>
                     <input type="text" id="valorTotal" name="valorTotal" placeholder="R$ 0,00" readonly required>
                 </div>
                 <div class="form-group">
-                    <label for="totalPagamentos">Total de Pagamentos<span class="required">*</span></label>
+                    <label for="totalPagamentos">Total de Pagamentos <span class="required">*</span></label>
                     <input type="text" id="totalPagamentos" name="totalPagamentos" placeholder="R$ 0,00" readonly required>
                 </div>
             </div>
@@ -214,49 +80,48 @@
 
             <div class="grid-2-colunas">
                 <div class="form-group">
-                    <label for="valorPago">Valor Pago<span class="required">*</span></label>
+                    <label for="valorPago">Valor Pago <span class="required">*</span></label>
                     <input type="text" id="valorPago" name="valorPago" placeholder="R$ 0,00 (Dinheiro, Pix...)" required>
                 </div>
                 <div class="form-group">
-                    <label for="formaPagamento">Forma de Pagamento<span class="required">*</span></label>
+                    <label for="formaPagamento">Forma de Pagamento <span class="required">*</span></label>
                     <select id="formaPagamento" name="formaPagamento" required>
                         <option value="">Selecione...</option>
                         <option value="Crédito">Crédito</option>
                         <option value="Débito">Débito</option>
                         <option value="Pix">Pix</option>
                         <option value="Espécie">Espécie</option>
-                        <option value="Entrega de Itens">Entrega de Itens</option>
                     </select>
                 </div>
             </div>
 
             <div class="grid-2-colunas">
                 <div class="form-group">
-                    <label for="codigoGarcom">Código Garçom<span class="required">*</span></label>
+                    <label for="codigoGarcom">Código Garçom <span class="required">*</span></label>
                     <input type="text" id="codigoGarcom" name="codigoGarcom" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
                 </div>
                 <div class="form-group">
-                    <label for="senhaGarcom">Senha<span class="required">*</span></label>
+                    <label for="senhaGarcom">Senha <span class="required">*</span></label>
                     <input type="password" id="senhaGarcom" name="senhaGarcom" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
                 </div>
             </div>
 
-            <div class="btn-inserir-container">
-                <button type="submit" class="btn btn-inserir">&lt; Inserir Pagamento &gt;</button>
+            <div class="buttons-bar" style="margin-top: 20px; text-align: left;">
+                <button type="submit" class="btn btn-nova-conta" style="background-color: #2563eb;">&lt; Inserir Pagamento &gt;</button>
             </div>
         </form>
 
         <div class="tables-vertical-wrapper">
             
-            <div>
+            <div class="table-responsive">
                 <div class="section-title">Itens na Conta</div>
-                <table>
+                <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr>
-                            <th>Código</th>
-                            <th>Descrição</th>
-                            <th>Quant</th>
-                            <th>Valor</th>
+                            <th style="width: 20%;">Código</th>
+                            <th style="width: 50%;">Descrição</th>
+                            <th style="width: 15%;">Quant</th>
+                            <th style="width: 15%;">Valor</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -264,14 +129,14 @@
                 </table>
             </div>
 
-            <div>
+            <div class="table-responsive">
                 <div class="section-title">Pagamentos Efetuados</div>
-                <table>
+                <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr>
-                            <th>Forma</th>
-                            <th>Valor</th>
-                            <th>Comandos</th>
+                            <th style="width: 30%;">Forma</th>
+                            <th style="width: 20%;">Valor</th>
+                            <th style="width: 50%;">Comandos</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -281,7 +146,9 @@
 
         </div>
 
-        <button type="button" class="btn btn-concluir">&lt; Concluir Fechamento &gt;</button>
+        <div class="buttons-bar" style="text-align: right; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+            <button type="button" class="btn btn-pesquisar" style="background-color: #991b1b; padding: 12px 30px; font-size: 16px;">&lt; Concluir Fechamento &gt;</button>
+        </div>
 
     </div>
 </body>
