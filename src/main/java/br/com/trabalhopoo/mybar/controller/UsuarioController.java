@@ -1,9 +1,6 @@
 package br.com.trabalhopoo.mybar.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.TipoItem;
@@ -32,8 +29,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> pesquisarUsuario(@PathVariable Long id) {
-        return ResponseEntity.ok(usuarioService.pesquisarUsuario(id));
+    public ResponseEntity<List<Usuario>> pesquisarUsuario(@RequestParam(required = false) String nome) {
+        return ResponseEntity.ok(usuarioService.pesquisarUsuarioPorFiltro(nome));
     }
 
     @PostMapping

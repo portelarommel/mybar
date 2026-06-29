@@ -49,6 +49,10 @@ public class UsuarioService {
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(
                         "Usuário não encontrado com id: " + id));
     }
+    public List<Usuario> pesquisarUsuarioPorFiltro(String nome)
+    {
+        return usuarioRepository.buscarComFiltros(nome);
+    }
 
     public void deletarUsuario(Long id){
         usuarioRepository.deleteById(id);
