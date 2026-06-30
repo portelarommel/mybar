@@ -70,7 +70,7 @@ public class ContaController {
     public String carregarPaginaRegistro(Model model)
     {
         model.addAttribute("conta", new Conta());
-        return "conta/registroDeContas";
+        return "conta/registroDeConta";
     } 
     @PostMapping("/registrar")
     public String abrirConta(@ModelAttribute Conta conta)

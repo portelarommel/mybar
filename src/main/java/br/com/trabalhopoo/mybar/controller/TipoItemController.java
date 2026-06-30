@@ -36,7 +36,7 @@ public class TipoItemController {
         model.addAttribute("TipoItens",tipoitens);
         return "tipoDeItem/gestaoDeTipoDeItem";
     }
-    @GetMapping
+    @GetMapping("/{id}/editar")
     public String carregarPaginaEdicao(@PathVariable Long id,Model model)
     {
         TipoItem tipoItem = tipoItemService.pesquisarTipoItem(id);
