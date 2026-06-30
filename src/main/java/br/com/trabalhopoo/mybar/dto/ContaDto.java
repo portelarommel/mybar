@@ -3,6 +3,8 @@ package br.com.trabalhopoo.mybar.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.enums.Sexo;
 
@@ -14,7 +16,9 @@ public class ContaDto {
     private String nomeCliente;
     private String celularCliente;
     private Sexo sexoCliente;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate data; 
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime hora;
     public void setNumeroConta(Integer numeroConta) { this.numeroConta = numeroConta; }
     public void setCodigoGarcom(String codigoGarcom) { this.codigoGarcom = codigoGarcom; }
@@ -69,6 +73,8 @@ public class ContaDto {
         dto.setCelularCliente(conta.getCliente().getCelular());
         dto.setSexoCliente(conta.getCliente().getSexo());
         dto.setNumeroConta(conta.getNumero());
+        dto.setData(conta.getDataAbertura());
+        dto.setHora(conta.getHoraAbertura());
         if(conta.getGarconAbertura()!= null)
         {
             dto.setCodigoGarcom(conta.getGarconAbertura().getCodigo());

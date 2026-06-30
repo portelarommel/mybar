@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
 import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.dto.ContaDto;
+import br.com.trabalhopoo.mybar.exception.ContaComNumeroJaExistenteException;
 import br.com.trabalhopoo.mybar.exception.ContaComPedidosException;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
 import br.com.trabalhopoo.mybar.exception.ContaNaoEncontradaException;
@@ -74,7 +75,7 @@ public class ContaService {
         return contaRepository.save(conta);
     }
 
-    public Conta alterarConta(Long id, Conta novaConta)
+    public Conta alterarConta(Long id, ContaDto contaDto)
     {
 
         Conta conta = pesquisarConta(id);
@@ -85,18 +86,22 @@ public class ContaService {
         }
 
         boolean numeroEmUso =
-                contaRepository.existsByNumero(novaConta.getNumero());
+                contaRepository.existsByNumero(contaDto.getNumeroConta());
 
         if (numeroEmUso &&
-                !conta.getNumero().equals(novaConta.getNumero())) {
+                !conta.getNumero().equals(contaDto.getNumeroConta())) {
 
-            throw new ContaJaAbertaException(
-                    "Já existe uma conta utilizando este número.");
+            throw new ContaComNumeroJaExistenteException(
+                    "Já existe uma conta utilizando este número.",id);
         }
+        conta.setNumero(contaDto.getNumeroConta());
+        conta.getCliente().setNome(contaDto.getNomeCliente());
+        conta.getCliente().setSexo(contaDto.getSexoCliente());
+        conta.getCliente().setCelular(contaDto.getCelularCliente());
+        conta.setDataAbertura(contaDto.getData());
+        conta.setHoraAbertura(contaDto.getHora());
 
-        conta.setNumero(novaConta.getNumero());
-        conta.setCliente(novaConta.getCliente());
-        conta.setGarconAbertura(novaConta.getGarconAbertura());
+        //conta.setGarconAbertura(novaConta.getGarconAbertura());
 
         return contaRepository.save(conta);
     }

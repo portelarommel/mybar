@@ -7,12 +7,13 @@
      <link rel="stylesheet" th:href="@{/css/gestaoEstilo.css}">
 </head>
 <script th:src="@{/js/mascaras.js}"></script>
+
 <body>
 
     <div class="container">
         
         <h2>Pesquisa por Contas</h2>
-        <form th:action="@{/contas}" method="GET">
+        <form id="formPesquisa" th:action="@{/contas}" method="GET">
             <div class="pesquisa-grid">
                 <div class="form-group">
                     <label for="numeroConta">Número Conta</label>
@@ -33,14 +34,11 @@
                     <label for="nome">Nome</label>
                     <input type="text" id="nome" name="nomeCliente" placeholder="Nome do cliente" maxlength="255">
                 </div>
-                
                 <div class="form-group">
                     <label for="aberta">Aberta?</label>
                     <select id="aberta" name="aberta">
-                        <option value="">Selecione...</option>
-                        <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
-                    </select>
+                    <option value="">Selecione...</option>
+                    <option value="true">Sim</option> <option value="false">Não</option> </select>
                 </div>
             </div>
             
@@ -92,6 +90,20 @@
         </div>
 
     </div>
+    <script>
+    document.getElementById('formPesquisa').addEventListener('submit', function(e) {
+        // Seleciona todos os inputs e selects dentro do formulário
+        const inputs = this.querySelectorAll('input, select');
+        
+        inputs.forEach(input => {
+            // Se o campo estiver totalmente vazio ou apenas com espaços
+            if (!input.value.trim()) {
+                // Desabilita o campo temporariamente para o navegador não enviá-lo
+                input.disabled = true;
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

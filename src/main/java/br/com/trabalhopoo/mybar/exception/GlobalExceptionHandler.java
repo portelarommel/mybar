@@ -24,6 +24,13 @@ public class GlobalExceptionHandler {
         return "redirect:/contas";
 
     }
+    @ExceptionHandler(ContaComNumeroJaExistenteException.class)
+    public String tratarContaComNumeroJaExistenteException(ContaComNumeroJaExistenteException ex, RedirectAttributes attributes)
+    {
+        attributes.addFlashAttribute("mensagem", ex.getMessage());
+        return "redirect:/contas/"+ex.getId()+"/editar";
+
+    }
    @ExceptionHandler(ItemCardapioNaoEncontradoException.class)
     public String tratarItemCardapioNaoEncontrado(ItemCardapioNaoEncontradoException ex,RedirectAttributes attributes)
     {
@@ -55,7 +62,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TipoItemJaRegistradoException.class)
     public String tratarTipoItemJaRegistrado(TipoItemJaRegistradoException ex,RedirectAttributes attributes)
     {
-        attributes.addFlashAttribute("mensagem", ex.getMessage());
+        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
         return "redirect:/tiposItem/registrar";
     }
 

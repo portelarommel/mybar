@@ -62,10 +62,10 @@ public class ContaController {
         model.addAttribute("contaDto",contaDto);
         return "conta/edicaoDeConta";
     }
-    @PutMapping("/{id}/editar")
-    public String alterarConta(@PathVariable Long id, @ModelAttribute Conta conta, Model model)
+    @PostMapping("/{id}/editar")
+    public String alterarConta(@PathVariable Long id, @ModelAttribute ContaDto contaDto, Model model)
     {
-        contaService.alterarConta(id, conta);
+        contaService.alterarConta(id, contaDto);
         return "redirect:/contas";
     }
     @GetMapping("/registrar")
@@ -86,12 +86,13 @@ public class ContaController {
     {
         Conta conta = contaService.pesquisarConta(id);
         ContaDto contaDto =  ContaDto.fromEntity(conta);
+        System.out.println(conta.getDataAbertura());
         model.addAttribute("contaDto",contaDto);
         return "conta/visualizacaoDeConta";
     }
 
     @GetMapping("/{id}/fechar")
-    public String fecharConta(@PathVariable Long id, Model model)
+    public String CarregarPaginaFecharConta(@PathVariable Long id, Model model)
     {
         return "conta/fechamentoDeConta";
     }
