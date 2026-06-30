@@ -72,6 +72,10 @@ public class ItemDaConta {
     @JoinColumn(name = "id_conta", nullable = false)
     private Conta conta;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private StatusItem status;
+
     public ItemDaConta() {
     }
 
@@ -258,5 +262,9 @@ public class ItemDaConta {
 
     public void setConta(Conta conta) {
         this.conta = conta;
+    }
+
+    public void setStatus(StatusItem status) {
+        this.status = status;
     }
 }

@@ -9,6 +9,9 @@ import org.springframework.data.repository.query.Param;
 import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.model.Conta;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public interface ContaRepository extends JpaRepository<Conta, Long> {
     @Query("SELECT c FROM Conta c WHERE " +
            "(:numero IS NULL OR c.numero = :numero) AND " +
@@ -24,4 +27,6 @@ public interface ContaRepository extends JpaRepository<Conta, Long> {
 
     boolean existsByClienteCpfAndStatus(String cpf, Status status);
     boolean existsByNumero(Integer numero);
+
+    List<Conta> findByAbertaFalseAndDataFechamentoBetweenOrderByDataFechamentoAsc(LocalDateTime inicio, LocalDateTime fim);
 }
