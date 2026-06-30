@@ -1,5 +1,6 @@
 package br.com.trabalhopoo.mybar.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,22 +96,26 @@ public class ContaController {
     {
         Conta conta = contaService.pesquisarConta(id);
         ContaDto contaDto =  ContaDto.fromEntity(conta);
+        BigDecimal gorjeta =contaService.calcularGorjeta(id);
+        BigDecimal ingresso = contaService.calcularValorIngresso(id);
         model.addAttribute("contaDto",contaDto);
         model.addAttribute("itensDaConta",contaService.listarItensFechamento(id));
-        model.addAttribute("totalConta",contaService.CalcularTotalConta(id));
+        model.addAttribute("totalConta",contaService.CalcularTotalConta(id,ingresso,gorjeta));
         model.addAttribute("totalPago",contaService.CalcularTotalPago(id));
-        model.addAttribute("valorGorjeta", contaService.calcularGorjeta(id));
-        model.addAttribute("valorIngresso", contaService.calcularValorIngresso(id));
+        model.addAttribute("valorGorjeta", gorjeta);
+        model.addAttribute("valorIngresso",ingresso);
         model.addAttribute("id", id);
         return "conta/fechamentoDeConta";
     }
-    @PostMapping("/{id}/fechar")
+    @PostMapping("/{id}/concluir")
     public String FecharConta(@PathVariable Long id, Model model)
     {
-        contaService.FecharConta (id,contaService.CalcularTotalConta(id), 
+        BigDecimal gorjeta =contaService.calcularGorjeta(id);
+        BigDecimal ingresso = contaService.calcularValorIngresso(id);
+        contaService.FecharConta (id,contaService.CalcularTotalConta(id,ingresso,gorjeta), 
         contaService.CalcularTotalPago(id),
-        contaService.calcularValorIngresso(id),
-        contaService.calcularGorjeta(id));
+        ingresso,
+        gorjeta);
         return "redirect:/contas";
     }
 

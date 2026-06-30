@@ -64,7 +64,7 @@ public class ItemDaConta {
     private Usuario quemLancou;
 
     @ManyToOne
-    @JoinColumn(name = "item_cardapio_id", nullable = false)
+    @JoinColumn(name = "item_cardapio_id", nullable = true)
     private ItemCardapio itemCardapio;
 
     @ManyToOne

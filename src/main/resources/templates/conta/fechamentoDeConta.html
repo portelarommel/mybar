@@ -49,10 +49,19 @@
         }
     </style>
 </head>
+<script th:src="@{/js/mensagens.js}"></script>
 <body>
+    <div id="mensagem"
+        th:if="${mensagem}"
+        th:data-texto="${mensagem}"
+        th:data-tipo="${tipo}">
+    </div>
 
     <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
         <h2>Fechamento de Conta</h2>
+        <div class="page-centralizada">
+        <div class="container">
+        <h2>Tela de Edição Conta</h2>
 
         <form th:action="@{/contas/{id}/fechar(id=${id})}" method="POST">
             
@@ -173,7 +182,7 @@
         </div>
 
         <div class="buttons-bar" style="text-align: right; border-top: 1px solid #e5e7eb; padding-top: 20px;">
-            <form th:action="@{/contas/{id}/fechar}" method="POST" style="display: inline;">
+            <form th:action="@{/contas/{id}/concluir(id=${id})}" method="POST" style="display: inline;">
                 <button type="submit" class="btn btn-pesquisar" style="background-color: #991b1b; padding: 12px 30px; font-size: 16px; cursor: pointer;">
                     &lt; Concluir Fechamento &gt;
                 </button>

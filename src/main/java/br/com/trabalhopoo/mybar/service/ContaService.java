@@ -23,6 +23,7 @@ import br.com.trabalhopoo.mybar.exception.ContaComNumeroJaExistenteException;
 import br.com.trabalhopoo.mybar.exception.ContaComPedidosException;
 import br.com.trabalhopoo.mybar.exception.ContaFaltandoPagamentoException;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
+import br.com.trabalhopoo.mybar.exception.ContaJaFechadaException;
 import br.com.trabalhopoo.mybar.exception.ContaNaoEncontradaException;
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
@@ -166,12 +167,14 @@ public class ContaService {
     {
         return itemDaContaService.listarPorConta(id);
     }
-    public BigDecimal CalcularTotalConta(Long id)
+    public BigDecimal CalcularTotalConta(Long id, BigDecimal valorIngresso, BigDecimal valorGorjeta)
     {
         Conta conta = pesquisarConta(id);
         BigDecimal totalConta = conta.getItensDaConta().stream()
                 .map(ItemDaConta::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+        totalConta.add(valorGorjeta);
+        totalConta.add(valorIngresso);
         return totalConta;
 
     }
@@ -191,17 +194,20 @@ public class ContaService {
         Conta conta = pesquisarConta(id);
 
         if (conta.getStatus() == Status.FECHADA) {
-            throw new IllegalStateException("A conta já está fechada.");
+            throw new ContaJaFechadaException("A conta já está fechada.",id);
         }
 
         if (totalPago.compareTo(totalConta) != 0) {
             throw new ContaFaltandoPagamentoException("A soma dos pagamentos é diferente do valor total da conta.",id);
         }
-
+        ItemDaConta itemIngresso = new ItemDaConta(valorIngresso);
+        ItemDaConta itemGorjeta = new ItemDaConta(valorGorjeta);
+        itemIngresso.setQuantidade(1);
+        itemGorjeta.setQuantidade(1);
         conta.setStatus(Status.FECHADA);
-        conta.adicionarItem(new ItemDaConta(valorIngresso));
+        conta.adicionarItem(itemIngresso);
         if (valorGorjeta.compareTo(BigDecimal.ZERO) > 0) {
-            conta.adicionarItem(new ItemDaConta(valorGorjeta));
+            conta.adicionarItem(itemGorjeta);
         }
         return contaRepository.save(conta);
        

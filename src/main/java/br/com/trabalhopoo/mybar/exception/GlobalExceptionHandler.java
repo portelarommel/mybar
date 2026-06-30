@@ -17,6 +17,12 @@ public class GlobalExceptionHandler {
         attributes.addFlashAttribute("mensagem", ex.getMessage());
         return "redirect:/contas/registrar";
     }
+    @ExceptionHandler(ContaJaFechadaException.class)
+    public String tratarContaJaAberta(ContaJaFechadaException ex,RedirectAttributes attributes)
+    {
+        attributes.addFlashAttribute("mensagem", ex.getMessage());
+        return "redirect:/contas/"+ex.getId()+"/fechar";
+    }
     @ExceptionHandler(ContaNaoEncontradaException.class)
     public String tratarContaNaoEncontrada(ContaNaoEncontradaException ex,RedirectAttributes attributes)
     {
@@ -28,7 +34,7 @@ public class GlobalExceptionHandler {
     public String tratarContaFaltandoPagamento(ContaFaltandoPagamentoException ex,RedirectAttributes attributes)
     {
         attributes.addFlashAttribute("mensagem", ex.getMessage());
-        return "redirect:/contas"+ex.getId()+"/fechar";
+        return "redirect:/contas/"+ex.getId()+"/fechar";
 
     }
 
@@ -70,7 +76,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TipoItemJaRegistradoException.class)
     public String tratarTipoItemJaRegistrado(TipoItemJaRegistradoException ex,RedirectAttributes attributes)
     {
-        attributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        attributes.addFlashAttribute("mensagem", ex.getMessage());
         return "redirect:/tiposItem/registrar";
     }
 
