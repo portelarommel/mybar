@@ -30,7 +30,8 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Conta> contas;
 
-    public Cliente() {}
+    public Cliente() {
+    }
 
     public Cliente(String nome, String cpf, String celular, Sexo sexo, List<Conta> contas) {
         this.nome = nome;

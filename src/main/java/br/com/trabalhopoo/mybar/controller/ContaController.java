@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.trabalhopoo.mybar.model.enums.Status;
+import br.com.trabalhopoo.mybar.dto.ContaDto;
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ContaService;
@@ -69,13 +70,13 @@ public class ContaController {
     @GetMapping("/registrar")
     public String carregarPaginaRegistro(Model model)
     {
-        model.addAttribute("conta", new Conta());
+        model.addAttribute("contaDto", new ContaDto());
         return "conta/registroDeConta";
     } 
     @PostMapping("/registrar")
-    public String abrirConta(@ModelAttribute Conta conta)
+    public String abrirConta(@ModelAttribute("contaDto") ContaDto contaDto)
     {
-        contaService.abrirConta(conta);
+        contaService.abrirConta(contaDto);
         return "redirect:/contas";
     }
 

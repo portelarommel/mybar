@@ -66,6 +66,27 @@
                     </tr>
                 </thead>
                 <tbody>
+                    
+                    <tr th:each="conta : ${contas}">
+                        <td th:text="${conta.cliente.cpf}">000.000.000-00</td>
+                        
+                        <td th:text="${conta.cliente.nome}">Nome do Cliente</td>
+                        
+                        <td th:text="${conta.cliente.celular}">(00) 00000-0000</td>
+                        
+                        <td th:text="${conta.numero}">000</td>
+                        
+                        <td th:text="${conta.status == T(br.com.trabalhopoo.mybar.model.enums.Status).ABERTA ? 'Sim' : 'Não'}"></td>
+                        
+                        <td class="commands">
+                            <a th:href="@{/contas/visualizar/{id}(id=${conta.id})}" class="btn-action btn-view">Visualizar</a>
+                            <a th:href="@{/contas/alterar/{id}(id=${conta.id})}" class="btn-action btn-edit">Alterar</a>
+                            <a th:href="@{/contas/excluir/{id}(id=${conta.id})}" class="btn-action btn-delete">Excluir</a>
+                            <a th:href="@{/contas/lancar/{id}(id=${conta.id})}" class="btn-action btn-item">Lançar Item</a>
+                            <a th:href="@{/contas/fechar/{id}(id=${conta.id})}" class="btn-action btn-close">Fechar Conta</a>
+                        </td>
+                    </tr>
+
                     </tbody>
             </table>
         </div>

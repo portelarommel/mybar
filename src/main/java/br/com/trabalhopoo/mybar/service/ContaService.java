@@ -1,17 +1,22 @@
 package br.com.trabalhopoo.mybar.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
+import br.com.trabalhopoo.mybar.model.Cliente;
 import br.com.trabalhopoo.mybar.model.Configuracao;
 import br.com.trabalhopoo.mybar.model.Pagamento;
 import br.com.trabalhopoo.mybar.model.enums.Sexo;
+import br.com.trabalhopoo.mybar.repository.ClienteRepository;
 import br.com.trabalhopoo.mybar.repository.ConfiguracaoRepository;
 import br.com.trabalhopoo.mybar.repository.ItemDaContaRepository;
 import org.springframework.stereotype.Service;
 
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
 import br.com.trabalhopoo.mybar.model.enums.Status;
+import br.com.trabalhopoo.mybar.dto.ContaDto;
 import br.com.trabalhopoo.mybar.exception.ContaComPedidosException;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
 import br.com.trabalhopoo.mybar.exception.ContaNaoEncontradaException;
@@ -24,9 +29,12 @@ public class ContaService {
     private ContaRepository contaRepository;
     private ConfiguracaoService configuracaoService;
 
-    public ContaService(ContaRepository contaRepository, ConfiguracaoService configuracaoService) {
+    private ClienteRepository clienteRepository;
+
+    public ContaService(ContaRepository contaRepository, ConfiguracaoService configuracaoService,ClienteRepository clienteRepository) {
         this.contaRepository = contaRepository;
         this.configuracaoService = configuracaoService;
+        this.clienteRepository = clienteRepository;
     }
 
     public List<Conta> listarContas()
@@ -34,8 +42,23 @@ public class ContaService {
         return contaRepository.findAll();
     }
 
-    public Conta abrirConta(Conta conta)
+    public Conta abrirConta(ContaDto dto)
     {
+        Cliente cliente = clienteRepository.findById(dto.getCpfCliente())
+            .orElseGet(() -> {
+                Cliente novo = new Cliente();
+                novo.setCpf(dto.getCpfCliente());
+                novo.setNome(dto.getNomeCliente());
+                novo.setCelular(dto.getCelularCliente());
+                novo.setSexo(dto.getSexoCliente());
+                return novo;
+            });
+        Conta conta = new Conta();
+        // 3. Conecta o Cliente na Conta
+        conta.setCliente(cliente);
+        conta.setNumero(dto.getNumeroConta());
+        conta.setDataAbertura(LocalDate.now());
+        conta.setHoraAbertura(LocalTime.now());
         String cpf = conta.getCliente().getCpf();
 
         if (contaRepository.existsByClienteCpfAndStatus(cpf, Status.ABERTA)) {

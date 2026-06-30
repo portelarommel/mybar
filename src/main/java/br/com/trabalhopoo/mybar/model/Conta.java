@@ -31,10 +31,10 @@ public class Conta {
     private LocalTime horaAbertura;
 
     @ManyToOne
-    @JoinColumn(name = "id_garcom_abertura", nullable = false)
+    @JoinColumn(name = "id_garcom_abertura", nullable = true)
     private Usuario garconAbertura;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cpf_cliente", nullable = false)
     private Cliente cliente;
 
