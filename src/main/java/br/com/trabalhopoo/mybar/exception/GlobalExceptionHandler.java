@@ -24,6 +24,14 @@ public class GlobalExceptionHandler {
         return "redirect:/contas";
 
     }
+    @ExceptionHandler(ContaFaltandoPagamentoException.class)
+    public String tratarContaFaltandoPagamento(ContaFaltandoPagamentoException ex,RedirectAttributes attributes)
+    {
+        attributes.addFlashAttribute("mensagem", ex.getMessage());
+        return "redirect:/contas"+ex.getId()+"/fechar";
+
+    }
+
     @ExceptionHandler(ContaComNumeroJaExistenteException.class)
     public String tratarContaComNumeroJaExistenteException(ContaComNumeroJaExistenteException ex, RedirectAttributes attributes)
     {

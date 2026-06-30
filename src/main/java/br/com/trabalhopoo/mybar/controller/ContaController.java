@@ -86,7 +86,6 @@ public class ContaController {
     {
         Conta conta = contaService.pesquisarConta(id);
         ContaDto contaDto =  ContaDto.fromEntity(conta);
-        System.out.println(conta.getDataAbertura());
         model.addAttribute("contaDto",contaDto);
         return "conta/visualizacaoDeConta";
     }
@@ -94,7 +93,25 @@ public class ContaController {
     @GetMapping("/{id}/fechar")
     public String CarregarPaginaFecharConta(@PathVariable Long id, Model model)
     {
+        Conta conta = contaService.pesquisarConta(id);
+        ContaDto contaDto =  ContaDto.fromEntity(conta);
+        model.addAttribute("contaDto",contaDto);
+        model.addAttribute("itensDaConta",contaService.listarItensFechamento(id));
+        model.addAttribute("totalConta",contaService.CalcularTotalConta(id));
+        model.addAttribute("totalPago",contaService.CalcularTotalPago(id));
+        model.addAttribute("valorGorjeta", contaService.calcularGorjeta(id));
+        model.addAttribute("valorIngresso", contaService.calcularValorIngresso(id));
+        model.addAttribute("id", id);
         return "conta/fechamentoDeConta";
+    }
+    @PostMapping("/{id}/fechar")
+    public String FecharConta(@PathVariable Long id, Model model)
+    {
+        contaService.FecharConta (id,contaService.CalcularTotalConta(id), 
+        contaService.CalcularTotalPago(id),
+        contaService.calcularValorIngresso(id),
+        contaService.calcularGorjeta(id));
+        return "redirect:/contas";
     }
 
     @GetMapping("/{id}/excluir")

@@ -12,6 +12,8 @@ import br.com.trabalhopoo.mybar.model.enums.Sexo;
 import br.com.trabalhopoo.mybar.repository.ClienteRepository;
 import br.com.trabalhopoo.mybar.repository.ConfiguracaoRepository;
 import br.com.trabalhopoo.mybar.repository.ItemDaContaRepository;
+
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
@@ -19,6 +21,7 @@ import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.dto.ContaDto;
 import br.com.trabalhopoo.mybar.exception.ContaComNumeroJaExistenteException;
 import br.com.trabalhopoo.mybar.exception.ContaComPedidosException;
+import br.com.trabalhopoo.mybar.exception.ContaFaltandoPagamentoException;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
 import br.com.trabalhopoo.mybar.exception.ContaNaoEncontradaException;
 import br.com.trabalhopoo.mybar.model.Conta;
@@ -29,13 +32,14 @@ import br.com.trabalhopoo.mybar.model.ItemDaConta;
 public class ContaService {
     private ContaRepository contaRepository;
     private ConfiguracaoService configuracaoService;
-
+    private ItemDaContaService itemDaContaService;
     private ClienteRepository clienteRepository;
 
-    public ContaService(ContaRepository contaRepository, ConfiguracaoService configuracaoService,ClienteRepository clienteRepository) {
+    public ContaService(ContaRepository contaRepository, ConfiguracaoService configuracaoService,ClienteRepository clienteRepository,@Lazy ItemDaContaService itemDaContaService) {
         this.contaRepository = contaRepository;
         this.configuracaoService = configuracaoService;
         this.clienteRepository = clienteRepository;
+        this.itemDaContaService = itemDaContaService;
     }
 
     public List<Conta> listarContas()
@@ -127,15 +131,9 @@ public class ContaService {
         return encontrado;
 
     }
-
-    public Conta fecharConta(Long id)
+    public BigDecimal calcularGorjeta(Long id)
     {
         Conta conta = pesquisarConta(id);
-
-        if (conta.getStatus() == Status.FECHADA) {
-            throw new IllegalStateException("A conta já está fechada.");
-        }
-
         BigDecimal gorjeta = BigDecimal.ZERO;
 
         for (ItemDaConta item : conta.getItensDaConta()) {
@@ -148,33 +146,64 @@ public class ContaService {
 
             gorjeta = gorjeta.add(item.getValor().multiply(percentualReal));
         }
+        /*if (gorjeta.compareTo(BigDecimal.ZERO) > 0) {
+            conta.adicionarItem(new ItemDaConta(gorjeta));
+        }*/
+        return gorjeta;
 
+    }
+    public BigDecimal calcularValorIngresso(Long id)
+    {
+        Conta conta = pesquisarConta(id);
         Configuracao config = configuracaoService.obterConfiguracao();
         BigDecimal valorIngresso = conta.getCliente().getSexo() == Sexo.MASCULINO
                 ? config.getValorIngressoMasc()
                 : config.getValorIngressoFemin();
 
-        conta.adicionarItem(new ItemDaConta(valorIngresso));
-
-        if (gorjeta.compareTo(BigDecimal.ZERO) > 0) {
-            conta.adicionarItem(new ItemDaConta(gorjeta));
-        }
-
+        return valorIngresso;
+    }
+    public List<ItemDaConta> listarItensFechamento(Long id)
+    {
+        return itemDaContaService.listarPorConta(id);
+    }
+    public BigDecimal CalcularTotalConta(Long id)
+    {
+        Conta conta = pesquisarConta(id);
         BigDecimal totalConta = conta.getItensDaConta().stream()
                 .map(ItemDaConta::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return totalConta;
 
+    }
+    public BigDecimal CalcularTotalPago(Long id)
+    {
+        Conta conta = pesquisarConta(id);
         BigDecimal totalPago = conta.getPagamentos().stream()
                 .map(Pagamento::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        return totalPago;
+
+
+    }
+    public Conta FecharConta(Long id,BigDecimal totalConta, BigDecimal totalPago,BigDecimal valorIngresso, BigDecimal valorGorjeta)
+    {
+        Conta conta = pesquisarConta(id);
+
+        if (conta.getStatus() == Status.FECHADA) {
+            throw new IllegalStateException("A conta já está fechada.");
+        }
+
         if (totalPago.compareTo(totalConta) != 0) {
-            throw new IllegalStateException(
-                    "A soma dos pagamentos é diferente do valor total da conta.");
+            throw new ContaFaltandoPagamentoException("A soma dos pagamentos é diferente do valor total da conta.",id);
         }
 
         conta.setStatus(Status.FECHADA);
-
+        conta.adicionarItem(new ItemDaConta(valorIngresso));
+        if (valorGorjeta.compareTo(BigDecimal.ZERO) > 0) {
+            conta.adicionarItem(new ItemDaConta(valorGorjeta));
+        }
         return contaRepository.save(conta);
+       
     }
 }
