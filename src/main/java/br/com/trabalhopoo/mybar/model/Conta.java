@@ -49,6 +49,11 @@ public class Conta {
         item.setConta(this);
         this.itensDaConta.add(item);
     }
+    public void adicionarPagamento(Pagamento pagamento)
+    {
+        pagamento.setConta(this);
+        this.pagamentos.add(pagamento);
+    }
 
     public Conta() {
     }

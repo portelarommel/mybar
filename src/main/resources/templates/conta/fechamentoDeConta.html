@@ -1,3 +1,6 @@
+<div class="page-centralizada">
+<div class="container">
+<h2>Tela de Edição Conta</h2> 
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,7 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/novoOuAlteraObjetoEstilo.css}">
     <link rel="stylesheet" th:href="@{/css/gestaoEstilo.css}">
     
- <style>
+    <style>
         /* Pequenos ajustes de layout específicos desta tela */
         .grid-3-colunas {
             display: grid;
@@ -40,7 +43,7 @@
             cursor: not-allowed;
         }
 
-        /* NOVA REGRA ADICIONADA AQUI */
+        /* Destaque visual aos totais */
         #valorTotal, #totalPagamentos {
             font-size: 18px;
             font-weight: bold;
@@ -49,8 +52,10 @@
         }
     </style>
 </head>
-<script th:src="@{/js/mensagens.js}"></script>
 <body>
+
+    <script th:src="@{/js/mensagens.js}"></script>
+
     <div id="mensagem"
         th:if="${mensagem}"
         th:data-texto="${mensagem}"
@@ -59,9 +64,6 @@
 
     <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
         <h2>Fechamento de Conta</h2>
-        <div class="page-centralizada">
-        <div class="container">
-        <h2>Tela de Edição Conta</h2>
 
         <form th:action="@{/contas/{id}/fechar(id=${id})}" method="POST">
             
@@ -94,18 +96,19 @@
             <div class="section-title">Lançar Recebimento / Pagamento</div>
 
             <div class="grid-2-colunas">
-                <div class="form-group">
-                    <label for="valorPago">Valor Pago <span class="required">*</span></label>
-                    <input type="text" id="valorPago" name="valorPago" placeholder="R$ 0,00 (Dinheiro, Pix...)" required>
-                </div>
+            <div class="form-group">
+                <label for="valorPago">Valor Pago <span class="required">*</span></label>
+                <input type="number" step="0.01" min="0.01" id="valorPago" name="valor" placeholder="0.00" required>
+            </div>
+
                 <div class="form-group">
                     <label for="formaPagamento">Forma de Pagamento <span class="required">*</span></label>
-                    <select id="formaPagamento" name="formaPagamento" required>
+                    <select id="formaPagamento" name="forma" required>
                         <option value="">Selecione...</option>
-                        <option value="Crédito">Crédito</option>
-                        <option value="Débito">Débito</option>
-                        <option value="Pix">Pix</option>
-                        <option value="Espécie">Espécie</option>
+                        <option value="CREDITO">Crédito</option>
+                        <option value="DEBITO">Débito</option>
+                        <option value="PIX">Pix</option>
+                        <option value="DINHEIRO">Espécie (Dinheiro)</option>
                     </select>
                 </div>
             </div>
@@ -124,9 +127,7 @@
             <div class="buttons-bar" style="margin-top: 20px; text-align: left;">
                 <button type="submit" class="btn btn-nova-conta" style="background-color: #2563eb;">&lt; Inserir Pagamento &gt;</button>
             </div>
-        </form>
-
-        <div class="tables-vertical-wrapper">
+        </form> <div class="tables-vertical-wrapper">
             
             <div class="table-responsive">
                 <div class="section-title">Itens na Conta</div>
@@ -175,7 +176,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        </tbody>
+                        <tr th:each="pag : ${pagamentos}">
+                            <td th:text="${pag.forma}">Forma</td>
+                            <td th:text="|R$ ${#numbers.formatDecimal(pag.valor ?: 0, 1, 2, 'COMMA')}|">R$ 0,00</td>
+                            <td>
+                                <span style="color: #6b7280; font-size: 14px;">Sem comandos</span>
+                            </td>
+                        </tr>
+                        
+                        <tr th:if="${#lists.isEmpty(pagamentos)}">
+                            <td colspan="3" style="text-align: center; color: #6b7280; font-style: italic; padding: 15px;">
+                                Nenhum pagamento efetuado para esta conta ainda.
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
@@ -188,7 +202,57 @@
                 </button>
             </form>
         </div>
+                <div class="buttons-bar">
+            <a th:href="@{/contas}" class="btn-voltar">
+                Voltar para Gestão
+            </a>
+        </div>
 
-    </div>
+    </div> 
+    </div> <script th:inline="javascript">
+        // th:inline="javascript" permite que o Thymeleaf injete os valores direto no script de forma segura
+        const totalConta = /*[[${totalConta ?: 0}]]*/ 0;
+        const totalPago = /*[[${totalPago ?: 0}]]*/ 0;
+        
+        // Calcula o saldo devedor restante
+        const saldoRestante = totalConta - totalPago;
+
+        const inputValor = document.getElementById('valorPago');
+        const formPagamento = document.querySelector('form[action*="fechar"]');
+
+        // Validação 1: Impede digitar caracteres inválidos
+        inputValor.addEventListener('keydown', function(e) {
+            if (e.key === '-' || e.key === 'e' || e.key === 'E') {
+                e.preventDefault();
+            }
+        });
+
+        // Validação 2: Quando o usuário termina de digitar e sai do campo
+        inputValor.addEventListener('change', function() {
+            const valorDigitado = parseFloat(this.value);
+
+            if (valorDigitado <= 0) {
+                alert('O valor do pagamento deve ser maior que R$ 0,00.');
+                this.value = '';
+                return;
+            }
+
+            // Se o valor ultrapassar o saldo que falta pagar
+            if (valorDigitado > saldoRestante) {
+                alert('Valor Excedido! O saldo restante a pagar é de R$ ' + saldoRestante.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                this.value = ''; // Limpa o campo
+            }
+        });
+
+        // Validação 3: Uma última checagem de segurança caso ele tente burlar e clicar no botão rápido
+        formPagamento.addEventListener('submit', function(e) {
+            const valorDigitado = parseFloat(inputValor.value);
+
+            if (valorDigitado > saldoRestante) {
+                e.preventDefault(); // Bloqueia o envio do formulário
+                alert('Não é possível processar. O valor máximo aceito é R$ ' + saldoRestante.toFixed(2));
+            }
+        });
+    </script>
 </body>
 </html>

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.dto.ContaDto;
+import br.com.trabalhopoo.mybar.dto.PagamentoDto;
+import br.com.trabalhopoo.mybar.exception.ContaJaFechadaException;
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ContaService;
@@ -44,7 +46,7 @@ public class ContaController {
             @RequestParam(required = false) String nomeCliente,
             @RequestParam(required = false) Boolean aberta,
             Model model){
-        Status status = Status.ABERTA;
+        Status status = null;
         if(aberta != null)
         {   
             status = aberta? Status.ABERTA : Status.FECHADA;
@@ -99,21 +101,29 @@ public class ContaController {
         BigDecimal gorjeta =contaService.calcularGorjeta(id);
         BigDecimal ingresso = contaService.calcularValorIngresso(id);
         model.addAttribute("contaDto",contaDto);
-        model.addAttribute("itensDaConta",contaService.listarItensFechamento(id));
+        model.addAttribute("itensDaConta",contaService.ListarItensFechamento(id));
         model.addAttribute("totalConta",contaService.CalcularTotalConta(id,ingresso,gorjeta));
         model.addAttribute("totalPago",contaService.CalcularTotalPago(id));
+        model.addAttribute("pagamentos",contaService.ListarPagamentos(id));
         model.addAttribute("valorGorjeta", gorjeta);
         model.addAttribute("valorIngresso",ingresso);
         model.addAttribute("id", id);
         return "conta/fechamentoDeConta";
+    }
+    @PostMapping("/{id}/fechar")
+    public String AdicionarPagamento(@PathVariable Long id, @ModelAttribute("pagamentoDto") PagamentoDto pagamentoDto, Model model)
+    { 
+        contaService.AdicionarPagamento(id, pagamentoDto);
+        return "redirect:/contas/"+id+"/fechar";
     }
     @PostMapping("/{id}/concluir")
     public String FecharConta(@PathVariable Long id, Model model)
     {
         BigDecimal gorjeta =contaService.calcularGorjeta(id);
         BigDecimal ingresso = contaService.calcularValorIngresso(id);
-        contaService.FecharConta (id,contaService.CalcularTotalConta(id,ingresso,gorjeta), 
-        contaService.CalcularTotalPago(id),
+        BigDecimal totalConta = contaService.CalcularTotalConta(id, ingresso, gorjeta);
+        BigDecimal totalPago = contaService.CalcularTotalPago(id);
+        contaService.FecharConta (id,totalConta,totalPago,
         ingresso,
         gorjeta);
         return "redirect:/contas";

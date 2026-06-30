@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
 import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.dto.ContaDto;
+import br.com.trabalhopoo.mybar.dto.PagamentoDto;
+import br.com.trabalhopoo.mybar.model.enums.FormaDePagamento;
 import br.com.trabalhopoo.mybar.exception.ContaComNumeroJaExistenteException;
 import br.com.trabalhopoo.mybar.exception.ContaComPedidosException;
 import br.com.trabalhopoo.mybar.exception.ContaFaltandoPagamentoException;
@@ -163,7 +165,7 @@ public class ContaService {
 
         return valorIngresso;
     }
-    public List<ItemDaConta> listarItensFechamento(Long id)
+    public List<ItemDaConta> ListarItensFechamento(Long id)
     {
         return itemDaContaService.listarPorConta(id);
     }
@@ -211,5 +213,22 @@ public class ContaService {
         }
         return contaRepository.save(conta);
        
+    }
+    public Pagamento AdicionarPagamento(Long id, PagamentoDto pagamentoDto)
+    {
+        Conta conta = pesquisarConta(id);
+        Pagamento pagamento = new Pagamento();
+        pagamento.setValor(pagamentoDto.getValor());
+        if (pagamentoDto.getForma() != null) {
+        pagamento.setForma(FormaDePagamento.valueOf(pagamentoDto.getForma().toUpperCase()));
+    }
+        conta.adicionarPagamento(pagamento);
+        contaRepository.save(conta);
+        return pagamento;
+
+    }
+    public List<Pagamento> ListarPagamentos(Long id)
+    {
+        return pesquisarConta(id).getPagamentos();
     }
 }
