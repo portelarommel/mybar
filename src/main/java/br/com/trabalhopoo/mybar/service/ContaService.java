@@ -5,32 +5,24 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-<<<<<<< HEAD
 import br.com.trabalhopoo.mybar.model.Cliente;
 import br.com.trabalhopoo.mybar.model.Configuracao;
 import br.com.trabalhopoo.mybar.model.Pagamento;
 import br.com.trabalhopoo.mybar.model.enums.Sexo;
 import br.com.trabalhopoo.mybar.repository.ClienteRepository;
-=======
-import br.com.trabalhopoo.mybar.model.Configuracao;
-import br.com.trabalhopoo.mybar.model.Pagamento;
-import br.com.trabalhopoo.mybar.model.enums.Sexo;
->>>>>>> 71442c31b25ab4adee3ea5aa12397f4004a53d2a
 import br.com.trabalhopoo.mybar.repository.ConfiguracaoRepository;
 import br.com.trabalhopoo.mybar.repository.ItemDaContaRepository;
+import br.com.trabalhopoo.mybar.repository.PagamentoRepository;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
 import br.com.trabalhopoo.mybar.model.enums.Status;
-<<<<<<< HEAD
 import br.com.trabalhopoo.mybar.dto.ContaDto;
 import br.com.trabalhopoo.mybar.dto.PagamentoDto;
 import br.com.trabalhopoo.mybar.model.enums.FormaDePagamento;
 import br.com.trabalhopoo.mybar.exception.ContaComNumeroJaExistenteException;
-=======
->>>>>>> 71442c31b25ab4adee3ea5aa12397f4004a53d2a
 import br.com.trabalhopoo.mybar.exception.ContaComPedidosException;
 import br.com.trabalhopoo.mybar.exception.ContaFaltandoPagamentoException;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
@@ -44,21 +36,15 @@ import br.com.trabalhopoo.mybar.model.ItemDaConta;
 public class ContaService {
     private ContaRepository contaRepository;
     private ConfiguracaoService configuracaoService;
-<<<<<<< HEAD
     private ItemDaContaService itemDaContaService;
     private ClienteRepository clienteRepository;
-
-    public ContaService(ContaRepository contaRepository, ConfiguracaoService configuracaoService,ClienteRepository clienteRepository,@Lazy ItemDaContaService itemDaContaService) {
+    private PagamentoRepository pagamentoRepository;
+    public ContaService(ContaRepository contaRepository, ConfiguracaoService configuracaoService,ClienteRepository clienteRepository,@Lazy ItemDaContaService itemDaContaService,PagamentoRepository pagamentoRepository) {
         this.contaRepository = contaRepository;
         this.configuracaoService = configuracaoService;
         this.clienteRepository = clienteRepository;
         this.itemDaContaService = itemDaContaService;
-=======
-
-    public ContaService(ContaRepository contaRepository, ConfiguracaoService configuracaoService) {
-        this.contaRepository = contaRepository;
-        this.configuracaoService = configuracaoService;
->>>>>>> 71442c31b25ab4adee3ea5aa12397f4004a53d2a
+        this.pagamentoRepository =pagamentoRepository;
     }
 
     public List<Conta> listarContas()
@@ -165,24 +151,11 @@ public class ContaService {
 
             gorjeta = gorjeta.add(item.getValor().multiply(percentualReal));
         }
-<<<<<<< HEAD
         /*if (gorjeta.compareTo(BigDecimal.ZERO) > 0) {
-=======
-
-        Configuracao config = configuracaoService.obterConfiguracao();
-        BigDecimal valorIngresso = conta.getCliente().getSexo() == Sexo.MASCULINO
-                ? config.getValorIngressoMasc()
-                : config.getValorIngressoFemin();
-
-        conta.adicionarItem(new ItemDaConta(valorIngresso));
-
-        if (gorjeta.compareTo(BigDecimal.ZERO) > 0) {
->>>>>>> 71442c31b25ab4adee3ea5aa12397f4004a53d2a
             conta.adicionarItem(new ItemDaConta(gorjeta));
         }*/
         return gorjeta;
 
-<<<<<<< HEAD
     }
     public BigDecimal calcularValorIngresso(Long id)
     {
@@ -227,15 +200,6 @@ public class ContaService {
         if (conta.getStatus() == Status.FECHADA) {
             throw new ContaJaFechadaException("A conta já está fechada.",id);
         }
-=======
-        BigDecimal totalConta = conta.getItensDaConta().stream()
-                .map(ItemDaConta::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal totalPago = conta.getPagamentos().stream()
-                .map(Pagamento::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
->>>>>>> 71442c31b25ab4adee3ea5aa12397f4004a53d2a
 
         if (totalPago.compareTo(totalConta) != 0) {
             throw new ContaFaltandoPagamentoException("A soma dos pagamentos é diferente do valor total da conta.",id);
@@ -249,27 +213,34 @@ public class ContaService {
         if (valorGorjeta.compareTo(BigDecimal.ZERO) > 0) {
             conta.adicionarItem(itemGorjeta);
         }
+        
         return contaRepository.save(conta);
        
     }
-<<<<<<< HEAD
     public Pagamento AdicionarPagamento(Long id, PagamentoDto pagamentoDto)
-    {
+    { 
+
         Conta conta = pesquisarConta(id);
         Pagamento pagamento = new Pagamento();
         pagamento.setValor(pagamentoDto.getValor());
         if (pagamentoDto.getForma() != null) {
         pagamento.setForma(FormaDePagamento.valueOf(pagamentoDto.getForma().toUpperCase()));
-    }
+        }
         conta.adicionarPagamento(pagamento);
         contaRepository.save(conta);
         return pagamento;
 
     }
+    public void ExcluirPagamento(Long id,Long idPagamento)
+    {
+        Conta conta = pesquisarConta(id);
+        Pagamento pagamento = pagamentoRepository.findById(idPagamento)
+        .orElseThrow(() -> new IllegalArgumentException("Pagamento não encontrado com o ID: " + idPagamento));
+        conta.getPagamentos().remove(pagamento);
+        pagamentoRepository.delete(pagamento);
+    }
     public List<Pagamento> ListarPagamentos(Long id)
     {
         return pesquisarConta(id).getPagamentos();
     }
-=======
->>>>>>> 71442c31b25ab4adee3ea5aa12397f4004a53d2a
 }

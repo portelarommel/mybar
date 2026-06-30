@@ -28,5 +28,5 @@ public interface ContaRepository extends JpaRepository<Conta, Long> {
     boolean existsByClienteCpfAndStatus(String cpf, Status status);
     boolean existsByNumero(Integer numero);
 
-    List<Conta> findByAbertaFalseAndDataFechamentoBetweenOrderByDataFechamentoAsc(LocalDateTime inicio, LocalDateTime fim);
+    List<Conta> findByStatusAndDataFechamentoBetweenOrderByDataFechamentoAsc(Status status, LocalDateTime inicio, LocalDateTime fim);
 }

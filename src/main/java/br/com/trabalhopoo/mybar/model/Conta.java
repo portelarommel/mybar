@@ -30,6 +30,12 @@ public class Conta {
     @Column(name = "hora_abertura", nullable = false)
     private LocalTime horaAbertura;
 
+    @Column(name ="data_fechamento",nullable = true)
+    private LocalDate dataFechamento;
+ 
+    @Column(name="hora_fechamento",nullable = true)
+    private LocalTime horaFechamento;
+    
     @ManyToOne
     @JoinColumn(name = "id_garcom_abertura", nullable = true)
     private Usuario garconAbertura;
@@ -90,6 +96,10 @@ public class Conta {
     public void setStatus(Status status) {
         this.status = status;
     }
+    public LocalDate getDataFechamento(){
+        return dataFechamento;
+    }
+    public void setDataFechamento(LocalDate dataFechamento){this.dataFechamento =dataFechamento;}
 
     public LocalDate getDataAbertura() {
         return dataAbertura;
@@ -97,6 +107,13 @@ public class Conta {
 
     public void setDataAbertura(LocalDate dataAbertura) {
         this.dataAbertura = dataAbertura;
+    }
+    public LocalTime getHoraFechamento() {
+        return horaFechamento;
+    }
+
+    public void setHoraFechamento(LocalTime horaFechamento) {
+        this.horaFechamento = horaFechamento;
     }
 
     public LocalTime getHoraAbertura() {

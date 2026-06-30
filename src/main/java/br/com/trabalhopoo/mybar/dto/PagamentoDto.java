@@ -2,8 +2,6 @@ package br.com.trabalhopoo.mybar.dto;
 
 import java.math.BigDecimal;
 
-import br.com.trabalhopoo.mybar.models.enums.FormaDePagamento;
-
 public class PagamentoDto {
     private BigDecimal valor;
     private String forma;

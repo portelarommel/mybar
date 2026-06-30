@@ -116,6 +116,13 @@ public class ContaController {
         contaService.AdicionarPagamento(id, pagamentoDto);
         return "redirect:/contas/"+id+"/fechar";
     }
+    @PostMapping("/{id}/{idPagamento}/excluir-pagamento")
+    public String ExcluirPagamento(@PathVariable Long id,@PathVariable Long idPagamento,@RequestParam String usuarioConfirmacao,
+                               @RequestParam String senhaConfirmacao)
+    {
+        contaService.ExcluirPagamento(id,idPagamento);
+        return "redirect:/contas/"+id+"/fechar";
+    }
     @PostMapping("/{id}/concluir")
     public String FecharConta(@PathVariable Long id, Model model)
     {

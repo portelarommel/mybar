@@ -1,6 +1,3 @@
-<div class="page-centralizada">
-<div class="container">
-<h2>Tela de Edição Conta</h2> 
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -50,6 +47,70 @@
             padding: 12px 15px;
             color: #1f2937;
         }
+
+        /* ESTILOS DO MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (Baseado no layout MyBar) */
+        .modal-backdrop {
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.5); 
+            z-index: 1000; 
+            justify-content: center; 
+            align-items: center;
+        }
+        .modal-content {
+            background: #ffffff; 
+            border: 2px solid #4b5563;
+            width: 500px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            background-color: #d1d5db;
+            color: #000000;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            padding: 8px;
+            border-bottom: 1px solid #4b5563;
+        }
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .modal-table td {
+            padding: 8px;
+            border-bottom: 1px solid #9ca3af;
+        }
+        .modal-table td:first-child {
+            background-color: #d1d5db;
+            font-weight: bold;
+            width: 25%;
+            border-right: 1px solid #4b5563;
+            text-decoration: underline;
+        }
+        .modal-table input {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #9ca3af;
+            box-sizing: border-box;
+        }
+        .modal-footer {
+            background-color: #d1d5db;
+            text-align: center;
+            padding: 8px;
+            border-top: 1px solid #4b5563;
+        }
+        .modal-footer button {
+            color: #0000ee;
+            background: none;
+            border: none;
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 15px;
+        }
     </style>
 </head>
 <body>
@@ -96,10 +157,10 @@
             <div class="section-title">Lançar Recebimento / Pagamento</div>
 
             <div class="grid-2-colunas">
-            <div class="form-group">
-                <label for="valorPago">Valor Pago <span class="required">*</span></label>
-                <input type="number" step="0.01" min="0.01" id="valorPago" name="valor" placeholder="0.00" required>
-            </div>
+                <div class="form-group">
+                    <label for="valorPago">Valor Pago <span class="required">*</span></label>
+                    <input type="number" step="0.01" min="0.01" id="valorPago" name="valor" placeholder="0.00" required>
+                </div>
 
                 <div class="form-group">
                     <label for="formaPagamento">Forma de Pagamento <span class="required">*</span></label>
@@ -127,7 +188,9 @@
             <div class="buttons-bar" style="margin-top: 20px; text-align: left;">
                 <button type="submit" class="btn btn-nova-conta" style="background-color: #2563eb;">&lt; Inserir Pagamento &gt;</button>
             </div>
-        </form> <div class="tables-vertical-wrapper">
+        </form> 
+        
+        <div class="tables-vertical-wrapper">
             
             <div class="table-responsive">
                 <div class="section-title">Itens na Conta</div>
@@ -180,7 +243,10 @@
                             <td th:text="${pag.forma}">Forma</td>
                             <td th:text="|R$ ${#numbers.formatDecimal(pag.valor ?: 0, 1, 2, 'COMMA')}|">R$ 0,00</td>
                             <td>
-                                <span style="color: #6b7280; font-size: 14px;">Sem comandos</span>
+                                <button type="button" style="background-color: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;"
+                                        th:onclick="|abrirModalExclusao('${id}', '${pag.id}')|">
+                                    Excluir
+                                </button>
                             </td>
                         </tr>
                         
@@ -202,32 +268,75 @@
                 </button>
             </form>
         </div>
-                <div class="buttons-bar">
+        <div class="buttons-bar">
             <a th:href="@{/contas}" class="btn-voltar">
                 Voltar para Gestão
             </a>
         </div>
-
     </div> 
-    </div> <script th:inline="javascript">
-        // th:inline="javascript" permite que o Thymeleaf injete os valores direto no script de forma segura
+
+    <div id="modalExclusao" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmando Exclusão de Pagamento
+            </div>
+            
+            <form id="formModalExcluir" method="POST">
+                <table class="modal-table">
+                    <tr>
+                        <td>Usuário*</td>
+                        <td>
+                            <input type="text" id="usuarioConfirmacao" name="usuarioConfirmacao" placeholder="joaolimao (texto com até 100 caracteres)" maxlength="100" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Senha*</td>
+                        <td>
+                            <input type="password" id="senhaConfirmacao" name="senhaConfirmacao" placeholder="NinguemSabe!@# (texto com até 100 caracteres)" maxlength="100" required>
+                        </td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="submit">&lt;Confirmar&gt;</button>
+                    <button type="button" onclick="fecharModalExclusao()" style="color: #dc2626;">&lt;Cancelar&gt;</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        // Injeção segura de valores numéricos vindos do Thymeleaf
         const totalConta = /*[[${totalConta ?: 0}]]*/ 0;
         const totalPago = /*[[${totalPago ?: 0}]]*/ 0;
-        
-        // Calcula o saldo devedor restante
         const saldoRestante = totalConta - totalPago;
 
         const inputValor = document.getElementById('valorPago');
         const formPagamento = document.querySelector('form[action*="fechar"]');
 
-        // Validação 1: Impede digitar caracteres inválidos
+        // FUNÇÕES DE MANIPULAÇÃO DO MODAL
+        function abrirModalExclusao(contaId, pagamentoId) {
+            const modal = document.getElementById('modalExclusao');
+            const form = document.getElementById('formModalExcluir');
+            
+            // Define o endpoint do POST apontando dinamicamente para os caminhos corretos
+            form.action = "/contas/" + contaId + "/" + pagamentoId + "/excluir-pagamento";
+            modal.style.display = "flex";
+        }
+
+        function fecharModalExclusao() {
+            document.getElementById('modalExclusao').style.display = "none";
+            document.getElementById('usuarioConfirmacao').value = "";
+            document.getElementById('senhaConfirmacao').value = "";
+        }
+
+        // Validação 1: Bloqueia caracteres matemáticos indesejados no input numérico
         inputValor.addEventListener('keydown', function(e) {
             if (e.key === '-' || e.key === 'e' || e.key === 'E') {
                 e.preventDefault();
             }
         });
 
-        // Validação 2: Quando o usuário termina de digitar e sai do campo
+        // Validação 2: Dispara o alerta se ultrapassar o teto pendente da conta
         inputValor.addEventListener('change', function() {
             const valorDigitado = parseFloat(this.value);
 
@@ -237,19 +346,18 @@
                 return;
             }
 
-            // Se o valor ultrapassar o saldo que falta pagar
             if (valorDigitado > saldoRestante) {
                 alert('Valor Excedido! O saldo restante a pagar é de R$ ' + saldoRestante.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                this.value = ''; // Limpa o campo
+                this.value = ''; 
             }
         });
 
-        // Validação 3: Uma última checagem de segurança caso ele tente burlar e clicar no botão rápido
+        // Validação 3: Validação de consistência final antes de enviar o formulário principal
         formPagamento.addEventListener('submit', function(e) {
             const valorDigitado = parseFloat(inputValor.value);
 
             if (valorDigitado > saldoRestante) {
-                e.preventDefault(); // Bloqueia o envio do formulário
+                e.preventDefault(); 
                 alert('Não é possível processar. O valor máximo aceito é R$ ' + saldoRestante.toFixed(2));
             }
         });
