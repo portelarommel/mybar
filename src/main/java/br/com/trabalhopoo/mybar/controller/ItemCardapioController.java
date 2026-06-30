@@ -23,7 +23,7 @@ import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.service.ItemCardapioService;
 @RestController
-@RequestMapping("/itensCardapio")
+@RequestMapping("/itens-cardapio")
 public class ItemCardapioController {
 
     private final ItemCardapioService itemCardapioService;

@@ -1,4 +1,4 @@
-package br.com.trabalhopoo.mybar.enums;
+package br.com.trabalhopoo.mybar.model.enums;
 
 public enum Sentenca {
     SIM,

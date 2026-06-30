@@ -4,28 +4,31 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import br.com.trabalhopoo.mybar.enums.ModoOperacao;
+import br.com.trabalhopoo.mybar.model.enums.ModoOperacao;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 @Entity
 @Table(name = "configuracao")
 public class Configuracao {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "valor_ingresso_masc", nullable = false)
     private BigDecimal valorIngressoMasc;
 
+    @Column(name = "valor_ingresso_fem", nullable = false)
     private BigDecimal valorIngressoFemin;
 
-    // rever depois
+    @Column(name = "data")
     private LocalDate data;
+
+    @Column(name = "hora")
     private LocalTime hora;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "modo_operacao", nullable = false)
     private ModoOperacao modoOperacao;
 
     public Configuracao() {

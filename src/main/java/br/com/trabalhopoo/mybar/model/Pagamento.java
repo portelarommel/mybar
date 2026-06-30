@@ -1,46 +1,45 @@
 package br.com.trabalhopoo.mybar.model;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import br.com.trabalhopoo.mybar.enums.FormaDePagamento;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import br.com.trabalhopoo.mybar.enums.Sentenca;
+import br.com.trabalhopoo.mybar.model.enums.FormaDePagamento;
+import br.com.trabalhopoo.mybar.model.enums.Sentenca;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="pagamentos")
+@Table(name="pagamento")
 public class Pagamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "valor", nullable = false)
     private BigDecimal valor;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "forma", nullable = false)
     private FormaDePagamento forma;
 
-    @Enumerated(EnumType.STRING)
-    private Sentenca ativo;
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo = true;
 
     @ManyToOne
+    @JoinColumn(name = "quem_lancou_pg_id")
     private Usuario quemLancouPg;
 
     @ManyToOne
+    @JoinColumn(name = "quem_excluiu_pg_id")
     private Usuario quemExcluiuPg;
 
     @ManyToOne
+    @JoinColumn(name = "id_conta", nullable = false)
     private Conta conta;
 
     public Pagamento() {
     }
 
-    public Pagamento(long id, BigDecimal valor, FormaDePagamento forma, Sentenca ativo, Usuario quemLancouPg, Usuario quemExcluiuPg, Conta conta) {
-        id = id;
+    public Pagamento(Long id, BigDecimal valor, FormaDePagamento forma, Boolean ativo, Usuario quemLancouPg, Usuario quemExcluiuPg, Conta conta) {
+        this.id = id;
         this.valor = valor;
         this.forma = forma;
         this.ativo = ativo;
@@ -49,12 +48,12 @@ public class Pagamento {
         this.conta = conta;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        id = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public BigDecimal getValor() {
@@ -73,11 +72,11 @@ public class Pagamento {
         this.forma = forma;
     }
 
-    public Sentenca getAtivo() {
+    public Boolean getAtivo() {
         return ativo;
     }
 
-    public void setAtivo(Sentenca ativo) {
+    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 

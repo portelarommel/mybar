@@ -1,5 +1,6 @@
 package br.com.trabalhopoo.mybar.repository;
 
+import br.com.trabalhopoo.mybar.model.enums.StatusItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,9 @@ public interface ItemDaContaRepository extends JpaRepository<ItemDaConta, Long>{
     );
     List<ItemDaConta> findByContaId(Long contaId);
 
+    List<ItemDaConta> findByConta_IdOrderByDataLancamentoAsc(Long contaId);
+
+    List<ItemDaConta> findByItemCardapio_TipoItem_CozinhaTrueAndStatusInOrderByDataLancamentoAsc(
+            List<StatusItem> statuses
+    );
 }

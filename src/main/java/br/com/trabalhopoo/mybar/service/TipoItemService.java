@@ -37,6 +37,7 @@ public class TipoItemService {
 
         existente.setDescricao(tipoItem.getDescricao());
         existente.setAtivo(tipoItem.getAtivo());
+        existente.setCodigo(tipoItem.getCodigo());
         existente.setGorjeta(tipoItem.getGorjeta());
         existente.setCozinha(tipoItem.getCozinha());
 

@@ -2,31 +2,28 @@ package br.com.trabalhopoo.mybar.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 import java.util.List;
 
-import org.hibernate.validator.constraints.br.CPF;
-
-import  br.com.trabalhopoo.mybar.enums.Sexo;
+import br.com.trabalhopoo.mybar.model.enums.Sexo;
 
 @Entity
 @Table(name = "cliente")
 public class Cliente {
+
     @NotBlank
+    @Column(name = "nome", length = 255, nullable = false)
     private String nome;
 
     @Id
-    @NotBlank
-    //@CPF
+    @Column(name = "cpf", length = 14, nullable = false)
     private String cpf;
 
+    @Column(name = "celular", length = 15, nullable = false)
     private String celular;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "sexo", nullable = false)
     private Sexo sexo;
 
     @JsonIgnore
