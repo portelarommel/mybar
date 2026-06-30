@@ -63,12 +63,6 @@ public class ContaController {
     public ResponseEntity<Conta> fecharConta(@PathVariable Long id)
     {
         Conta fechada = contaService.fecharConta(id);
-        return ResponseEntity.status(201).body(fechada);
-    }
-
-    @PutMapping("/{id}/addItem")
-    public ResponseEntity<?> registrarItemConta(@PathVariable Long id, @RequestBody ItemDaConta itemDaConta){
-        contaService.registrarItemConta(id, itemDaConta);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.ok(fechada);
     }
 }

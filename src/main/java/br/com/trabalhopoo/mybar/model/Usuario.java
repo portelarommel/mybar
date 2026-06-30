@@ -1,54 +1,60 @@
 package br.com.trabalhopoo.mybar.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 import java.util.List;
 
-import br.com.trabalhopoo.mybar.enums.TipoDeUsuario;
+import br.com.trabalhopoo.mybar.model.enums.TipoDeUsuario;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "usuario")
 public class Usuario {
+
     @Id
-    @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "senha", length = 255, nullable = false)
     private String senha;
 
+    @Column(name = "codigo")
+    private String codigo;
+
+    @Column(name = "nome", length = 255, nullable = false)
     private String nome;
 
+    @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false)
     private TipoDeUsuario tipo;
 
-    @OneToOne 
-    private ItemDaConta quemRemoveu;
+    @OneToMany(mappedBy = "quemRemoveu")
+    @JsonIgnore
+    private List<ItemDaConta> quemRemoveu;
 
-    @OneToMany(mappedBy = "quemLancou", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "quemLancou")
+    @JsonIgnore
     private List<ItemDaConta> quemLancou;
 
-    @OneToMany(mappedBy = "quemExcluiuPg", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "quemExcluiuPg")
     private List<Pagamento> quemExcluiuPg;
 
-    @OneToOne
-    private Pagamento quemLancouPg;
+    @OneToMany(mappedBy = "quemLancouPg")
+    private List<Pagamento> quemLancouPg;
 
-    @OneToMany(mappedBy = "garconAbertura", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "garconAbertura")
     @JsonIgnore
     private List<Conta> garconAbertura;
 
     public Usuario() {
     }
 
-    public Usuario(Long id, String senha, String nome, String email, TipoDeUsuario tipo, ItemDaConta quemRemoveu, List<ItemDaConta> quemLancou, List<Pagamento> quemExcluiuPg, Pagamento quemLancouPg, List<Conta> garconAbertura) {
+    public Usuario(Long id, String senha, String codigo, String nome, String email, TipoDeUsuario tipo, List<ItemDaConta> quemRemoveu, List<ItemDaConta> quemLancou, List<Pagamento> quemExcluiuPg, List<Pagamento> quemLancouPg, List<Conta> garconAbertura) {
         this.id = id;
         this.senha = senha;
+        this.codigo = codigo;
         this.nome = nome;
         this.email = email;
         this.tipo = tipo;
@@ -75,6 +81,14 @@ public class Usuario {
         this.senha = senha;
     }
 
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -99,11 +113,11 @@ public class Usuario {
         this.tipo = tipo;
     }
 
-    public ItemDaConta getQuemRemoveu() {
+    public List<ItemDaConta> getQuemRemoveu() {
         return quemRemoveu;
     }
 
-    public void setQuemRemoveu(ItemDaConta quemRemoveu) {
+    public void setQuemRemoveu(List<ItemDaConta> quemRemoveu) {
         this.quemRemoveu = quemRemoveu;
     }
 
@@ -123,11 +137,11 @@ public class Usuario {
         this.quemExcluiuPg = quemExcluiuPg;
     }
 
-    public Pagamento getQuemLancouPg() {
+    public List<Pagamento> getQuemLancouPg() {
         return quemLancouPg;
     }
 
-    public void setQuemLancouPg(Pagamento quemLancouPg) {
+    public void setQuemLancouPg(List<Pagamento> quemLancouPg) {
         this.quemLancouPg = quemLancouPg;
     }
 

@@ -22,7 +22,7 @@ import br.com.trabalhopoo.mybar.model.TipoItem;
 import br.com.trabalhopoo.mybar.service.TipoItemService;
 
 @RestController
-@RequestMapping("/tiposItem")
+@RequestMapping("/tipos-item")
 public class TipoItemController {
 
     private final TipoItemService tipoItemService;

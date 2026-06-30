@@ -3,12 +3,15 @@ package br.com.trabalhopoo.mybar.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import br.com.trabalhopoo.mybar.model.Configuracao;
 import br.com.trabalhopoo.mybar.model.Pagamento;
+import br.com.trabalhopoo.mybar.model.enums.Sexo;
+import br.com.trabalhopoo.mybar.repository.ConfiguracaoRepository;
 import br.com.trabalhopoo.mybar.repository.ItemDaContaRepository;
 import org.springframework.stereotype.Service;
 
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
-import br.com.trabalhopoo.mybar.enums.Status;
+import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.exception.ContaComPedidosException;
 import br.com.trabalhopoo.mybar.exception.ContaJaAbertaException;
 import br.com.trabalhopoo.mybar.exception.ContaNaoEncontradaException;
@@ -19,11 +22,11 @@ import br.com.trabalhopoo.mybar.model.ItemDaConta;
 @Service
 public class ContaService {
     private ContaRepository contaRepository;
-    private ItemDaContaRepository itemDaContaRepository;
+    private ConfiguracaoService configuracaoService;
 
-    public ContaService(ContaRepository contaRepository, ItemDaContaRepository itemDaContaRepository) {
+    public ContaService(ContaRepository contaRepository, ConfiguracaoService configuracaoService) {
         this.contaRepository = contaRepository;
-        this.itemDaContaRepository = itemDaContaRepository;
+        this.configuracaoService = configuracaoService;
     }
 
     public List<Conta> listarContas()
@@ -96,7 +99,6 @@ public class ContaService {
 
     public Conta fecharConta(Long id)
     {
-
         Conta conta = pesquisarConta(id);
 
         if (conta.getStatus() == Status.FECHADA) {
@@ -106,31 +108,34 @@ public class ContaService {
         BigDecimal gorjeta = BigDecimal.ZERO;
 
         for (ItemDaConta item : conta.getItensDaConta()) {
+            if (item.getItemCardapio() == null) continue;
 
-            BigDecimal percentual =
-                    item.getItemCardapio()
-                            .getTipoItem()
-                            .getGorjeta();
+            BigDecimal percentualReal = item.getItemCardapio()
+                    .getTipoItem()
+                    .getGorjeta()
+                    .divide(BigDecimal.valueOf(100));
 
-            gorjeta = gorjeta.add(
-                    item.getValor().multiply(percentual));
+            gorjeta = gorjeta.add(item.getValor().multiply(percentualReal));
         }
+
+        Configuracao config = configuracaoService.obterConfiguracao();
+        BigDecimal valorIngresso = conta.getCliente().getSexo() == Sexo.MASCULINO
+                ? config.getValorIngressoMasc()
+                : config.getValorIngressoFemin();
+
+        conta.adicionarItem(new ItemDaConta(valorIngresso));
 
         if (gorjeta.compareTo(BigDecimal.ZERO) > 0) {
             conta.adicionarItem(new ItemDaConta(gorjeta));
         }
 
-        BigDecimal totalConta = BigDecimal.ZERO;
+        BigDecimal totalConta = conta.getItensDaConta().stream()
+                .map(ItemDaConta::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        for (ItemDaConta item : conta.getItensDaConta()) {
-            totalConta = totalConta.add(item.getValor());
-        }
-
-        BigDecimal totalPago = BigDecimal.ZERO;
-
-        for (Pagamento pagamento : conta.getPagamentos()) {
-            totalPago = totalPago.add(pagamento.getValor());
-        }
+        BigDecimal totalPago = conta.getPagamentos().stream()
+                .map(Pagamento::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (totalPago.compareTo(totalConta) != 0) {
             throw new IllegalStateException(
@@ -140,11 +145,5 @@ public class ContaService {
         conta.setStatus(Status.FECHADA);
 
         return contaRepository.save(conta);
-    }
-
-    public void registrarItemConta(Long id, ItemDaConta itemDaConta) {
-        Conta conta = pesquisarConta(id);
-        conta.adicionarItem(itemDaConta);
-        contaRepository.save(conta);
     }
 }

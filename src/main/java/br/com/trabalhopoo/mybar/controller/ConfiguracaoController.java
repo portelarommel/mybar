@@ -4,14 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import br.com.trabalhopoo.mybar.model.enums.ModoOperacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.trabalhopoo.mybar.model.Configuracao;
 import br.com.trabalhopoo.mybar.service.ConfiguracaoService;
@@ -19,22 +16,32 @@ import br.com.trabalhopoo.mybar.service.ConfiguracaoService;
 @RestController
 @RequestMapping("/configuracao")
 public class ConfiguracaoController {
-    @Autowired
+
     private final ConfiguracaoService configuracaoService;
     public ConfiguracaoController(ConfiguracaoService configuracaoService)
     {
         this.configuracaoService = configuracaoService;
     }
+
+    @GetMapping
+    public ResponseEntity<Configuracao> buscarAtual() {
+        return ResponseEntity.ok(configuracaoService.obterConfiguracao());
+    }
+
     @PutMapping("/ingressos")
     public ResponseEntity<Configuracao> alterarValorIngresso(@RequestParam BigDecimal valorIngressoMasc, @RequestParam BigDecimal valorIngressoFemin)
     {
         return ResponseEntity.status(200).body(configuracaoService.alterarValorIngresso(valorIngressoMasc,valorIngressoFemin));
     }
-    @PutMapping ("/modoOperacao")
-    public ResponseEntity<Configuracao> alterarModoOperacao(@RequestParam LocalDate data,@RequestParam LocalTime hora)
-    {
-        return ResponseEntity.status(200).body(configuracaoService.alterarModoOperacao(data, hora));
+
+    @PutMapping("/liberar")
+    public ResponseEntity<Configuracao> liberarAtendimento() {
+        return ResponseEntity.ok(configuracaoService.liberarAtendimento());
     }
 
-
+    @PutMapping("/fechar")
+    public ResponseEntity<Configuracao> fecharAtendimento() {
+        return ResponseEntity.ok(configuracaoService.fecharAtendimento());
+    }
 }
+

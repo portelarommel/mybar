@@ -9,7 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.trabalhopoo.mybar.enums.StatusItem;
+import br.com.trabalhopoo.mybar.model.enums.StatusItem;
 import br.com.trabalhopoo.mybar.exception.ItemDaContaNaoEncontradoException;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.repository.ItemDaContaRepository;
@@ -23,6 +23,7 @@ public class ControleEntregaService {
     public List<ItemDaConta> buscarItemDaConta(Integer numeroConta,  String nomeCliente)
     {
         List<ItemDaConta> itens = itemDaContaRepository.buscarParaControleEntregas(numeroConta, nomeCliente);
+
         Map<StatusItem, Integer> pesoStatus = Map.of(
             StatusItem.SOLICITADO, 1,
             StatusItem.RECEBIDO, 2,

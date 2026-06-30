@@ -38,7 +38,7 @@ public class ItemCardapioService {
 
         existente.setDescricao(itemCardapio.getDescricao());
         existente.setValor(itemCardapio.getValor());
-        existente.setAtivo(itemCardapio.isAtivo());
+        existente.setAtivo(itemCardapio.getAtivo());
         existente.setTipoItem(itemCardapio.getTipoItem());
 
         return itemCardapioRepository.save(existente);
