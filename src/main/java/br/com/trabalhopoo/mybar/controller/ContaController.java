@@ -80,7 +80,20 @@ public class ContaController {
         return "redirect:/contas";
     }
 
-    @DeleteMapping("/{id}/excluir")
+    @GetMapping("/{id}/visualizar")
+    public String visualizarConta(@PathVariable Long id, Model model)
+    {
+        model.addAttribute("conta",contaService.pesquisarConta(id));
+        return "conta/visualizacaoDeConta";
+    }
+
+    @GetMapping("/{id}/fechar")
+    public String fecharConta(@PathVariable Long id, Model model)
+    {
+        return "conta/fechamentoDeConta";
+    }
+
+    @GetMapping("/{id}/excluir")
     public String excluirConta(@PathVariable Long id)
     {
         contaService.excluirConta(id);

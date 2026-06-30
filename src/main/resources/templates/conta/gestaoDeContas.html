@@ -79,11 +79,11 @@
                         <td th:text="${conta.status == T(br.com.trabalhopoo.mybar.model.enums.Status).ABERTA ? 'Sim' : 'Não'}"></td>
                         
                         <td class="commands">
-                            <a th:href="@{/contas/visualizar/{id}(id=${conta.id})}" class="btn-action btn-view">Visualizar</a>
-                            <a th:href="@{/contas/alterar/{id}(id=${conta.id})}" class="btn-action btn-edit">Alterar</a>
-                            <a th:href="@{/contas/excluir/{id}(id=${conta.id})}" class="btn-action btn-delete">Excluir</a>
-                            <a th:href="@{/contas/lancar/{id}(id=${conta.id})}" class="btn-action btn-item">Lançar Item</a>
-                            <a th:href="@{/contas/fechar/{id}(id=${conta.id})}" class="btn-action btn-close">Fechar Conta</a>
+                            <a th:href="@{/contas/{id}/visualizar(id=${conta.id})}" class="btn-action btn-view">Visualizar</a>
+                            <a th:href="@{/contas/{id}/editar(id=${conta.id})}" class="btn-action btn-edit">Alterar</a>
+                            <a th:href="@{/contas/{id}/excluir(id=${conta.id})}" class="btn-action btn-delete">Excluir</a>
+                            <a th:href="@{/contas/{id}/itens(id=${conta.id})}" class="btn-action btn-item">Lançar Item</a>
+                            <a th:href="@{/contas/{id}/fechar(id=${conta.id})}" class="btn-action btn-close">Fechar Conta</a>
                         </td>
                     </tr>
 
