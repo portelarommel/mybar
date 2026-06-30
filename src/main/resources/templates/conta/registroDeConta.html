@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="/css/novoOuAlteraObjetoEstilo.css">
 </head>
 <script th:src="@{/js/mascaras.js}"></script>
+<script th:src="@{/js/mensagens.js}"></script>
 <body>
     <div class="page-centralizada">
         <div class="container">
         <h2>Tela de Registro de Conta</h2>
-        
+            <div id="mensagem"
+                th:if="${mensagem}"
+                th:data-texto="${mensagem}"
+                th:data-tipo="${tipo}">
+            </div>
             <form th:action="@{/contas/registrar}" th:object="${contaDto}" method="POST">
             
             <div class="form-group">

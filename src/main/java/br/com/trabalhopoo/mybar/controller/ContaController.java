@@ -58,7 +58,8 @@ public class ContaController {
     public String carregarPaginaEdicao(@PathVariable Long id, Model model)
     {
         Conta conta = contaService.pesquisarConta(id);
-        model.addAttribute("conta",conta);
+        ContaDto contaDto = ContaDto.fromEntity(conta);
+        model.addAttribute("contaDto",contaDto);
         return "conta/edicaoDeConta";
     }
     @PutMapping("/{id}/editar")
@@ -83,7 +84,9 @@ public class ContaController {
     @GetMapping("/{id}/visualizar")
     public String visualizarConta(@PathVariable Long id, Model model)
     {
-        model.addAttribute("conta",contaService.pesquisarConta(id));
+        Conta conta = contaService.pesquisarConta(id);
+        ContaDto contaDto =  ContaDto.fromEntity(conta);
+        model.addAttribute("contaDto",contaDto);
         return "conta/visualizacaoDeConta";
     }
 

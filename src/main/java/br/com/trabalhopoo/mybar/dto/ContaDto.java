@@ -1,31 +1,47 @@
 package br.com.trabalhopoo.mybar.dto;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.enums.Sexo;
 
 public class ContaDto {
     private Integer numeroConta;
-    private Integer codigoGarcom;
-    private Integer senha;
+    private String codigoGarcom;
+    private String senha;
     private String cpfCliente;
     private String nomeCliente;
     private String celularCliente;
     private Sexo sexoCliente;
+    private LocalDate data; 
+    private LocalTime hora;
     public void setNumeroConta(Integer numeroConta) { this.numeroConta = numeroConta; }
-    public void setCodigoGarcom(Integer codigoGarcom) { this.codigoGarcom = codigoGarcom; }
-    public void setSenha(Integer senha) { this.senha = senha; }
+    public void setCodigoGarcom(String codigoGarcom) { this.codigoGarcom = codigoGarcom; }
+    public void setSenha(String senha) { this.senha = senha; }
     public void setCpfCliente(String cpfCliente) { this.cpfCliente = cpfCliente; }
     public void setNomeCliente(String nomeCliente) { this.nomeCliente = nomeCliente; }
     public void setCelularCliente(String celularCliente) { this.celularCliente = celularCliente; }
     public void setSexoCliente(Sexo sexoCliente) { this.sexoCliente = sexoCliente; }
+    public void setData(LocalDate data){this.data = data;}
+    public void setHora(LocalTime hora){this.hora = hora;}
+    public LocalDate getData()
+    {
+        return data;
+    }
+    public LocalTime getHora()
+    {
+        return hora;
+    }
     public Integer getNumeroConta()
     {
         return numeroConta;
     }
-    public Integer  getCodigoGarcom()
+    public String  getCodigoGarcom()
     {
         return codigoGarcom;
     }
-    public Integer getSenha()
+    public String getSenha()
     {
         return senha;
     }
@@ -44,5 +60,22 @@ public class ContaDto {
     public Sexo getSexoCliente()
     {
         return sexoCliente;
+    }
+    public static ContaDto fromEntity(Conta conta) {
+        ContaDto dto = new ContaDto();
+
+        dto.setCpfCliente(conta.getCliente().getCpf());
+        dto.setNomeCliente(conta.getCliente().getNome());
+        dto.setCelularCliente(conta.getCliente().getCelular());
+        dto.setSexoCliente(conta.getCliente().getSexo());
+        dto.setNumeroConta(conta.getNumero());
+        if(conta.getGarconAbertura()!= null)
+        {
+            dto.setCodigoGarcom(conta.getGarconAbertura().getCodigo());
+            dto.setCodigoGarcom(conta.getGarconAbertura().getSenha());
+
+        }
+
+        return dto;
     }
 }

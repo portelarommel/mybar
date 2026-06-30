@@ -34,66 +34,100 @@
         }
     </style>
 </head>
-<body>
-    <div class="page-centralizada">
-        <div class="container">
-            <h2>Tela de Visualização Conta</h2>
-        
-            <form action="#" method="GET">
-                
-                <div class="form-group">
-                    <label for="cpf">CPF</label>
-                    <input type="text" id="cpf" name="cpf" placeholder="123.456.789-10" readonly>
-                </div>
+    <body>
+        <div class="page-centralizada">
+            <div class="container">
+                <h2>Tela de Visualização Conta</h2>
+                <form th:object="${contaDto}">
 
-                <div class="form-group">
-                    <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" placeholder="Nome do cliente" maxlength="255" readonly>
-                </div>
+        <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input
+                type="text"
+                id="cpf"
+                th:field="*{cpfCliente}"
+                readonly>
+        </div>
 
-                <div class="form-group">
-                    <label for="celular">Celular</label>
-                    <input type="tel" id="celular" name="celular" placeholder="86 98888-8888" readonly>
-                </div>
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input
+                type="text"
+                id="nome"
+                th:field="*{nomeCliente}"
+                readonly>
+        </div>
 
-                <div class="form-group">
-                    <label for="sexo">Sexo</label>
-                    <select id="sexo" name="sexo" disabled>
-                        <option value="">Selecione...</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                    </select>
-                </div>
+        <div class="form-group">
+            <label for="celular">Celular</label>
+            <input
+                type="tel"
+                id="celular"
+                th:field="*{celularCliente}"
+                readonly>
+        </div>
 
-                <div class="form-group">
-                    <label for="data">Data</label>
-                    <input type="date" id="data" name="data" readonly>
-                </div>
+        <div class="form-group">
+            <label for="sexo">Sexo</label>
+            <input
+                type="text"
+                id="sexo"
+                th:field="*{sexoCliente}"
+                readonly>
+        </div>
+        <div class="form-group">
+            <label for="data">Data de Abertura</label>
+            <input
+                type="text"
+                id="data"
+                th:value="${#temporals.format(contaDto.data, 'dd/MM/yyyy')}"
+                readonly>
+        </div>
 
-                <div class="form-group">
-                    <label for="hora">Hora</label>
-                    <input type="time" id="hora" name="hora" readonly>
-                </div>
+        <div class="form-group">
+            <label for="hora">Hora de Abertura</label>
+            <input
+                type="text"
+                id="hora"
+                th:value="${#temporals.format(contaDto.hora, 'HH:mm')}"
+                readonly>
+        </div>
 
-                <div class="form-group">
-                    <label for="numeroConta">Número Conta</label>
-                    <input type="number" id="numeroConta" name="numeroConta" placeholder="Ex: 120" readonly>
-                </div>
+        <div class="form-group">
+            <label for="numeroConta">Número da Conta</label>
+            <input
+                type="number"
+                id="numeroConta"
+                th:field="*{numeroConta}"
+                readonly>
+        </div>
 
-                <div class="form-group">
-                    <label for="codigoGarcom">Código Garçom</label>
-                    <input type="text" id="codigoGarcom" name="codigoGarcom" placeholder="Ex: 1010" readonly>
-                </div>
+        <div class="form-group">
+            <label for="codigoGarcom">Código do Garçom</label>
+            <input
+                type="text"
+                id="codigoGarcom"
+                th:field="*{codigoGarcom}"
+                readonly>
+        </div>
 
-                <div class="form-group">
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" placeholder="••••" readonly>
-                </div>
+        <div class="form-group">
+            <label for="senha">Senha</label>
+            <input
+                type="password"
+                id="senha"
+                th:field="*{senha}"
+                readonly>
+        </div>
 
-                <div class="buttons-bar">
-                    <a href="/contas" class="btn-voltar">Voltar para Gestão</a>
-                </div>
-            </form>
+        <div class="buttons-bar">
+            <a th:href="@{/contas}" class="btn-voltar">
+                Voltar para Gestão
+            </a>
+        </div>
+
+    </form>
+
         </div>
     </div>
 </body>
