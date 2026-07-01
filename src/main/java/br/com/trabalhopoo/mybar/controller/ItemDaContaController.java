@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.stream.Collectors;
 import java.util.List;
 
 @Controller
@@ -32,7 +32,18 @@ public class ItemDaContaController {
     @GetMapping("/{id}/itens")
     public String carregarPaginaItemConta(@PathVariable Long id, Model model) {
         model.addAttribute("conta",contaService.pesquisarConta(id));
-        model.addAttribute("itens", itemDaContaService.listarPorConta(id));
+        List<ItemDaConta> itensDaConta =  itemDaContaService.listarPorConta(id);
+        List<ItemDaContaDto> itensDaContaDto = itensDaConta.stream()
+    .map((ItemDaConta item) -> {
+        return new ItemDaContaDto(
+            item.getId(),
+            item.getQuantidade(),
+            item.getCodigo(),
+            item.getItemCardapio().getDescricao(),
+            item.getItemCardapio().getValor()
+
+        );}).collect(Collectors.toList());
+        model.addAttribute("itens", itensDaContaDto);
         return "conta/registroDeItemConta" ;
     }
 

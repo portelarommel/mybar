@@ -2,6 +2,7 @@ package br.com.trabalhopoo.mybar.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -149,7 +150,7 @@ public class ContaService {
                     .getGorjeta()
                     .divide(BigDecimal.valueOf(100));
 
-            gorjeta = gorjeta.add(item.getValor().multiply(percentualReal));
+            gorjeta = gorjeta.add(item.getValorTotal().multiply(percentualReal));
         }
         /*if (gorjeta.compareTo(BigDecimal.ZERO) > 0) {
             conta.adicionarItem(new ItemDaConta(gorjeta));
@@ -175,7 +176,7 @@ public class ContaService {
     {
         Conta conta = pesquisarConta(id);
         BigDecimal totalConta = conta.getItensDaConta().stream()
-                .map(ItemDaConta::getValor)
+                .map(ItemDaConta::getValorTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         totalConta.add(valorGorjeta);
         totalConta.add(valorIngresso);
@@ -226,6 +227,7 @@ public class ContaService {
         if (pagamentoDto.getForma() != null) {
         pagamento.setForma(FormaDePagamento.valueOf(pagamentoDto.getForma().toUpperCase()));
         }
+        pagamento.setDataHora(LocalDateTime.now());
         conta.adicionarPagamento(pagamento);
         contaRepository.save(conta);
         return pagamento;
@@ -243,4 +245,5 @@ public class ContaService {
     {
         return pesquisarConta(id).getPagamentos();
     }
+    
 }

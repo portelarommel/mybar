@@ -80,8 +80,17 @@ public class Pagamento {
         return ativo;
     }
 
+
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+    public void setDataHora(LocalDateTime dataHora)
+    {
+        this.dataHora = dataHora;
+    }
+    public LocalDateTime getDataHora()
+    {
+        return dataHora;
     }
 
     public Usuario getQuemLancouPg() {

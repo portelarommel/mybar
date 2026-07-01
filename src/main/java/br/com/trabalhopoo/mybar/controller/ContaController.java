@@ -3,6 +3,7 @@ package br.com.trabalhopoo.mybar.controller;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.dto.ContaDto;
+import br.com.trabalhopoo.mybar.dto.ItemDaContaDto;
 import br.com.trabalhopoo.mybar.dto.PagamentoDto;
 import br.com.trabalhopoo.mybar.exception.ContaJaFechadaException;
 import br.com.trabalhopoo.mybar.model.Conta;
@@ -100,8 +102,19 @@ public class ContaController {
         ContaDto contaDto =  ContaDto.fromEntity(conta);
         BigDecimal gorjeta =contaService.calcularGorjeta(id);
         BigDecimal ingresso = contaService.calcularValorIngresso(id);
+        List<ItemDaConta> itensDaConta =  contaService.ListarItensFechamento(id);
+        List<ItemDaContaDto> itensDaContaDto = itensDaConta.stream()
+        .map((ItemDaConta item) -> {
+        return new ItemDaContaDto(
+            item.getId(),
+            item.getQuantidade(),
+            item.getCodigo(),
+            item.getItemCardapio().getDescricao(),
+            item.getItemCardapio().getValor()
+
+        );}).collect(Collectors.toList());
         model.addAttribute("contaDto",contaDto);
-        model.addAttribute("itensDaConta",contaService.ListarItensFechamento(id));
+        model.addAttribute("itensDaConta",itensDaContaDto);
         model.addAttribute("totalConta",contaService.CalcularTotalConta(id,ingresso,gorjeta));
         model.addAttribute("totalPago",contaService.CalcularTotalPago(id));
         model.addAttribute("pagamentos",contaService.ListarPagamentos(id));

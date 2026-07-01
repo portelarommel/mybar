@@ -205,10 +205,10 @@
                     </thead>
                     <tbody>
                         <tr th:each="item : ${itensDaConta}">
-                            <td th:text="${item.itemCardapio != null ? item.itemCardapio.id : '-'}">001</td>
-                            <td th:text="${item.itemCardapio != null ? item.itemCardapio.nome : 'Item de Consumo'}">Item</td>
+                            <td th:text="${item.codigo}">001</td>
+                            <td th:text="${item.descricao}">Item</td>
                             <td th:text="${item.quantidade}">1</td>
-                            <td th:text="|R$ ${#numbers.formatDecimal(item.valor ?: 0, 1, 2, 'COMMA')}|">R$ 0,00</td>
+                            <td th:text="|R$ ${#numbers.formatDecimal(item.valorUnitario ?: 0, 1, 2, 'COMMA')}|">R$ 0,00</td>
                         </tr>
                         
                         <tr style="background-color: #f9fafb; font-style: italic; border-top: 1px solid #e5e7eb;">

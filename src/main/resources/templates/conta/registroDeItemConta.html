@@ -45,8 +45,15 @@
 
             <div class="grid-dados-conta">
                 <div class="form-group">
-                    <label for="codigoItem">Código <span class="required">*</span></label>
-                    <input type="text" id="codigoItem" name="codigoItem" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
+                    <label for="codigo">Código <span class="required">*</span></label>
+                    <input type="text" id="codigo" name="codigo" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
+                </div>
+            </div>
+
+            <div class="grid-dados-conta">
+                <div class="form-group">
+                    <label for="codigoCardapio">Código de Item Cardapio <span class="required">*</span></label>
+                    <input type="text" id="codigoCardapio" name="codigoCardapio" placeholder="9999" pattern="[0-9]{4}" maxlength="4" required>
                 </div>
             </div>
 
@@ -84,10 +91,10 @@
                 </thead>
                 <tbody>
                     <tr th:each="item : ${itens}">
-                        <td th:text="${item.itemCardapio.codigo}">1201</td>
-                        <td th:text="${item.itemCardapio.descricao}">Coca cola 300ml</td>
+                        <td th:text="${item.codigo}">1201</td>
+                        <td th:text="${item.descricao}">Coca cola 300ml</td>
                         <td th:text="${item.quantidade}">3</td>
-                        <td th:text="${'R$ ' + item.itemCardapio.valorUnitario}">R$ 12,00</td>
+                        <td th:text="${'R$ ' + item.valorUnitario}">R$ 12,00</td>
                         <td>
                             <form th:action="@{/contas/{id}/item/{itemId}(id=${conta.id}, itemId=${item.id})}" th:method="delete" style="display:inline;">
                                 <button type="submit" class="btn-excluir" style="color: red; background: none; border: none; cursor: pointer;">&lt; Excluir &gt;</button>

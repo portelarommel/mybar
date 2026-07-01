@@ -17,7 +17,7 @@ public class ItemDaConta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name= "codigo",length = 4, nullable =false)
+    @Column(name= "codigo",length = 4, nullable = true, unique = true)
     private Integer codigo;
 
     private BigDecimal valor; // nao tem no pdf mas vou analisar dps
@@ -107,6 +107,7 @@ public class ItemDaConta {
         this.valor = valor;
     }
 
+
     public Long getId() {
         return id;
     }
@@ -114,9 +115,21 @@ public class ItemDaConta {
     public void setId(Long id) {
         this.id = id;
     }
+    public Integer getCodigo()
+    {
+        return codigo;
+    }
+    public void setCodigo(Integer codigo)
+    {
+        this.codigo =codigo;
+    }
 
     public BigDecimal getValor() {
         return valor;
+    }
+    public BigDecimal getValorTotal()
+    {
+        return this.getItemCardapio().getValor().multiply(BigDecimal.valueOf(quantidade));
     }
 
     public void setValor(BigDecimal valor) {

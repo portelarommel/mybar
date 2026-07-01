@@ -6,6 +6,7 @@ import br.com.trabalhopoo.mybar.exception.ItemCardapioNaoEncontradoException;
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
+import br.com.trabalhopoo.mybar.model.enums.StatusItem;
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
 import br.com.trabalhopoo.mybar.repository.ItemCardapioRepository;
 import br.com.trabalhopoo.mybar.repository.ItemDaContaRepository;
@@ -35,13 +36,15 @@ public class ItemDaContaService {
     }
 
     public ItemDaConta registrarItemConta(Long contaId, ItemDaContaDto itemDaContaDto) {
-        ItemCardapio itemCardapio = itemCardapioRepository.findByCodigo(itemDaContaDto.getCodigo()).orElseThrow(() -> new ItemCardapioNaoEncontrado2Exception("Item de Cardapio não encontrado",contaId));;
+        ItemCardapio itemCardapio = itemCardapioRepository.findByCodigo(itemDaContaDto.getCodigoCardapio()).orElseThrow(() -> new ItemCardapioNaoEncontrado2Exception("Item de Cardapio não encontrado",contaId));;
 
         ItemDaConta itemDaConta = new ItemDaConta();
         itemDaConta.setItemCardapio(itemCardapio);
         itemDaConta.setDataSolicitacao(LocalDate.now());
         itemDaConta.setHoraSolicitacao(LocalTime.now());
         itemDaConta.setQuantidade(itemDaContaDto.getQuantidade());
+        itemDaConta.setCodigo(itemDaContaDto.getCodigo());
+        itemDaConta.setStatus(StatusItem.SOLICITADO);
         Conta conta = contaService.pesquisarConta(contaId);
         conta.adicionarItem(itemDaConta);
         contaRepository.save(conta);
