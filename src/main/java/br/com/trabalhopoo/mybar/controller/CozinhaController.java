@@ -23,7 +23,7 @@ public class CozinhaController {
     @GetMapping("/pedidos")
     public List<ItemDaConta> listarPedidosCozinha() {
         return itemDaContaRepository
-                .findByItemCardapio_TipoItem_CozinhaTrueAndStatusInOrderByDataRecebimentoCozinhaAsc(
+                .findByItemCardapio_TipoItem_CozinhaTrueAndStatusInOrderByDataSolicitacaoAsc(
                         Arrays.asList(StatusItem.SOLICITADO, StatusItem.RECEBIDO, StatusItem.EM_PREPARACAO)
                 );
     }

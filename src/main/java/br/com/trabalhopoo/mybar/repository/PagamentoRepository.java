@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
 
-    /*List<Pagamento> findByConta_Id(
-            Long contaId
-    );*/
+
+    List<Pagamento> findByConta_Id(Long contaId);
 }
