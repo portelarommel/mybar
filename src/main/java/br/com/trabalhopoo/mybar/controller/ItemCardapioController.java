@@ -2,6 +2,8 @@ package br.com.trabalhopoo.mybar.controller;
 
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.service.ItemCardapioService;
+import br.com.trabalhopoo.mybar.service.TipoItemService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,27 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 import br.com.trabalhopoo.mybar.service.ItemCardapioService;
-@RestController
+@Controller
 @RequestMapping("/itens-cardapio")
 public class ItemCardapioController {
 
     private final ItemCardapioService itemCardapioService;
-    public ItemCardapioController(ItemCardapioService itemCardapioService)
+    private final TipoItemService tipoItemService;
+    public ItemCardapioController(ItemCardapioService itemCardapioService, TipoItemService tipoItemService)
     {
         this.itemCardapioService = itemCardapioService;
+        this.tipoItemService =tipoItemService;
     }
 
     /*@GetMapping
@@ -42,8 +37,9 @@ public class ItemCardapioController {
     @GetMapping
     public String pesquisarItemCardapio(@RequestParam(required = false) Long codigo,
         @RequestParam(required = false) String descricao,
-        @RequestParam(required = false) Long tipoItemId)
+        @RequestParam(required = false) Long tipoItemId, Model model)
     {
+        model.addAttribute("itensCardapio",itemCardapioService.buscarItemCardapioPorFiltros(codigo, descricao, tipoItemId));
         return "itemCardapio/gestaoDeItemCardapio";
 
     }
@@ -52,10 +48,11 @@ public class ItemCardapioController {
     {
         ItemCardapio itemCardapio = itemCardapioService.buscarItemCardapio(id);
         model.addAttribute("itemCardapio", itemCardapio);
+        model.addAttribute("TiposItem", tipoItemService.listarTiposItem());
         return "itemCardapio/edicaoDeItemCardapio";
     }
 
-    @PutMapping("/{id}/editar")
+    @PostMapping("/{id}/editar")
     public String editarItemCardapio(@PathVariable Long id, @ModelAttribute ItemCardapio itemCardapio,Model model)
     {
         itemCardapio.setId(id);
@@ -66,10 +63,18 @@ public class ItemCardapioController {
     @GetMapping("/registrar")
     public String carregarPaginaRegistro(Model model)
     {
-        model.addAttribute("novo",new ItemCardapio());
+        model.addAttribute("itemCardapio",new ItemCardapio());
+        model.addAttribute("TiposItem", tipoItemService.listarTiposItem());
+
         return "itemCardapio/registroDeItemCardapio";
 
     }
+    @GetMapping("/{id}/visualizar")
+    public String carregarPaginaVisualizacao(@PathVariable Long id, Model model) {
+        ItemCardapio itemCardapio = itemCardapioService.buscarItemCardapio(id);
+        model.addAttribute("itemCardapio", itemCardapio);
+        return "itemCardapio/visualizacaoDeItemCardapio";
+}
 
     @PostMapping("/registrar")
     public String registrarItemCardapio(@ModelAttribute ItemCardapio itemCardapio,Model model)
@@ -78,7 +83,7 @@ public class ItemCardapioController {
         return "redirect:/itens-cardapio";
     }
 
-    @DeleteMapping("/{id}/excluir")
+    @GetMapping("/{id}/excluir")
     public String deletarItemCardapio(@PathVariable Long id)
     {
         itemCardapioService.deletarItemCardapio(id);

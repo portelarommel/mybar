@@ -1,44 +1,71 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBar - Login</title>
-     <link rel="stylesheet" th:href="@{/css/indexEstilo.css}">
+    <title>MyBar - Painel do Administrador</title>
+    <link rel="stylesheet" th:href="@{/css/dashboardEstilo.css}">
 </head>
 <body>
-     <div class="login-container">
-        <div class="login-header">
-            <h1>MyBar</h1>
-            <p>Gerenciador de Bares e Restaurantes</p>
+
+    <div class="dashboard-container">
+        
+        <div class="dashboard-header">
+            <h1>Painel do Administrador</h1>
+            <p>Seja bem-vindo ao controle central do MyBar. Selecione uma gerência abaixo:</p>
         </div>
 
-        <form action="/login" method="POST">
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    placeholder="Ex: joao@limao.com" 
-                    required
-                 >
+        <div class="cards-grid">
+
+            <div class="card">
+                <div>
+                    <div class="card-title">Gestão de Contas</div>
+                    <p class="card-description">Gerencie a abertura, inserção de itens, consultas por CPF/nome e fechamento de contas dos clientes.</p>
+                </div>
+                <a href="/contas" class="btn-dashboard btn-azul">Acessar Contas</a>
             </div>
 
-            <div class="form-group">
-                <label for="senha">Senha</label>
-                <input 
-                    type="password" 
-                    id="senha" 
-                    name="senha" 
-                    placeholder="Digite sua senha" 
-                    required
-                >
+            <div class="card">
+                <div>
+                    <div class="card-title">Itens do Cardápio</div>
+                    <p class="card-description">Cadastre novos produtos, bebidas, porções e altere valores unitários e taxas de gorjeta vigentes.</p>
+                </div>
+                <a href="/itens-cardapio" class="btn-dashboard btn-vinho">Acessar Cardápio</a>
             </div>
 
-            <button type="submit" class="btn-login">Entrar</button>
-            
-        </form>
+            <div class="card">
+                <div>
+                    <div class="card-title">Tipos de Itens</div>
+                    <p class="card-description">Organize e configure as categorias do sistema (Ex: Bebidas, Refeições, Sobremesas, Tira-gostos).</p>
+                </div>
+                <a href="/tipos-item" class="btn-dashboard btn-azul">Acessar Categorias</a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div class="card-title">Configuração do Sistema</div>
+                    <p class="card-description">Defina os valores das taxas de ingresso (masculino/feminino) e libere ou encerre o expediente de atendimentos.</p>
+                </div>
+                <a href="/configuracao" class="btn-dashboard btn-vinho">Acessar Configurações</a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div class="card-title">Cadastro de Usuários</div>
+                    <p class="card-description">Controle os acessos administrativos e de funcionários. Insira e edite Cozinha, Garçons e Atendentes.</p>
+                </div>
+                <a href="/usuarios" class="btn-dashboard btn-azul">Acessar Usuários</a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div class="card-title">Relatório de Contas</div>
+                    <p class="card-description">Consulte o histórico financeiro e relatórios de atendimentos encerrados filtrando por períodos específicos.</p>
+                </div>
+                <a href="/relatorios" class="btn-dashboard btn-vinho">Visualizar Relatórios</a>
+            </div>
+
+        </div>
     </div>
 
 </body>

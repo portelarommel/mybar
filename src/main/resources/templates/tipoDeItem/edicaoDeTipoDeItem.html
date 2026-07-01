@@ -1,45 +1,45 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyBar - Tela de Edição de Tipo</title>
-    <link rel="stylesheet" href="/css/novoOuAlteraObjetoEstilo.css">
+    <link rel="stylesheet" th:href="@{/css/novoOuAlteraObjetoEstilo.css}">
 </head>
 <body>
     <div class="page-centralizada">
         <div class="container">
         <h2>Tela de Edição de Tipo</h2>
         
-        <form action="#" method="POST">
+        <form th:action="@{/tipos-item/{id}/editar(id=${tipoItem.id})}" th:object="${tipoItem}" method="POST">
             
             <div class="form-group">
                 <label for="codigo">Código <span class="required">*</span></label>
-                <input type="text" id="codigo" name="codigo" value="" readonly required>
+                <input type="text" id="codigo" th:field="*{codigo}" readonly="readonly" required>
             </div>
 
             <div class="form-group">
                 <label for="descricao">Descrição <span class="required">*</span></label>
-                <input type="text" id="descricao" name="descricao" value="" required maxlength="255">
+                <input type="text" id="descricao" th:field="*{descricao}" required maxlength="255" placeholder="Ex: Bebida">
             </div>
 
             <div class="form-group">
                 <label for="gorjeta">Gorjeta <span class="required">*</span></label>
-                <input type="text" id="gorjeta" name="gorjeta" value="" required placeholder="Ex: 10%">
+                <input type="text" id="gorjeta" th:field="*{gorjeta}" required placeholder="Ex: 10%">
             </div>
             
             <div class="form-group">
                 <label for="cozinha">Cozinha <span class="required">*</span></label>
-                <select id="cozinha" name="cozinha" required>
+                <select id="cozinha" th:field="*{cozinha}" required>
                     <option value="">[Selecione]</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
                 </select>
             </div>
 
             <div class="buttons-bar">
                 <button type="submit" class="btn-salvar">&lt; Salvar Alterações &gt;</button>
-                <a href="/tipos" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Cancelar</a>
+                <a th:href="@{/tipos-item}" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Cancelar</a>
             </div>
             
             <div class="footer-note">

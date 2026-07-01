@@ -25,16 +25,16 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public UsuarioDto alterarUsuario(long id, UsuarioDto usuarioDto) {
+    public UsuarioDto alterarUsuario(long id, Usuario usuario) {
 
         Usuario existente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(
                         "Usuário não encontrado com id: " + id));
 
-        existente.setNome(usuarioDto.getNome());
-        existente.setEmail(usuarioDto.getEmail());
-        existente.setCodigo(usuarioDto.getCodigo());
-        existente.setTipo(usuarioDto.getTipo());
+        existente.setNome(usuario.getNome());
+        existente.setEmail(usuario.getEmail());
+        existente.setTipo(usuario.getTipo());
+        existente.setSenha(usuario.getSenha());
 
         Usuario salvo = usuarioRepository.save(existente);
         return UsuarioDto.fromEntity(salvo);
@@ -47,18 +47,15 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public UsuarioDto pesquisarUsuario(Long id) {
+    public Usuario pesquisarUsuario(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(
                         "Usuário não encontrado com id: " + id));
-        return UsuarioDto.fromEntity(usuario);
+        return usuario;
     }
 
-    public List<UsuarioDto> pesquisarUsuarioPorFiltro(String nome) {
-        return usuarioRepository.buscarComFiltros(nome)
-                .stream()
-                .map(UsuarioDto::fromEntity)
-                .collect(Collectors.toList());
+    public List<Usuario> pesquisarUsuarioPorFiltro(String nome) {
+        return usuarioRepository.buscarComFiltros(nome);
     }
 
     public void deletarUsuario(Long id) {

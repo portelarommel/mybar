@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,17 +11,17 @@
     <div class="container">
         
         <h2>Pesquisa por Usuários</h2>
-        <form action="#" method="GET">
+        <form id ="formPesquisaUsuario" :action="@{/usuarios}" method="GET">
             <div class="pesquisa-grid">
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" placeholder="João (texto com até 255 caracteres)" maxlength="255">
+                    <input type="text" id="nome" name="nome" th:value="${param.nome}" placeholder="João (texto com até 255 caracteres)" maxlength="255">
                 </div>
             </div>
             
             <div class="buttons-bar">
                 <button type="submit" class="btn btn-pesquisar">Pesquisar</button>
-                <a href="/usuarios/novo" class="btn btn-nova-conta">Novo Usuário</a>
+                <a th:href="@{/usuarios/registrar}" class="btn btn-nova-conta">Novo Usuário</a>
             </div>
         </form>
 
@@ -37,12 +37,48 @@
                     </tr>
                 </thead>
                 <tbody>
-                    </tbody>
+                    <tr th:each="user : ${usuarios}">
+                        <td th:text="${user.codigo != null ? user.codigo : user.id}">10</td>
+                        
+                        <td th:text="${user.nome}">João Limão</td>
+                        
+                        <td th:text="${user.tipo}">GARCOM</td>
+                        
+                        <td>
+                            <a th:href="@{/usuarios/{id}/visualizar(id=${user.id})}" class="btn-links" style="margin-right: 10px; color: #10b981; text-decoration: none;">&lt; Visualizar &gt;</a>
+                            <a th:href="@{/usuarios/{id}/editar(id=${user.id})}" class="btn-links" style="margin-right: 10px; color: #2563eb; text-decoration: none;">&lt; Alterar &gt;</a>
+                            
+                            <form th:action="@{/usuarios/{id}/excluir(id=${user.id})}" th:method="delete" style="display: inline;">
+                                <button type="submit" class="btn-links" style="color: #991b1b; background: none; border: none; cursor: pointer; font-family: inherit; font-size: inherit; padding: 0;">&lt; Excluir &gt;</button>
+                            </form>
+                        </td>
+                    </tr>
+                    
+                    <tr th:if="${#lists.isEmpty(usuarios)}">
+                        <td colspan="4" style="text-align: center; color: #6b7280; padding: 20px;">Nenhum usuário encontrado.</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
+        <div class="buttons-bar">
+    
+    <a th:href="@{/}" class="btn btn-voltar-dashboard">&lt; Voltar para Dashboard &gt;</a>
+</div>
 
     </div>
+    <script>
+        document.getElementById('formPesquisaUsuario').addEventListener('submit', function(e) {
+            const inputs = this.querySelectorAll('input, select');
+            
+            inputs.forEach(input => {
+                // Se o campo de pesquisa estiver vazio ou só com espaços
+                if (!input.value.trim()) {
+                    // Desabilita temporariamente para o navegador não mandar "?nome=" na URL
+                    input.disabled = true;
+                }
+            });
+        });
+    </script>
 
 </body>
-</html>
 </html>

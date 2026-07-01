@@ -10,18 +10,16 @@ public class UsuarioDto {
     private String nome;
     private String email;
     private TipoDeUsuario tipo;
+    private String senha;
 
-    public UsuarioDto() {
+    public String getSenha()
+    {
+        return senha;
     }
-
-    public UsuarioDto(Long id, String codigo, String nome, String email, TipoDeUsuario tipo) {
-        this.id = id;
-        this.codigo = codigo;
-        this.nome = nome;
-        this.email = email;
-        this.tipo = tipo;
+    public void setSenha(String senha)
+    {
+        this.senha = senha;
     }
-
     public Long getId() {
         return id;
     }

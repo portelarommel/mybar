@@ -144,7 +144,7 @@ public class ItemDaConta {
             return null;
         }
 
-        if (getItemCardapio().getTipoItem().getCozinha() == Sentenca.SIM) {
+        if (getItemCardapio().getTipoItem().getCozinha() == true) {
             if (this.getDataEntregaCozinha() != null) return StatusItem.ENTREGUE;
             if (this.getDataRecebimentoCozinha() != null) return StatusItem.RECEBIDO;
             return StatusItem.SOLICITADO;

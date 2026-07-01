@@ -11,29 +11,29 @@
     <div class="container">
         <h2>Tela de Gestão de Itens do Cardápio</h2>
         
-        <form action="#" th:action="@{/cardapio/pesquisar}" method="GET">
+        <form th:action="@{/itens-cardapio}" method="GET">
             <div class="pesquisa-grid">
                 <div class="form-group">
                     <label for="codigo">Código</label>
-                    <input type="text" id="codigo" name="codigo" placeholder="120 (até 4 dígitos)" maxlength="4">
+                    <input type="text" id="codigo" name="codigo" th:value="${param.codigo}" placeholder="120 (até 4 dígitos)" maxlength="4">
                 </div>
                 
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
-                    <input type="text" id="descricao" name="descricao" placeholder="(até 255 caracteres)" maxlength="255">
+                    <input type="text" id="descricao" name="descricao" th:value="${param.descricao}" placeholder="(até 255 caracteres)" maxlength="255">
                 </div>
                 
                 <div class="form-group">
                     <label for="tipoItem">Tipo de Item</label>
-                    <select id="tipoItem" name="tipoItem">
+                    <select id="tipoItem" name="tipoItemId">
                         <option value="">[Selecione o Tipo]</option>
-                    </select>
+                        </select>
                 </div>
             </div>
 
             <div class="buttons-bar">
                 <button type="submit" class="btn btn-pesquisar">&lt; Pesquisar &gt;</button>
-                <a href="/cardapio/novo" class="btn btn-nova-conta">&lt; Novo Item &gt;</a>
+                <a th:href="@{/itens-cardapio/registrar}" class="btn btn-nova-conta">&lt; Novo Item &gt;</a>
             </div>
         </form>
 
@@ -50,8 +50,32 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr th:each="item : ${itensCardapio}">
+                        <td th:text="${item.codigo}">1010</td>
+                        <td th:text="${item.descricao}">Coca-cola 290ml</td>
+                        
+                        <td th:text="${item.tipoItem != null ? item.tipoItem.descricao : 'Sem Tipo'}">Bebida</td>
+                        
+                        <td th:text="${#numbers.formatDecimal(item.valor, 1, 'POINT', 2, 'COMMA')}">8,00</td>
+                        
+                        <td th:text="${item.tipoItem != null ? item.tipoItem.gorjeta + '%' : '0%'}">10%</td>
+                        
+                        <td>
+                            <a th:href="@{/itens-cardapio/{id}/visualizar(id=${item.id})}" class="link-comando">&lt;Visualizar&gt;</a>
+                            <a th:href="@{/itens-cardapio/{id}/editar(id=${item.id})}" class="link-comando">&lt;Alterar&gt;</a>
+                            <a th:href="@{/itens-cardapio/{id}/excluir(id=${item.id})}" class="link-comando" style="font-weight: bold; color: black;">&lt;Excluir&gt;</a>
+                        </td>
+                    </tr>
+                    
+                    <tr th:if="${#lists.isEmpty(itensCardapio)}">
+                        <td colspan="6" style="text-align: center; color: #6b7280; padding: 20px;">Nenhum item encontrado no cardápio.</td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
+        
+        <div class="buttons-bar">
+            <a th:href="@{/}" class="btn btn-voltar-dashboard">&lt; Voltar para Dashboard &gt;</a>
         </div>
 
     </div>

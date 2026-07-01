@@ -44,7 +44,7 @@ public class TipoItemController {
         return "tipoDeItem/edicaoDeTipoDeItem";
 
     }
-    @PutMapping("/{id}/editar")
+    @PostMapping("/{id}/editar")
     public String alterarTipoItem(@PathVariable Long id, @ModelAttribute TipoItem tipoItem)
     {
         tipoItem.setId(id);
@@ -65,9 +65,17 @@ public class TipoItemController {
         return "redirect:/tipos-item";
     }
 
-    @DeleteMapping("/{id}/excluir")
+    @PostMapping("/{id}/excluir")
     public String deletarTipoItem(@PathVariable Long id) {
         tipoItemService.deletarTipoItem(id);
         return "redirect:/tipos-item";
     }
+
+    @GetMapping("/{id}/visualizar")
+    public String visualizarTipoItem(@PathVariable Long id,Model model)
+    {
+        model.addAttribute("tipoItem",tipoItemService.pesquisarTipoItem(id));
+        return "tipoDeItem/visualizacaoDeTipoDeItem";
+    }
+    
 }

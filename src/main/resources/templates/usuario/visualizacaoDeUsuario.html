@@ -31,6 +31,7 @@
             background-color: #f3f4f6;
             color: #4b5563;
             cursor: not-allowed;
+            border-color: #e5e7eb;
         }
     </style>
 </head>
@@ -41,41 +42,41 @@
         <div class="container">
             <h2>Tela de Visualização de Usuário</h2>
             
-            <form action="#" method="GET">
+            <form th:object="${usuario}">
                 
                 <div class="form-group">
                     <label for="codigo">Código</label>
-                    <input type="text" id="codigo" name="codigo" readonly placeholder="Ex: 10">
+                    <input type="text" id="codigo" th:field="*{codigo}" readonly="readonly">
                 </div>
 
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" readonly placeholder="Ex: João Limão">
+                    <input type="text" id="nome" th:field="*{nome}" readonly="readonly">
                 </div>
 
                 <div class="form-group">
                     <label for="tipoUsuario">Tipo</label>
-                    <select id="tipoUsuario" name="tipoUsuario" disabled>
+                    <select id="tipoUsuario" th:field="*{tipo}" disabled="disabled">
                         <option value="">Selecione o tipo...</option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Cozinha">Cozinha</option>
-                        <option value="Garçom">Garçom</option>
-                        <option value="Atendente Balcão">Atendente Balcão</option>
+                        <option value="ADMINISTRADOR">Administrador</option>
+                        <option value="COZINHA">Cozinha</option>
+                        <option value="GARCOM">Garçom</option>
+                        <option value="ATENDENTE_BALCAO">Atendente Balcão</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" readonly placeholder="Ex: joao@limao.com">
+                    <input type="email" id="email" th:field="*{email}" readonly="readonly">
                 </div>
 
                 <div class="form-group">
                     <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" readonly placeholder="••••">
+                    <input type="password" id="senha" th:value="'••••'" readonly="readonly">
                 </div>
 
                 <div class="buttons-bar" style="margin-top: 25px;">
-                    <a href="/usuarios" class="btn-voltar">&lt; Voltar para Gestão de Usuários &gt;</a>
+                    <a th:href="@{/usuarios}" class="btn-voltar">&lt; Voltar para Gestão de Usuários &gt;</a>
                 </div>
                 
             </form>

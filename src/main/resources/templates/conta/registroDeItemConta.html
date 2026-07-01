@@ -13,12 +13,17 @@
         input[readonly] { background-color: #f3f4f6; color: #4b5563; cursor: not-allowed; }
     </style>
 </head>
+<script th:src="@{/js/mensagens.js}"></script>
 <body>
 
     <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
         
         <h2>Registro de Itens em Conta</h2>
-        
+        <div id="mensagem"
+                th:if="${mensagem}"
+                th:data-texto="${mensagem}"
+                th:data-tipo="${tipo}">
+            </div>
         <form th:action="@{/contas/{id}/registrar(id=${conta.id})}" method="POST">
             
             <div class="grid-dados-conta">
@@ -95,6 +100,11 @@
 
         <div class="buttons-bar" style="text-align: right; border-top: 1px solid #e5e7eb; padding-top: 20px;">
             <a th:href="@{/contas}" class="btn btn-pesquisar" style="background-color: #991b1b; padding: 12px 30px; font-size: 16px; text-decoration: none; color: white;">&lt; Salvar &gt;</a>
+        </div>
+        <div class="buttons-bar">
+            <a th:href="@{/contas}" class="btn-voltar">
+                Voltar para Gestão
+            </a>
         </div>
 
     </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,46 +13,46 @@
         <div class="container">
             <h2>Tela de Inclusão de Usuário</h2>
             
-            <form action="#" method="POST">
+            <form th:action="@{/usuarios/registrar}" th:object="${usuario}" method="POST">
                 
                 <div class="form-group">
                     <label for="codigo">Código <span class="required">*</span></label>
-                    <input type="text" id="codigo" name="codigo" required 
+                    <input type="text" id="codigo" th:field="*{codigo}" required 
                            pattern="[0-9]{4}" maxlength="4" placeholder="Ex: 10 (número com até 4 dígitos)">
                 </div>
 
                 <div class="form-group">
                     <label for="nome">Nome <span class="required">*</span></label>
-                    <input type="text" id="nome" name="nome" required 
+                    <input type="text" id="nome" th:field="*{nome}" required 
                            maxlength="255" placeholder="Ex: João Limão (texto com até 255 caracteres)">
                 </div>
 
                 <div class="form-group">
                     <label for="tipoUsuario">Tipo <span class="required">*</span></label>
-                    <select id="tipoUsuario" name="tipoUsuario" required>
+                    <select id="tipoUsuario" th:field="*{tipo}" required>
                         <option value="">Selecione o tipo...</option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Cozinha">Cozinha</option>
-                        <option value="Garçom">Garçom</option>
-                        <option value="Atendente Balcão">Atendente Balcão</option>
+                        <option value="ADMINISTRADOR">Administrador</option>
+                        <option value="COZINHA">Cozinha</option>
+                        <option value="GARCOM">Garçom</option>
+                        <option value="ATENDENTE_BALCAO">Atendente Balcão</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email <span class="required">*</span></label>
-                    <input type="email" id="email" name="email" required 
+                    <input type="email" id="email" th:field="*{email}" required 
                            placeholder="Ex: joao@limao.com (e-mail válido)">
                 </div>
 
                 <div class="form-group">
                     <label for="senha">Senha <span class="required">*</span></label>
-                    <input type="password" id="senha" name="senha" required 
+                    <input type="password" id="senha" th:field="*{senha}" required 
                            pattern="[0-9]{4}" maxlength="4" placeholder="Ex: 9999 (número com 4 dígitos)">
                 </div>
 
                 <div class="buttons-bar">
                     <button type="submit" class="btn-salvar">&lt; Salvar &gt;</button>
-                    <a href="/usuarios" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Voltar para Gestão de Usuários</a>
+                    <a th:href="@{/usuarios}" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Voltar para Gestão de Usuários</a>
                 </div>
                 
                 <div class="footer-note">

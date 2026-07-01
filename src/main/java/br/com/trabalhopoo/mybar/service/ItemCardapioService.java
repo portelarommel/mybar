@@ -31,7 +31,8 @@ public class ItemCardapioService {
     {
         return itemCardapioRepository.buscarComFiltrosDeTela(codigo, descricao, tipoItemId);
     }
-    public ItemCardapio registrarItemCardapio(ItemCardapio itemCardapio) {
+    public ItemCardapio registrarItemCardapio(ItemCardapio itemCardapio) { 
+        
         return itemCardapioRepository.save(itemCardapio);
     }
 

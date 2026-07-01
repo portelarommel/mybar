@@ -31,6 +31,7 @@
             background-color: #f3f4f6;
             color: #4b5563;
             cursor: not-allowed;
+            border-color: #e5e7eb;
         }
     </style>
 </head>
@@ -39,34 +40,34 @@
         <div class="container">
             <h2>Tela de Visualização de Tipo de Item</h2>
         
-            <form action="#" method="GET">
+            <form th:object="${tipoItem}">
                 
                 <div class="form-group">
                     <label for="codigo">Código</label>
-                    <input type="text" id="codigo" name="codigo" readonly placeholder="Ex: 10">
+                    <input type="text" id="codigo" th:field="*{codigo}" readonly="readonly">
                 </div>
 
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
-                    <input type="text" id="descricao" name="descricao" readonly placeholder="Ex: Bebida">
+                    <input type="text" id="descricao" th:field="*{descricao}" readonly="readonly">
                 </div>
 
                 <div class="form-group">
                     <label for="gorjeta">Gorjeta</label>
-                    <input type="text" id="gorjeta" name="gorjeta" readonly placeholder="Ex: 10%">
+                    <input type="text" id="gorjeta" th:field="*{gorjeta}" readonly="readonly">
                 </div>
                 
                 <div class="form-group">
                     <label for="cozinha">Cozinha</label>
-                    <select id="cozinha" name="cozinha" disabled>
+                    <select id="cozinha" th:field="*{cozinha}" disabled="disabled">
                         <option value="">[Selecione]</option>
-                        <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
                     </select>
                 </div>
 
                 <div class="buttons-bar" style="margin-top: 25px;">
-                    <a href="/tipos" class="btn-voltar">&lt; Voltar para Lista de Tipos &gt;</a>
+                    <a th:href="@{/tipos-item}" class="btn-voltar">&lt; Voltar para Lista de Tipos &gt;</a>
                 </div>
                 
             </form>

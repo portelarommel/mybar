@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -28,9 +28,7 @@ public class UsuarioController {
 
     @GetMapping
     public String pesquisarUsuario(@RequestParam(required = false) String nome, Model model) {
-        List<UsuarioDto> usuarios = (nome == null || nome.isBlank())
-                ? usuarioService.listarUsuarios()
-                : usuarioService.pesquisarUsuarioPorFiltro(nome);
+        List<Usuario> usuarios= usuarioService.pesquisarUsuarioPorFiltro(nome);
 
         model.addAttribute("usuarios", usuarios);
         return "usuario/gestaoDeUsuario";
@@ -38,33 +36,40 @@ public class UsuarioController {
 
     @GetMapping("/registrar")
     public String carregarPaginaRegistro(Model model) {
-        model.addAttribute("novo", new Usuario());
+        model.addAttribute("usuario", new Usuario());
         return "usuario/registroDeUsuario";
     }
 
     @PostMapping("/registrar")
     public String incluirUsuario(@ModelAttribute Usuario usuario) {
         usuarioService.incluirUsuario(usuario);
-        return "redirect:/usuario";
+        return "redirect:/usuarios";
     }
 
     @GetMapping("/{id}/editar")
     public String carregarPaginaEdicao(@PathVariable Long id, Model model) {
-        UsuarioDto usuario = usuarioService.pesquisarUsuario(id);
-        model.addAttribute("editar", usuario);
-        return "usuario/registroDeUsuario";
+        Usuario usuario = usuarioService.pesquisarUsuario(id);
+        model.addAttribute("usuario", usuario);
+        return "usuario/edicaoDeUsuario";
     }
 
-    @PutMapping("/{id}/editar")
-    public String alterarUsuario(@PathVariable Long id, @ModelAttribute UsuarioDto usuarioDto) {
-        usuarioService.alterarUsuario(id, usuarioDto);
-        return "redirect:/usuario";
+    @PostMapping("/{id}/editar")
+    public String alterarUsuario(@PathVariable Long id, @ModelAttribute("usuario") Usuario usuario) {
+        usuarioService.alterarUsuario(id, usuario);
+        return "redirect:/usuarios";
+    }
+    @GetMapping("/{id}/visualizar")
+    public String visualizarUsuario(@PathVariable Long id, Model model)
+    {
+        Usuario usuario = usuarioService.pesquisarUsuario(id);
+        model.addAttribute("usuario",usuario);
+        return "usuario/visualizacaoDeUsuario";
     }
 
-    @DeleteMapping("/{id}/excluir")
+    @PostMapping("/{id}/excluir")
     public String deletarUsuario(@PathVariable Long id) {
         usuarioService.deletarUsuario(id);
-        return "redirect:/usuario";
+        return "redirect:/usuarios";
     }
 
 }

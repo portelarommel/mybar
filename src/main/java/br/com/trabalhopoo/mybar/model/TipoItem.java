@@ -15,7 +15,7 @@ public class TipoItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "descricao", length = 255, nullable = false)
+    @Column(name = "descricao", length = 255, unique = true, nullable = false)
     private String descricao;
 
     @Column(name = "codigo")
@@ -27,9 +27,8 @@ public class TipoItem {
     @Column(name = "gorjeta", nullable = false)
     private BigDecimal gorjeta;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "cozinha", nullable = false)
-    private Sentenca cozinha;
+    private Boolean cozinha;
 
     @OneToMany(mappedBy = "tipoItem", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -38,7 +37,7 @@ public class TipoItem {
     public TipoItem() {
     }
 
-    public TipoItem(Long id, String descricao, String codigo, Boolean ativo, BigDecimal gorjeta, Sentenca cozinha, List<ItemCardapio> itensCardapio) {
+    public TipoItem(Long id, String descricao, String codigo, Boolean ativo, BigDecimal gorjeta, Boolean cozinha, List<ItemCardapio> itensCardapio) {
         this.id = id;
         this.descricao = descricao;
         this.codigo = codigo;
@@ -88,11 +87,11 @@ public class TipoItem {
         this.gorjeta = gorjeta;
     }
 
-    public Sentenca getCozinha() {
+    public Boolean getCozinha() {
         return cozinha;
     }
 
-    public void setCozinha(Sentenca cozinha) {
+    public void setCozinha(Boolean cozinha) {
         this.cozinha = cozinha;
     }
 

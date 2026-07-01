@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
     public String tratarItemCardapioNaoEncontrado(ItemCardapioNaoEncontradoException ex,RedirectAttributes attributes)
     {
         attributes.addFlashAttribute("mensagem", ex.getMessage());
-        return "redirect:/itensCardapio";
+        return "redirect:/itens-cardapio";
 
     }
     @ExceptionHandler(ItemCardapioNaoEncontrado2Exception.class)
@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
     public String tratarItemCardapioJaRegistrado(ItemCardapioJaRegistradoException ex, RedirectAttributes attributes)
     {
         attributes.addFlashAttribute("mensagem", ex.getMessage());
-        return "redirect:/itensCardapio/registrar";
+        return "redirect:/itens-cardapio/registrar";
     }
     @ExceptionHandler(ContaComPedidosException.class)
     public String tratarContaComPedidos(ContaComPedidosException ex,RedirectAttributes attributes)

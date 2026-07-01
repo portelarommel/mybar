@@ -1,60 +1,59 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyBar - Tela de Edição de Item</title>
-    <link rel="stylesheet" href="/css/novoOuAlteraObjetoEstilo.css">
+    <link rel="stylesheet" th:href="@{/css/novoOuAlteraObjetoEstilo.css}">
 </head>
 <body>
     <div class="page-centralizada">
         <div class="container">
-        <h2>Tela de Edição de Item</h2>
-        
-        <form action="#" method="POST">
+            <h2>Tela de Edição de Item</h2>
             
-            <div class="form-group">
-                <label for="codigo">Código <span class="required">*</span></label>
-                <input type="text" id="codigo" name="codigo" value="" readonly required>
-            </div>
+            <form th:action="@{/itens-cardapio/{id}/editar(id=${itemCardapio.id})}" th:object="${itemCardapio}" th:method="POST">
+                
+                <input type="hidden" th:field="*{id}" />
 
-            <div class="form-group">
-                <label for="descricao">Descrição <span class="required">*</span></label>
-                <input type="text" id="descricao" name="descricao" value="" required maxlength="255">
-            </div>
+                <div class="form-group">
+                    <label for="codigo">Código <span class="required">*</span></label>
+                    <input type="text" id="codigo" th:field="*{codigo}" readonly required 
+                           style="background-color: #e5e7eb; cursor: not-allowed;">
+                </div>
 
-            <div class="form-group">
-                <label for="tipoItem">Tipo <span class="required">*</span></label>
-                <select id="tipoItem" name="tipoItem" required>
-                    <option value="">[Tipos de Itens]</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="valor">Valor Unitário <span class="required">*</span></label>
-                <input type="number" id="valor" name="valor" value="" step="0.01" min="0" required placeholder="R$ 0,00">
-            </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição <span class="required">*</span></label>
+                    <input type="text" id="descricao" th:field="*{descricao}" required maxlength="255">
+                </div>
 
-            <div class="form-group">
-                <label for="gorjeta">Gorjeta <span class="required">*</span></label>
-                <input type="text" id="gorjeta" name="gorjeta" value="" required placeholder="Ex: 10%">
-            </div>
+                <div class="form-group">
+                    <label for="tipoItem">Tipo <span class="required">*</span></label>
+                    <select id="tipoItem" th:field="*{tipoItem.id}" required>
+                        <option value="">[Selecione o Tipo]</option>
+                        <option th:each="tipo : ${TiposItem}" 
+                                th:value="${tipo.id}" 
+                                th:text="${tipo.descricao}">
+                            Bebida
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="valor">Valor Unitário <span class="required">*</span></label>
+                    <input type="number" id="valor" th:field="*{valor}" step="0.01" min="0" required placeholder="R$ 0,00">
+                </div>
 
-            <div class="buttons-bar">
-                <button type="submit" class="btn-salvar">&lt; Salvar Alterações &gt;</button>
-                <a href="/cardapio" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Cancelar</a>
-            </div>
-            
-            <div class="footer-note">
-                O código do item não pode ser modificado após a inclusão.
-            </div>
-            
-        </form>
+                <div class="buttons-bar">
+                    <button type="submit" class="btn-salvar">&lt; Salvar Alterações &gt;</button>
+                    <a th:href="@{/itens-cardapio}" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Cancelar</a>
+                </div>
+                
+                <div class="footer-note">
+                    O código do item não pode ser modificado após a inclusão.
+                </div>
+                
+            </form>
         </div>
     </div>
-
-</body>
-</html>
-
 </body>
 </html>

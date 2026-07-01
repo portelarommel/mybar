@@ -1,63 +1,56 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBar - Tela de Inclusão de Item</title>
-    <link rel="stylesheet" href="/css/novoOuAlteraObjetoEstilo.css">
+    <title>MyBar - Tela de Inclusão de Itens</title>
+    <link rel="stylesheet" th:href="@{/css/novoOuAlteraObjetoEstilo.css}">
 </head>
 <body>
     <div class="page-centralizada">
         <div class="container">
-        <h2>Tela de Inclusão de Item</h2>
-        
-        <form action="#" method="POST">
+            <h2>Tela de Inclusão de Item</h2>
             
-            <div class="form-group">
-                <label for="codigo">Código <span class="required">*</span></label>
-                <input type="text" id="codigo" name="codigo" required 
-                       pattern="[0-9]{4}" maxlength="4" placeholder="Ex: 2010 (4 dígitos)">
-            </div>
+            <form th:action="@{/itens-cardapio/registrar}" th:object="${itemCardapio}" method="POST">
+                
+                <div class="form-group">
+                    <label for="codigo">Código <span class="required">*</span></label>
+                    <input type="text" id="codigo" th:field="*{codigo}" required 
+                           pattern="[0-9]{4}" maxlength="4" placeholder="Ex: 2010 (número com 4 dígitos, alterável apenas na inclusão de itens)">
+                </div>
 
-            <div class="form-group">
-                <label for="descricao">Descrição <span class="required">*</span></label>
-                <input type="text" id="descricao" name="descricao" required 
-                       maxlength="255" placeholder="Ex: Coca-cola 290ml">
-            </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição <span class="required">*</span></label>
+                    <input type="text" id="descricao" th:field="*{descricao}" required 
+                           maxlength="255" placeholder="Ex: Coca-cola 290ml (texto com 255 caracteres)">
+                </div>
+                <div class="form-group">
+                    <label for="valor">Valor Unitário <span class="required">*</span></label>
+                    <input type="number" id="valor" th:field="*{valor}" required 
+                           step="0.01" min="0.00" placeholder="Ex: 8.00">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipo">Tipo <span class="required">*</span></label>
+                        <select id="tipo" th:field="*{tipoItem.id}" required>
+                            <option value="">[Selecione um Tipo]</option>
+                            <option th:each="tipo : ${TiposItem}" 
+                                    th:value="${tipo.id}" 
+                                    th:text="${tipo.descricao}">Bebida</option>
+                        </select>
+                </div>
 
-            <div class="form-group">
-                <label for="tipoItem">Tipo <span class="required">*</span></label>
-                <select id="tipoItem" name="tipoItem" required>
-                    <option value="">[Tipos de Itens]</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="valor">Valor Unitário <span class="required">*</span></label>
-                <input type="number" id="valor" name="valor" step="0.01" min="0" 
-                       required placeholder="R$ 0,00">
-            </div>
-
-            <div class="form-group">
-                <label for="gorjeta">Gorjeta <span class="required">*</span></label>
-                <input type="text" id="gorjeta" name="gorjeta" required 
-                       placeholder="Ex: 10%">
-            </div>
-
-            <div class="buttons-bar">
-                <button type="submit" class="btn-salvar">&lt; Salvar &gt;</button>
-                <a href="/cardapio" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Voltar para o Cardápio</a>
-            </div>
-            
-            <div class="footer-note">
-                Os campos marcados com <span class="required">*</span> são de preenchimento obrigatório.
-            </div>
-            
-        </form>
-
+                <div class="buttons-bar">
+                    <button type="submit" class="btn-salvar">&lt; Salvar &gt;</button>
+                    <a th:href="@{/itens-cardapio}" style="display: block; margin-top: 15px; color: #4b5563; font-size: 14px; text-decoration: underline;">Voltar para Lista de Itens</a>
+                </div>
+                
+                <div class="footer-note">
+                    Os campos marcados com <span class="required">*</span> são de preenchimento obrigatório.
+                </div>
+                
+            </form>
         </div>
-
     </div>
-
 </body>
 </html>

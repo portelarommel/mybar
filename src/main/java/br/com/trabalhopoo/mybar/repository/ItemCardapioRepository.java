@@ -11,9 +11,9 @@ import org.springframework.data.repository.query.Param;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
 
 public interface ItemCardapioRepository extends JpaRepository<ItemCardapio, Long> {
-    @Query("SELECT i FROM ItemCardapio i WHERE " +
-           "(:codigo IS NULL OR i.id = :codigo) AND " +
-           "(:descricao IS NULL OR LOWER(i.descricao) LIKE LOWER(CONCAT('%', :descricao, '%'))) AND " +
+@Query("SELECT i FROM ItemCardapio i WHERE " +
+           "(:codigo IS NULL OR i.codigo = :codigo) AND " +
+           "(:descricao IS NULL OR :descricao = '' OR LOWER(i.descricao) LIKE LOWER(CONCAT('%', :descricao, '%'))) AND " +
            "(:tipoItemId IS NULL OR i.tipoItem.id = :tipoItemId) " +
            "ORDER BY i.descricao ASC")
     List<ItemCardapio> buscarComFiltrosDeTela(

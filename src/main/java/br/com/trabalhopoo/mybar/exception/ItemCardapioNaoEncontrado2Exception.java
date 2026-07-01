@@ -10,6 +10,7 @@ public class ItemCardapioNaoEncontrado2Exception extends RuntimeException{
     public ItemCardapioNaoEncontrado2Exception(String mensagem,Long id)
     {
         super(mensagem);
+        this.id =id;
     }
     
 }
