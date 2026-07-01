@@ -20,12 +20,31 @@ public class Configuracao {
 
     @Column(name = "valor_ingresso_fem", nullable = false)
     private BigDecimal valorIngressoFemin;
-
+   
     @Column(name = "data")
     private LocalDate data;
 
     @Column(name = "hora")
     private LocalTime hora;
+
+    private LocalDate dataFechamento;
+    private LocalTime horaFechamento;
+    public LocalDate getDataFechamento() {
+    return dataFechamento;
+}
+
+public void setDataFechamento(LocalDate dataFechamento) {
+    this.dataFechamento = dataFechamento;
+}
+
+public LocalTime getHoraFechamento() {
+    return horaFechamento;
+}
+
+public void setHoraFechamento(LocalTime horaFechamento) {
+    this.horaFechamento = horaFechamento;
+}
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "modo_operacao", nullable = false)

@@ -35,16 +35,19 @@ public class ConfiguracaoController {
     @PostMapping("/ingressos")
     public String alterarValorIngresso(@RequestParam BigDecimal valorIngressoMasc, @RequestParam BigDecimal valorIngressoFemin)
     {
+        configuracaoService.alterarValorIngresso(valorIngressoMasc, valorIngressoFemin);
         return "redirect:/configuracao";
     }
 
     @PostMapping("/liberar")
     public String liberarAtendimento() {
+        configuracaoService.liberarAtendimento();
         return "redirect:/configuracao";
     }
 
     @PostMapping("/fechar")
     public String fecharAtendimento() {
+        configuracaoService.fecharAtendimento(); 
         return "redirect:/configuracao";
     }
 }

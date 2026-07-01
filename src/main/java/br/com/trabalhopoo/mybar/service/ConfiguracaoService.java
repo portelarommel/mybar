@@ -53,8 +53,8 @@ public class ConfiguracaoService {
     public Configuracao fecharAtendimento() {
         Configuracao config = obterConfiguracao();
         config.setModoOperacao(ModoOperacao.GESTAO);
-        config.setData(LocalDate.now());
-        config.setHora(LocalTime.now());
+        config.setDataFechamento(LocalDate.now());
+        config.setHoraFechamento(LocalTime.now());
         return configuracaoRepository.save(config);
     }
 }
