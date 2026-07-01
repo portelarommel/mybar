@@ -1,5 +1,6 @@
 package br.com.trabalhopoo.mybar.controller;
 
+import br.com.trabalhopoo.mybar.dto.UsuarioDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -25,38 +26,38 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    /*@GetMapping
-    public ResponseEntity<List<Usuario>> listarUsuarios() {
-        return ResponseEntity.ok(usuarioService.listarUsuarios());
-    }*/
-
     @GetMapping
-    public String pesquisarUsuario(@RequestParam(required = false) String nome) {
+    public String pesquisarUsuario(@RequestParam(required = false) String nome, Model model) {
+        List<UsuarioDto> usuarios = (nome == null || nome.isBlank())
+                ? usuarioService.listarUsuarios()
+                : usuarioService.pesquisarUsuarioPorFiltro(nome);
+
+        model.addAttribute("usuarios", usuarios);
         return "usuario/gestaoDeUsuario";
     }
-    @GetMapping("/registrar")
-    public String carregarPaginaRegistro(Model model)
-    {
-        model.addAttribute("novo",new Usuario());
-        return "usuario/registroDeUsuario";
 
+    @GetMapping("/registrar")
+    public String carregarPaginaRegistro(Model model) {
+        model.addAttribute("novo", new Usuario());
+        return "usuario/registroDeUsuario";
     }
+
     @PostMapping("/registrar")
     public String incluirUsuario(@ModelAttribute Usuario usuario) {
         usuarioService.incluirUsuario(usuario);
         return "redirect:/usuario";
     }
-    @GetMapping("/{id}/editar")
-    public String carregarPaginaEdicao(@PathVariable Long id , Model model)
-    {
-        Usuario usuario = usuarioService.pesquisarUsuario(id);
-        model.addAttribute("editar",usuario);
-        return "usuario/registroDeUsuario";
 
+    @GetMapping("/{id}/editar")
+    public String carregarPaginaEdicao(@PathVariable Long id, Model model) {
+        UsuarioDto usuario = usuarioService.pesquisarUsuario(id);
+        model.addAttribute("editar", usuario);
+        return "usuario/registroDeUsuario";
     }
+
     @PutMapping("/{id}/editar")
-    public String alterarUsuario(@PathVariable Long id, @ModelAttribute Usuario usuario) {
-        usuarioService.alterarUsuario(id, usuario);
+    public String alterarUsuario(@PathVariable Long id, @ModelAttribute UsuarioDto usuarioDto) {
+        usuarioService.alterarUsuario(id, usuarioDto);
         return "redirect:/usuario";
     }
 
@@ -65,4 +66,5 @@ public class UsuarioController {
         usuarioService.deletarUsuario(id);
         return "redirect:/usuario";
     }
+
 }

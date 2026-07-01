@@ -10,4 +10,6 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
     List<Pagamento> findByConta_IdOrderByDataHoraAsc(
             Long contaId
     );
+
+    List<Pagamento> findByConta_Id(Long contaId);
 }

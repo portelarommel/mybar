@@ -65,6 +65,7 @@ public class ContaDto {
     {
         return sexoCliente;
     }
+
     public static ContaDto fromEntity(Conta conta) {
         ContaDto dto = new ContaDto();
 

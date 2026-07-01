@@ -22,9 +22,5 @@ public interface ItemDaContaRepository extends JpaRepository<ItemDaConta, Long>{
     );
     List<ItemDaConta> findByContaId(Long contaId);
 
-    List<ItemDaConta> findByConta_IdOrderByDataLancamentoAsc(Long contaId);
-
-    List<ItemDaConta> findByItemCardapio_TipoItem_CozinhaTrueAndStatusInOrderByDataLancamentoAsc(
-            List<StatusItem> statuses
-    );
+    List<ItemDaConta> findByItemCardapio_TipoItem_CozinhaTrueAndStatusInOrderByDataSolicitacaoAsc(List<StatusItem> status);
 }

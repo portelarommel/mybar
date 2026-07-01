@@ -1,5 +1,6 @@
 package br.com.trabalhopoo.mybar.service;
 
+import br.com.trabalhopoo.mybar.dto.UsuarioDto;
 import br.com.trabalhopoo.mybar.exception.ItemCardapioNaoEncontradoException;
 import br.com.trabalhopoo.mybar.exception.UsuarioNaoEncontradoException;
 import br.com.trabalhopoo.mybar.model.ItemCardapio;
@@ -10,51 +11,58 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
-
     private UsuarioRepository usuarioRepository;
 
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Usuario incluirUsuario(Usuario usuario){
+    public Usuario incluirUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario alterarUsuario(long id, Usuario usuario) {
+    public UsuarioDto alterarUsuario(long id, UsuarioDto usuarioDto) {
 
         Usuario existente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(
                         "Usuário não encontrado com id: " + id));
 
-        existente.setNome(usuario.getNome());
-        existente.setEmail(usuario.getEmail());
-        existente.setSenha(usuario.getSenha());
-        existente.setCodigo(usuario.getCodigo());
-        existente.setTipo(usuario.getTipo());
+        existente.setNome(usuarioDto.getNome());
+        existente.setEmail(usuarioDto.getEmail());
+        existente.setCodigo(usuarioDto.getCodigo());
+        existente.setTipo(usuarioDto.getTipo());
 
-        return usuarioRepository.save(existente);
+        Usuario salvo = usuarioRepository.save(existente);
+        return UsuarioDto.fromEntity(salvo);
     }
 
-    public List<Usuario> listarUsuarios()
-    {
-        return usuarioRepository.findAll();
+    public List<UsuarioDto> listarUsuarios() {
+        return usuarioRepository.findAll()
+                .stream()
+                .map(UsuarioDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public Usuario pesquisarUsuario(Long id) {
-        return usuarioRepository.findById(id)
+    public UsuarioDto pesquisarUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(
                         "Usuário não encontrado com id: " + id));
-    }
-    public List<Usuario> pesquisarUsuarioPorFiltro(String nome)
-    {
-        return usuarioRepository.buscarComFiltros(nome);
+        return UsuarioDto.fromEntity(usuario);
     }
 
-    public void deletarUsuario(Long id){
+    public List<UsuarioDto> pesquisarUsuarioPorFiltro(String nome) {
+        return usuarioRepository.buscarComFiltros(nome)
+                .stream()
+                .map(UsuarioDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public void deletarUsuario(Long id) {
         usuarioRepository.deleteById(id);
     }
+
 }

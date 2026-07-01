@@ -4,6 +4,7 @@ import br.com.trabalhopoo.mybar.model.enums.FormaDePagamento;
 import br.com.trabalhopoo.mybar.model.enums.Sentenca;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="pagamento")
@@ -22,6 +23,9 @@ public class Pagamento {
 
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;
+
+    @Column(name = "data_hora", nullable = false)
+    private LocalDateTime dataHora;
 
     @ManyToOne
     @JoinColumn(name = "quem_lancou_pg_id")
