@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
 import br.com.trabalhopoo.mybar.model.enums.Status;
+import br.com.trabalhopoo.mybar.model.enums.StatusItem;
 import br.com.trabalhopoo.mybar.dto.ContaDto;
 import br.com.trabalhopoo.mybar.dto.PagamentoDto;
 import br.com.trabalhopoo.mybar.model.enums.FormaDePagamento;
@@ -178,8 +179,8 @@ public class ContaService {
         BigDecimal totalConta = conta.getItensDaConta().stream()
                 .map(ItemDaConta::getValorTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        totalConta.add(valorGorjeta);
-        totalConta.add(valorIngresso);
+        totalConta = totalConta.add(valorGorjeta);
+        totalConta = totalConta.add(valorIngresso);
         return totalConta;
 
     }
@@ -209,6 +210,8 @@ public class ContaService {
         ItemDaConta itemGorjeta = new ItemDaConta(valorGorjeta);
         itemIngresso.setQuantidade(1);
         itemGorjeta.setQuantidade(1);
+        itemIngresso.setStatus(StatusItem.INTERNO);
+        itemGorjeta.setStatus(StatusItem.INTERNO);
         conta.setStatus(Status.FECHADA);
         conta.adicionarItem(itemIngresso);
         if (valorGorjeta.compareTo(BigDecimal.ZERO) > 0) {

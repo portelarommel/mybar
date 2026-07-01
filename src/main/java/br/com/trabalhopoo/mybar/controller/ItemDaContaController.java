@@ -1,8 +1,10 @@
 package br.com.trabalhopoo.mybar.controller;
 
 import br.com.trabalhopoo.mybar.dto.ItemDaContaDto;
+import br.com.trabalhopoo.mybar.exception.ContaJaFechadaException;
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
+import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.service.ContaService;
 import br.com.trabalhopoo.mybar.service.ItemDaContaService;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,12 @@ public class ItemDaContaController {
 
     @GetMapping("/{id}/itens")
     public String carregarPaginaItemConta(@PathVariable Long id, Model model) {
-        model.addAttribute("conta",contaService.pesquisarConta(id));
+        Conta conta = contaService.pesquisarConta(id);
+        if(conta.getStatus() == Status.FECHADA)
+        {
+            throw new ContaJaFechadaException("Conta já foi fechada!", id);
+        }
+        model.addAttribute("conta",conta);
         List<ItemDaConta> itensDaConta =  itemDaContaService.listarPorConta(id);
         List<ItemDaContaDto> itensDaContaDto = itensDaConta.stream()
     .map((ItemDaConta item) -> {

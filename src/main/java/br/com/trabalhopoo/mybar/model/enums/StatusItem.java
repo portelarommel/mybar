@@ -5,5 +5,6 @@ public enum StatusItem {
     RECEBIDO, 
     SOLICITADO,
     EM_PREPARACAO,
+    INTERNO
 
 }

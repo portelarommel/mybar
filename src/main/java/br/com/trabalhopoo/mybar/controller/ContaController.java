@@ -99,6 +99,10 @@ public class ContaController {
     public String CarregarPaginaFecharConta(@PathVariable Long id, Model model)
     {
         Conta conta = contaService.pesquisarConta(id);
+        if(conta.getStatus() == Status.FECHADA)
+        {
+            throw new ContaJaFechadaException("Conta já foi fechada!", id);
+        }
         ContaDto contaDto =  ContaDto.fromEntity(conta);
         BigDecimal gorjeta =contaService.calcularGorjeta(id);
         BigDecimal ingresso = contaService.calcularValorIngresso(id);
@@ -133,6 +137,7 @@ public class ContaController {
     public String ExcluirPagamento(@PathVariable Long id,@PathVariable Long idPagamento,@RequestParam String usuarioConfirmacao,
                                @RequestParam String senhaConfirmacao)
     {
+
         contaService.ExcluirPagamento(id,idPagamento);
         return "redirect:/contas/"+id+"/fechar";
     }

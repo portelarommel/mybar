@@ -9,6 +9,13 @@
 <script th:src="@{/js/mascaras.js}"></script>
 
 <body>
+    <script th:src="@{/js/mensagens.js}"></script>
+
+    <div id="mensagem"
+        th:if="${mensagem}"
+        th:data-texto="${mensagem}"
+        th:data-tipo="${tipo}">
+    </div>
 
     <div class="container">
         

@@ -18,10 +18,10 @@ public class GlobalExceptionHandler {
         return "redirect:/contas/registrar";
     }
     @ExceptionHandler(ContaJaFechadaException.class)
-    public String tratarContaJaAberta(ContaJaFechadaException ex,RedirectAttributes attributes)
+    public String tratarContaJaFechada(ContaJaFechadaException ex,RedirectAttributes attributes)
     {
         attributes.addFlashAttribute("mensagem", ex.getMessage());
-        return "redirect:/contas/"+ex.getId()+"/fechar";
+        return "redirect:/contas";
     }
     @ExceptionHandler(ContaNaoEncontradaException.class)
     public String tratarContaNaoEncontrada(ContaNaoEncontradaException ex,RedirectAttributes attributes)
