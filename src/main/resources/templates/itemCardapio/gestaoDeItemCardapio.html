@@ -11,7 +11,7 @@
     <div class="container">
         <h2>Tela de Gestão de Itens do Cardápio</h2>
         
-        <form th:action="@{/itens-cardapio}" method="GET">
+        <form id = "formItemCardapio" :action="@{/itens-cardapio}" method="GET">
             <div class="pesquisa-grid">
                 <div class="form-group">
                     <label for="codigo">Código</label>
@@ -79,6 +79,22 @@
         </div>
 
     </div>
+    
+    
+    <script>
+       document.getElementById('formItemCardapio').addEventListener('submit', function(e) {
+        // Seleciona todos os inputs e selects dentro do formulário
+        const inputs = this.querySelectorAll('input, select');
+        
+        inputs.forEach(input => {
+            // Se o campo estiver totalmente vazio ou apenas com espaços
+            if (!input.value.trim()) {
+                // Desabilita o campo temporariamente para o navegador não enviá-lo
+                input.disabled = true;
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
