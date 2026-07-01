@@ -17,10 +17,13 @@ public class ItemDaConta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name= "codigo",length = 4, nullable =false)
+    private Integer codigo;
+
     private BigDecimal valor; // nao tem no pdf mas vou analisar dps
 
     @Column(name = "quantidade", nullable = false)
-    private int quantidade;
+    private Integer quantidade;
 
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;

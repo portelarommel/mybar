@@ -2,6 +2,7 @@ package br.com.trabalhopoo.mybar.repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,5 @@ public interface ItemCardapioRepository extends JpaRepository<ItemCardapio, Long
             @Param("descricao") String descricao,
             @Param("tipoItemId") Long tipoItemId);
     List<ItemCardapio> findByAtivoTrue();
+    Optional<ItemCardapio> findByCodigo(Integer codigo);
 }

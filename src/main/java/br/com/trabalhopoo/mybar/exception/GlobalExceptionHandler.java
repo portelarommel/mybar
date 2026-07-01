@@ -52,6 +52,13 @@ public class GlobalExceptionHandler {
         return "redirect:/itensCardapio";
 
     }
+    @ExceptionHandler(ItemCardapioNaoEncontrado2Exception.class)
+    public String tratarItemCardapioNaoEncontrado(ItemCardapioNaoEncontrado2Exception ex,RedirectAttributes attributes)
+    {
+        attributes.addFlashAttribute("mensagem", ex.getMessage());
+        return "redirect:/contas/"+ex.getId()+"/itens";
+
+    }
     @ExceptionHandler(ItemCardapioJaRegistradoException.class)
     public String tratarItemCardapioJaRegistrado(ItemCardapioJaRegistradoException ex, RedirectAttributes attributes)
     {

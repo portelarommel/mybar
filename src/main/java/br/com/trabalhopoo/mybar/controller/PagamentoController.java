@@ -35,8 +35,8 @@ public class PagamentoController {
         return ResponseEntity.status(204).build();
     }
 
-    @GetMapping("/{contaId}/total")
+   /* @GetMapping("/{contaId}/total")
     public ResponseEntity<BigDecimal> totalPagamentos(@PathVariable Long contaId) {
         return ResponseEntity.ok(pagamentoService.somarPagamentos(contaId));
-    }
+    }*/
 }

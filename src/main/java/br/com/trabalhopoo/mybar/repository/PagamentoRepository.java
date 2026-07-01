@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
 
-    List<Pagamento> findByConta_IdOrderByDataHoraAsc(
+    /*List<Pagamento> findByConta_Id(
             Long contaId
-    );
+    );*/
 }

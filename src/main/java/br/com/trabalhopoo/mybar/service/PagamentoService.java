@@ -1,14 +1,15 @@
 package br.com.trabalhopoo.mybar.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import br.com.trabalhopoo.mybar.model.Conta;
 import br.com.trabalhopoo.mybar.model.Pagamento;
 import br.com.trabalhopoo.mybar.model.enums.Status;
 import br.com.trabalhopoo.mybar.repository.ContaRepository;
 import br.com.trabalhopoo.mybar.repository.PagamentoRepository;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class PagamentoService {
@@ -44,10 +45,10 @@ public class PagamentoService {
     }
 
 
-    public BigDecimal somarPagamentos(Long contaId) {
-        List<Pagamento> pagamentos = pagamentoRepository.findByConta_Id(contaId);
+    /*public BigDecimal somarPagamentos(Long contaId) {
+        List<Pagamento> pagamentos =  pagamentoRepository.findByConta_Id(contaId);
         return pagamentos.stream()
                 .map(Pagamento::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+    }*/
 }
