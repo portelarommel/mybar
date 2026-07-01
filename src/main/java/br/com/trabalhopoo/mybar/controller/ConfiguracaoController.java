@@ -8,10 +8,12 @@ import br.com.trabalhopoo.mybar.model.enums.ModoOperacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.trabalhopoo.mybar.model.Configuracao;
 import br.com.trabalhopoo.mybar.service.ConfiguracaoService;
+
 
 @Controller
 @RequestMapping("/configuracao")
@@ -24,22 +26,24 @@ public class ConfiguracaoController {
     }
 
     @GetMapping
-    public ResponseEntity<Configuracao> buscarAtual() {
-        return ResponseEntity.ok(configuracaoService.obterConfiguracao());
+    public String buscarAtual(Model model) {
+        model.addAttribute("configuracao",configuracaoService.obterConfiguracao());
+        //model.addAttribute("ModoOperacao", br.com.trabalhopoo.mybar.model.enums.ModoOperacao.class);
+        return "/gestaoDeConfiguracao";
     }
 
-    @PutMapping("/ingressos")
+    @PostMapping("/ingressos")
     public String alterarValorIngresso(@RequestParam BigDecimal valorIngressoMasc, @RequestParam BigDecimal valorIngressoFemin)
     {
         return "redirect:/configuracao";
     }
 
-    @PutMapping("/liberar")
+    @PostMapping("/liberar")
     public String liberarAtendimento() {
         return "redirect:/configuracao";
     }
 
-    @PutMapping("/fechar")
+    @PostMapping("/fechar")
     public String fecharAtendimento() {
         return "redirect:/configuracao";
     }
