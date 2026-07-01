@@ -24,13 +24,21 @@ public class ControleEntregaService {
     {
         List<ItemDaConta> itens = itemDaContaRepository.buscarParaControleEntregas(numeroConta, nomeCliente);
 
-        Map<StatusItem, Integer> pesoStatus = Map.of(
-            StatusItem.SOLICITADO, 1,
-            StatusItem.RECEBIDO, 2,
-            StatusItem.ENTREGUE, 3
-        );
-        itens.sort(Comparator.comparingInt(item -> pesoStatus.getOrDefault(item.getStatus(), 4)));
-        return itens;
+            Map<StatusItem, Integer> pesoStatus = Map.of(
+                StatusItem.SOLICITADO, 1,
+                StatusItem.RECEBIDO, 2,
+                StatusItem.ENTREGUE, 3
+            );
+
+            // Ordenação corrigida prevenindo NullPointerException
+            itens.sort(Comparator.comparingInt(item -> {
+                if (item.getStatus() == null) {
+                    return 4; // Se o status for nulo, joga para o fim da fila
+                }
+                return pesoStatus.getOrDefault(item.getStatus(), 4);
+            }));
+
+            return itens;
 
     }
     @Transactional
@@ -40,6 +48,7 @@ public class ControleEntregaService {
         .orElseThrow(() -> new ItemDaContaNaoEncontradoException("Item não encontrado"));
         item.setDataRecebimentoBar(LocalDate.now());
         item.setHoraRecebimentoBar(LocalTime.now());
+        item.setStatus(StatusItem.RECEBIDO);
 
         return itemDaContaRepository.save(item);
     }
@@ -50,7 +59,7 @@ public class ControleEntregaService {
         .orElseThrow(() -> new ItemDaContaNaoEncontradoException("Item não encontrado"));
         item.setDataEntregaBar(LocalDate.now());
         item.setHoraEntregaBar(LocalTime.now());
-
+        item.setStatus(StatusItem.ENTREGUE);
         return itemDaContaRepository.save(item);
     }
 

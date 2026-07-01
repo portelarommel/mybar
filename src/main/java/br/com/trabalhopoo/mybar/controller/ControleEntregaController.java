@@ -1,6 +1,7 @@
 package br.com.trabalhopoo.mybar.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.trabalhopoo.mybar.dto.ItemDaContaEntregaDto;
+import br.com.trabalhopoo.mybar.dto.ItemDaContaDto;
 import br.com.trabalhopoo.mybar.model.ItemDaConta;
 import br.com.trabalhopoo.mybar.service.ControleEntregaService;
 import jakarta.transaction.Transactional;
@@ -30,23 +33,34 @@ public class ControleEntregaController {
             Model model) {
             
         List<ItemDaConta> resultado = controleEntregaService.buscarItemDaConta(numeroConta, nomeCliente);
-        model.addAttribute("itens", resultado);
+        List<ItemDaContaEntregaDto> resultadoDto =resultado.stream()
+    .map((ItemDaConta item) -> {
+        return new ItemDaContaEntregaDto(
+            item.getId(),
+            item.getConta().getNumero(),
+            item.getItemCardapio().getTipoItem().getDescricao(),
+            item.getItemCardapio().getDescricao(),
+            item.getDataHora(),
+            item.getStatus()
+
+        );}).collect(Collectors.toList());
+        model.addAttribute("itens", resultadoDto);
         return "gestaoDeControleDeEntrega";
     }
     @Transactional
-    @PostMapping
-    public String  receberBar(@PathVariable Long idItem, Model model)
+    @PostMapping("/{id}/receber")
+    public String  receberBar(@PathVariable Long id, Model model)
     {
-        ItemDaConta atualizado = controleEntregaService.receberNoBar(idItem);
+        ItemDaConta atualizado = controleEntregaService.receberNoBar(id);
         model.addAttribute("itemAtualizado",atualizado);
         return "redirect:/controle-entrega";
     }
 
     @Transactional
-    @PostMapping("/registrar")
-    public String  registrarEntregaBar(@PathVariable Long idItem,Model model)
+    @PostMapping("/{id}/registrar")
+    public String  registrarEntregaBar(@PathVariable Long id,Model model)
     {
-        ItemDaConta atualizado = controleEntregaService.registrarEntregaFinalBar(idItem);
+        ItemDaConta atualizado = controleEntregaService.registrarEntregaFinalBar(id);
         model.addAttribute("itemregistrado",atualizado);
         return "redirect:/controle-entrega";
     }

@@ -1,6 +1,7 @@
 package br.com.trabalhopoo.mybar.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import br.com.trabalhopoo.mybar.model.enums.Sentenca;
@@ -167,7 +168,32 @@ public class ItemDaConta {
             return StatusItem.SOLICITADO;
         }
     }
+    public LocalDateTime getDataHora()
+    {
+        StatusItem statusAux = this.getStatus();
+        if(statusAux == StatusItem.SOLICITADO )
+        {
+            return LocalDateTime.of(this.getDataSolicitacao(), this.getHoraSolicitacao());
 
+        }
+        if(statusAux == StatusItem.ENTREGUE)
+        {
+            if(this.getItemCardapio().getTipoItem().getCozinha())
+            {
+                return LocalDateTime.of(this.getDataEntregaCozinha(),this.getHoraEntregaCozinha());
+            }
+            return LocalDateTime.of(this.getDataEntregaBar(),this.getHoraEntregaBar());
+        }
+        else
+        {
+            if(this.getItemCardapio().getTipoItem().getCozinha())
+            {
+                return LocalDateTime.of(this.getDataRecebimentoCozinha(),this.getHoraRecebimentoCozinha());
+            }
+            return LocalDateTime.of(this.getDataRecebimentoBar(),this.getHoraRecebimentoBar());
+
+        }
+    }
     public LocalDate getDataSolicitacao() {
         return dataSolicitacao;
     }

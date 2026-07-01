@@ -12,7 +12,6 @@ public class ItemDaContaDto {
     private BigDecimal valorUnitario;
     private String descricao;
 
-
    public ItemDaContaDto(){}
    public ItemDaContaDto(Long id, Integer quantidade, Integer codigo, String descricao,BigDecimal valorUnitario){
     this.id = id;
